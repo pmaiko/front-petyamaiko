@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
+  "rules": {
+    "interface-name": false,
+    "semicolon": [true, "never"]
+//    "no-console": [true, "log", "error"],
+//    "defaultSeverity": "error"
+  }
+}
