@@ -2,6 +2,11 @@
   "name": "petyamaiko",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js"
+  },
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -64,30 +69,41 @@
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1"
   },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ],
     "rules": {
-      "import/no-anonymous-default-export": ["error", {
-        "allowArray": true,
-        "allowArrowFunction": true,
-        "allowAnonymousClass": true,
-        "allowAnonymousFunction": true,
-        "allowCallExpression": true,
-        "allowLiteral": true,
-        "allowObject": true
-      }],
-      "object-curly-spacing": ["error", "always"],
+      "import/no-anonymous-default-export": [
+        "error",
+        {
+          "allowArray": true,
+          "allowArrowFunction": true,
+          "allowAnonymousClass": true,
+          "allowAnonymousFunction": true,
+          "allowCallExpression": true,
+          "allowLiteral": true,
+          "allowObject": true
+        }
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
       "no-trailing-spaces": 0,
-      "prefer-const": [ "error", { "destructuring": "all" } ],
-      "space-infix-ops": ["error", { "int32Hint": false }]
+      "prefer-const": [
+        "error",
+        {
+          "destructuring": "all"
+        }
+      ],
+      "space-infix-ops": [
+        "error",
+        {
+          "int32Hint": false
+        }
+      ]
     }
   },
   "browserslist": {

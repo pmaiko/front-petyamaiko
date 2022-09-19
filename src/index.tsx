@@ -5,7 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import router from './plugins/router'
+import router from '~/plugins/router'
 
 import reportWebVitals from './reportWebVitals'
 

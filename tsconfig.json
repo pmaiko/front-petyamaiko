@@ -22,7 +22,8 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "extends": "./tsconfig.paths.json"
 //  "eslintConfig": {
 //    "extends": [
 //      "react-app",

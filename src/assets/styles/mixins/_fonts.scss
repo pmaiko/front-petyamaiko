@@ -1,0 +1,24 @@
+$fonts-path: '~/src/assets/fonts';
+
+@mixin font-face($font-name, $file-name, $font-weight, $font-style: normal) {
+  @font-face {
+    font-family: quote($font-name);
+    font-style: $font-style;
+    font-weight: $font-weight;
+    font-display: swap;
+
+    @if ($font-style == normal) {
+      src:
+        local(quote($font-name)),
+        url("#{$fonts-path}/#{$font-name}/#{$file-name}.woff") format("woff"),
+        url("#{$fonts-path}/#{$font-name}/#{$file-name}.woff2") format("woff2");
+    }
+
+    @else {
+      src:
+        local(quote($font-name)),
+        url("#{$fonts-path}/#{$font-name}/#{$file-name}-#{$font-style}.woff") format("woff"),
+        url("#{$fonts-path}/#{$font-name}/#{$file-name}-#{$font-style}.woff2") format("woff2");
+    }
+  }
+}
