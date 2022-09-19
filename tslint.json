@@ -4,9 +4,39 @@
     "tslint-react"
   ],
   "rules": {
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
     "interface-name": false,
-    "semicolon": [true, "never"]
-//    "no-console": [true, "log", "error"],
-//    "defaultSeverity": "error"
+    "semicolon": [true, "never"],
+    "no-console": false,
+    "defaultSeverity": "error",
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
+    "space-before-function-paren": true,
+    "import-spacing": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "never",
+          "arrays": "never",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "esSpecCompliant": true
+      }
+    ],
+    "prefer-const": [true, {"destructuring": "all"}],
+    "increment-decrement": [true, "allow-post"],
+    "no-duplicate-imports": [true, {"allow-namespace-imports": true}],
+    "prefer-for-of": true,
+    "prefer-object-spread": true,
+    "restrict-plus-operands": true,
+    "strict-type-predicates": true,
+    "import-blacklist": true,
+    "no-trailing-whitespace": [true, "ignore-blank-lines"]
+    //    "typedef": [true, "object-destructuring"]
   }
 }
