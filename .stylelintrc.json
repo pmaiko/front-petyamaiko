@@ -4,6 +4,9 @@
     "stylelint-config-recess-order"
   ],
   "rules": {
-    "scss/no-global-function-names": false
+    "indentation": 2,
+    "scss/no-global-function-names": null,
+    "scss/comment-no-empty": null,
+    "no-empty-source": null
   }
 }

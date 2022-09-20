@@ -1,10 +1,14 @@
-import TheHeader from '../shared/TheHeader'
+import TheHeader from '../shared/TheHeader/TheHeader'
 
-export default (props: any) => {
+const Default = (props: any) => {
   return (
     <div className='layout layout_default'>
       <TheHeader />
-      {props.children}
+      <div className='container'>
+        {props.children}
+      </div>
     </div>
   )
 }
+
+export default Default

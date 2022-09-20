@@ -1,0 +1,18 @@
+.container {
+  width: map-get($container-max-widths, lg);
+  max-width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+
+  @include respDown(md) {
+    width: map-get($container-max-widths, md);
+  }
+
+  @include respDown(sm) {
+    width: map-get($container-max-widths, sm);
+  }
+}
+
+.layout {
+  padding-top: 100px;
+}

@@ -1,6 +1,6 @@
-import Default from '../layout/default'
+import Default from '../../layout/default'
 
-export default () => {
+const Home = () => {
   return (
     <Default>
       <div>
@@ -9,3 +9,5 @@ export default () => {
     </Default>
   )
 }
+
+export default Home

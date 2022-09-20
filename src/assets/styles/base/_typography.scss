@@ -1,24 +1,16 @@
-body {
-  // font-family: $f-main;
+html {
   font-size: 16px;
+}
+
+body {
+  font-family: $f-main;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1;
-  // color: $c-black;
-  font-display: auto;
+  color: $c-text;
+  background-color: $c-primary;
 }
 
 code {
-  font-family:
-          source-code-pro,
-          Menlo,
-          Monaco,
-          Consolas,
-          "Courier New",
-          monospace;
-}
-
-div {
-  padding: 10px;
-  margin: 0;
-  color: red;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }

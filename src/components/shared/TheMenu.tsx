@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default () => {
+const TheMenu = () => {
   return (
     <nav className='menu'>
       <ul>
@@ -17,3 +17,5 @@ export default () => {
     </nav>
   )
 }
+
+export default TheMenu
