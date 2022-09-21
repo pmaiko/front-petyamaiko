@@ -1,0 +1,13 @@
+{
+  "header": {
+    "menu": {
+      "logo": "Petya",
+      "items": [
+        {
+          "label": "home",
+          "url": "/"
+        }
+      ]
+    }
+  }
+}
