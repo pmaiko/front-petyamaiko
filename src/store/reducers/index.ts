@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux'
 
-import global from './global'
+import globalDataReducers from './globalDataReducers'
 
-export default combineReducers({
-  global
+export const rootReducer = combineReducers({
+  globalData: globalDataReducers
 })
+
+export type RootState = ReturnType<typeof rootReducer>

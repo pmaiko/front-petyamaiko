@@ -2,5 +2,9 @@
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  align-items: center;
   width: 100%;
+  height: #{$header-height}px;
+  border-bottom: 1px solid rgba($c-text, 1);
 }

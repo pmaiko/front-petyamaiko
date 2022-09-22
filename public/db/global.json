@@ -1,11 +1,19 @@
 {
   "header": {
     "menu": {
-      "logo": "Petya",
+      "logo": "< <span>P</span>etya <span>M</span>aiko <span>/></span>",
       "items": [
         {
-          "label": "home",
-          "url": "/"
+          "label": "Home",
+          "link": "/"
+        },
+        {
+          "label": "Works",
+          "link": "/works"
+        },
+        {
+          "label": "About Me",
+          "link": "/about"
         }
       ]
     }

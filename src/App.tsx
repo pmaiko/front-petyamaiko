@@ -1,20 +1,15 @@
-import api from '~/api/api'
 import router from '~/plugins/router'
 
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { getGlobal } from '~/store/thunk/getGlobal'
-
+import { useActions } from '~/components/hooks/useActions'
 
 const App = () => {
-  const dispatch = useDispatch<any>()
-  const global = useSelector((state: any) => state.global)
+  const { fetchGlobalData } = useActions()
 
-  console.log(global)
   useEffect(() => {
-    dispatch(getGlobal())
+    fetchGlobalData()
   }, [])
 
   return (

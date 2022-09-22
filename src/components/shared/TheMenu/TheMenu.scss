@@ -1,0 +1,20 @@
+.menu {
+  display: flex;
+  align-items: center;
+
+  &__list {
+    display: flex;
+    margin: 0 -15px -10px;
+
+    &-item {
+      padding: 0 15px;
+      margin-bottom: 10px;
+
+      &-link {
+        font-size: 0.9rem;
+        font-weight: 300;
+        letter-spacing: 0.07em;
+      }
+    }
+  }
+}

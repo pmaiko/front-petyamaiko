@@ -1,15 +1,15 @@
 import api from 'axios'
 
-import { IGlobal } from '~/types/types'
+import { IGlobalData } from '~/types'
 
 const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
 })
 
 export default {
-  async getGlobal () {
+  async fetchGlobalData () {
     try {
-      const { data } = await axios.get<IGlobal>('global.json')
+      const { data } = await axios.get<IGlobalData>('global.json')
 
       return Promise.resolve(data)
     } catch (error) {

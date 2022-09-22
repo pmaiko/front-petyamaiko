@@ -1,0 +1,14 @@
+.nav {
+  display: flex;
+
+  .logo {
+    margin-right: 60px;
+    font-family: $f-secondary;
+
+    @extend .h3;
+
+	span {
+	  color: $c-secondary;
+	}
+  }
+}

@@ -14,5 +14,5 @@
 }
 
 .layout {
-  padding-top: 100px;
+  padding-top: #{$header-height + 30}px;
 }

@@ -4,7 +4,7 @@
     "stylelint-config-recess-order"
   ],
   "rules": {
-    "indentation": 2,
+    "scss/at-extend-no-missing-placeholder": null,
     "scss/no-global-function-names": null,
     "scss/comment-no-empty": null,
     "no-empty-source": null
