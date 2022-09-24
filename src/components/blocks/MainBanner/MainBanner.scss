@@ -17,6 +17,10 @@
     align-self: center;
     width: calc(100% - 645px);
 
+    @include respUp(lg) {
+      padding-bottom: 86px;
+    }
+
     @include respDown(md) {
       width: calc(100% - 380px);
     }
@@ -70,6 +74,7 @@
     align-self: center;
     width: 645px;
     height: 100%;
+    padding: 30px 0;
 
     @include respDown(md) {
       width: 380px;
@@ -78,6 +83,7 @@
     @include respDown(sm) {
       width: 100%;
       height: auto;
+      padding: 0;
     }
 
     @include respDown(sm) {
