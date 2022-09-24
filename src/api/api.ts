@@ -9,7 +9,7 @@ const axios = api.create({
 export default {
   async fetchGlobalData () {
     try {
-      const { data } = await axios.get<IGlobalData>('global.json')
+      const { data } = await axios.get<IGlobalData>('/global-data')
 
       return Promise.resolve(data)
     } catch (error) {
