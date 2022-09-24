@@ -2,6 +2,10 @@
   display: flex;
   align-items: center;
 
+  @include respDown(sm) {
+    display: none;
+  }
+
   &__list {
     display: flex;
     margin: 0 -15px -10px;
@@ -11,7 +15,7 @@
       margin-bottom: 10px;
 
       &-link {
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: 300;
         letter-spacing: 0.07em;
       }

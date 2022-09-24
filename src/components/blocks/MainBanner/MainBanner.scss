@@ -1,0 +1,104 @@
+.main-banner {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+
+  .container {
+    display: flex;
+    height: 100%;
+
+    @include respDown(md) {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__content {
+    align-self: center;
+    width: calc(100% - 645px);
+
+    @include respDown(md) {
+      width: calc(100% - 380px);
+    }
+
+    @include respDown(sm) {
+      width: 100%;
+    }
+  }
+
+  &__title {
+    font-size: 5rem;
+    font-weight: 700;
+    white-space: nowrap;
+
+    @include respDown(md) {
+      font-size: 3rem;
+      white-space: normal;
+    }
+
+    @include respDown(sm) {
+      margin-top: 40px;
+      font-size: 2rem;
+    }
+  }
+
+  &__description {
+    margin-top: 15px;
+    font-size: 1.2rem;
+
+    @include respDown(md) {
+      font-size: 1rem;
+    }
+
+    @include respDown(sm) {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__button {
+    margin-top: 50px;
+
+    @include respDown(sm) {
+      margin-top: 30px;
+    }
+  }
+
+  &__photo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    width: 645px;
+    height: auto;
+
+    @include respDown(md) {
+      width: 380px;
+    }
+
+    @include respDown(sm) {
+      width: 100%;
+    }
+
+    @include respDown(sm) {
+      margin-top: 30px;
+    }
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    &-code {
+      position: absolute;
+      right: -200px;
+      bottom: 145px;
+      z-index: -1;
+
+      @include respDown(md) {
+        right: -115px;
+        bottom: -95px;
+      }
+    }
+  }
+}
