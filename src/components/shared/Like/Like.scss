@@ -1,0 +1,12 @@
+.like {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+}

@@ -1,0 +1,12 @@
+.view {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+}

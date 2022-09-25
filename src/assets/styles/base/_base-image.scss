@@ -1,0 +1,28 @@
+.base-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-position: center;
+  }
+
+  &_object-fit-cover {
+    img {
+      object-fit: cover;
+      //font-family: "object-fit: cover;object-position: center;";
+    }
+  }
+
+  &_object-fit-contain {
+    img {
+      object-fit: contain;
+      //font-family: "object-fit: contain;object-position: center;";
+    }
+  }
+}

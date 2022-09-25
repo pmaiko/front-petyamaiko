@@ -1,0 +1,41 @@
+.projects-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__image {
+	@include aspect-ratio(16 / 10)
+  }
+
+  &__body {
+	//
+  }
+
+  &__label,
+  &__description {
+	margin-top: 10px;
+  }
+
+  &__foot {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-top: 24px;
+
+
+	&-inner {
+	  display: flex;
+	  justify-content: space-between;
+	  margin: 0 -15px;
+	}
+
+	&-col {
+	  padding: 0 15px;
+	}
+  }
+
+  &__like {
+	//
+  }
+}

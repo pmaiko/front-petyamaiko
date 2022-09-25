@@ -16,28 +16,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-h1 {
+h1,
+.h1 {
   @include h1;
 }
 
-h2 {
+h2,
+.h2{
   @include h2;
 }
 
-h3 {
+h3,
+.h3 {
   @include h3;
 }
 
-h4 {
+h4,
+.h4 {
   @include h4;
 }
 
 h5,
-h6 {
+.h5,
+h6,
+.h6 {
   @include h5;
 }
 
-p {
+p,
+.p{
   @include p;
+}
+
+.label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 0.775rem;
+  line-height: 1.6;
 }
 

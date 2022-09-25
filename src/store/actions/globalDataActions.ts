@@ -1,4 +1,4 @@
-import api from '~/api/api'
+import api from '~/api'
 import { IReducerAction } from '~/types'
 import { types, TTypes } from '~/store/types/globalDataTypes'
 

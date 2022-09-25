@@ -1,0 +1,30 @@
+.projects {
+  &__title {
+	margin-bottom: 50px;
+	text-align: center;
+  }
+
+  &__list {
+	&-inner {
+	  display: flex;
+	  flex-wrap: wrap;
+	}
+
+	&-item {
+	  flex: 1 1 25%;
+	  max-width: 25%;
+	  padding: 0 15px;
+	  margin-bottom: 30px;
+
+	  @include respDown(md) {
+		flex: 1 1 50%;
+		max-width: 50%;
+	  }
+
+	  @include respDown(sm) {
+		flex: 1 1 100%;
+		max-width: 100%;
+	  }
+	}
+  }
+}

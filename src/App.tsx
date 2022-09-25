@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom'
 
 import { useActions } from '~/components/hooks/useActions'
 
+// const OtherComponent = React.lazy(() => import('./OtherComponent'))
+
 const App = () => {
   const { fetchGlobalData } = useActions()
 
