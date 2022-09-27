@@ -24,4 +24,16 @@
       color: $c-secondary;
     }
   }
+
+  &__user {
+    display: flex;
+    align-items: center;
+
+    &-logout {
+      width: 25px;
+      height: 25px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
 }

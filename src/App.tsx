@@ -12,11 +12,15 @@ import { NotificationContainer } from 'react-notifications'
 import Modals from '~/components/modals'
 
 const App = () => {
-  const { fetchGlobalData, checkToken } = useActions()
+  const { fetchGlobalData, checkToken, fetchUser } = useActions()
 
   const init = async () : Promise<any> => {
     await checkToken()
-    await fetchGlobalData()
+
+    await Promise.all([
+      fetchGlobalData(),
+      fetchUser()
+    ])
   }
   useEffect(() => {
     init()

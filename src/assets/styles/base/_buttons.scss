@@ -7,4 +7,9 @@
   text-transform: uppercase;
   cursor: pointer;
   background-color: $c-secondary;
+
+  &_secondary {
+    color: $c-text-reverse;
+    background-color: $c-input-border;
+  }
 }

@@ -18,10 +18,10 @@ const modalsReducers = <T extends IReducerAction<TTypes>>(state = initialState, 
         ...state,
         user: action.payload
       }
-    case types.USER:
+    case types.LOADING:
       return {
         ...state,
-        user: action.payload
+        loading: action.payload
       }
     default:
       return state

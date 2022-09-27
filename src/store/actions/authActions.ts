@@ -30,6 +30,33 @@ export const login = (fields: any) => {
   }
 }
 
+export const logout = () => {
+  return async (dispatch: (action: IReducerAction<TTypes>) => void): Promise<ILogin> => {
+    try {
+      const data = await api.logout()
+
+      dispatch({
+        type: types.IS_LOGGED_IN,
+        payload: false
+      })
+
+      dispatch({
+        type: types.TOKEN,
+        payload: ''
+      })
+
+      window.localStorage.removeItem('token')
+      axios.defaults.headers.common = {
+        Authorization: ''
+      }
+
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
+}
+
 export const checkToken = () => {
   return async (dispatch: (action: IReducerAction<TTypes>) => void) => {
     const token: string = window.localStorage.getItem('token') || ''

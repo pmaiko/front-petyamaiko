@@ -28,3 +28,34 @@ export const authModalToggle = () => {
     })
   }
 }
+
+
+// confirmLogoutModalShow
+
+export const confirmLogoutModalShow = () => {
+  return async (dispatch: (action: IReducerAction<TTypes>) => void) => {
+    dispatch({
+      type: types.CONFIRM_LOGOUT_MODAL,
+      payload: true
+    })
+  }
+}
+
+export const confirmLogoutModalHide = () => {
+  return async (dispatch: (action: IReducerAction<TTypes>) => void) => {
+    dispatch({
+      type: types.CONFIRM_LOGOUT_MODAL,
+      payload: false
+    })
+  }
+}
+
+export const confirmLogoutModalToggle = () => {
+  return async (dispatch: (action: IReducerAction<TTypes>) => void, getState: () => RootState) => {
+    dispatch({
+      type: types.CONFIRM_LOGOUT_MODAL,
+      payload: !getState().modals.confirmLogoutModal
+    })
+  }
+}
+

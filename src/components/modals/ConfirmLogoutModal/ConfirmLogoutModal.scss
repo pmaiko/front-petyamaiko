@@ -1,0 +1,21 @@
+.confirm-logout-modal {
+  &__title {
+	text-align: center;
+  }
+
+  &__buttons {
+	margin-top: 50px;
+
+	&-inner {
+	  display: flex;
+	  flex-wrap: wrap;
+	  justify-content: space-evenly;
+	  margin: 0 -5px -10px;
+	}
+
+	&-col {
+	  padding: 0 5px;
+	  margin-bottom: 10px;
+	}
+  }
+}

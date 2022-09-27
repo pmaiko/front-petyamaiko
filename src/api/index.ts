@@ -1,7 +1,6 @@
 import api from 'axios'
 
 import { IGlobalData, ILogin, IProject, IUser } from '~/types'
-import { fetchUser } from '~/store/actions/userActions'
 
 export const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -37,6 +36,15 @@ export default {
     }
   },
 
+  async logout () {
+    try {
+      const { data } = await axios.post('/logout')
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async fetchProjects () {
     try {
       const { data } = await axios.get<IProject[]>('/projects')
@@ -48,7 +56,7 @@ export default {
 
   async fetchUser () {
     try {
-      const { data } = await axios.get<IUser>('/user')
+      const { data } = await axios.post<IUser>('/user')
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)

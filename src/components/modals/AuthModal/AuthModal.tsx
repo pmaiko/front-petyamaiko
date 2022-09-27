@@ -1,7 +1,6 @@
 import './AuthModal.scss'
 
 import { RootState } from '~/store/reducers'
-import { ILogin } from '~/types'
 
 import BaseModal from '~/components/base/BaseModal'
 
@@ -14,7 +13,6 @@ import { NotificationManager } from 'react-notifications'
 import BaseTextField from '~/components/base/BaseTextField'
 import BaseButton from '~/components/base/BaseButton'
 import { useRef } from 'react'
-import { setUser } from '~/store/actions/userActions'
 
 const AuthModal = (props: any) => {
   const authModal = useSelector((state: RootState) => state.modals.authModal)
