@@ -23,6 +23,19 @@ export interface IGlobalData {
   }
 }
 
+export interface ILogin {
+  success: true,
+  message: string,
+  token: string,
+  user: IUser
+}
+
+export interface IUser {
+  id: number,
+  email: string,
+  name: string
+}
+
 export interface IProject {
   id: number,
   image: string,

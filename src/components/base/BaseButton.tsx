@@ -1,6 +1,9 @@
 const BaseButton = (props: any) => {
   return (
-    <button className={`base-button ${props.className}`}>
+    <button
+      {...props}
+      className={`base-button ${props.className}`
+    }>
       {props.children}
     </button>
   )

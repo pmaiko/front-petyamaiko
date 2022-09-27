@@ -3,19 +3,31 @@ import router from '~/plugins/router'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
-import { useActions } from '~/components/hooks/useActions'
+import { useActions } from '~/hooks/useActions'
+// @ts-ignore
+import { NotificationContainer } from 'react-notifications'
 
 // const OtherComponent = React.lazy(() => import('./OtherComponent'))
 
-const App = () => {
-  const { fetchGlobalData } = useActions()
+import Modals from '~/components/modals'
 
+const App = () => {
+  const { fetchGlobalData, checkToken } = useActions()
+
+  const init = async () : Promise<any> => {
+    await checkToken()
+    await fetchGlobalData()
+  }
   useEffect(() => {
-    fetchGlobalData()
+    init()
   }, [])
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <Modals />
+      <NotificationContainer />
+    </>
   )
 }
 

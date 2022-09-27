@@ -1,0 +1,30 @@
+.base-text-field {
+  width: 100%;
+
+  &__label {
+	margin-bottom: 4px;
+	font-size: 0.888rem;
+  }
+
+  &__input {
+	width: 100%;
+	padding: 15px 20px;
+	font-size: 0.888rem;
+	border: 1px solid $c-input-border;
+	outline: none;
+
+	&:focus {
+	  border-color: $c-secondary;
+	}
+
+	.base-text-field_error & {
+	  border-color: $c-error;
+	}
+  }
+
+  &__error {
+	margin-top: 2px;
+	font-size: 0.5rem;
+	color: $c-error;
+  }
+}

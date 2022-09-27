@@ -16,10 +16,10 @@ const BaseImage = (props: Image) => {
       <LazyLoadImage
         alt={props.image.alt}
         src={props.image.src}
-        // placeholderSrc={props.image.src}
+        placeholderSrc='/favicon.ico'
         // useIntersectionObserver={false}
-        effect='opacity'
-        delayTime={0}
+        effect='blur'
+        threshold={0}
       />
     </div>
   )

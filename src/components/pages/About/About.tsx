@@ -2,8 +2,6 @@ import './About.scss'
 
 import Default from '../../layout/default'
 
-import { Link } from 'react-router-dom'
-
 const About = () => {
   return (
     <Default>

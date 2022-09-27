@@ -1,9 +1,19 @@
 import api from 'axios'
 
-import { IGlobalData, IProject } from '~/types'
+import { IGlobalData, ILogin, IProject, IUser } from '~/types'
+import { fetchUser } from '~/store/actions/userActions'
 
-const axios = api.create({
+export const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
+})
+
+// axios.defaults.withCredentials = true
+
+axios.interceptors.request.use((config) => {
+  return config
+}, (error) => {
+  // Do something with request error
+  return Promise.reject(error)
 })
 
 export default {
@@ -17,10 +27,28 @@ export default {
     }
   },
 
+  async login (sendData: any) {
+    try {
+      const { data } = await axios.post<ILogin>('/login', sendData)
+
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async fetchProjects () {
     try {
       const { data } = await axios.get<IProject[]>('/projects')
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
 
+  async fetchUser () {
+    try {
+      const { data } = await axios.get<IUser>('/user')
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)

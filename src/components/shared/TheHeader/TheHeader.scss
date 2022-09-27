@@ -7,4 +7,21 @@
   width: 100%;
   height: #{$header-height}px;
   border-bottom: 1px solid rgba($c-text, 1);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__login {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    @include hover () {
+      color: $c-secondary;
+    }
+  }
 }

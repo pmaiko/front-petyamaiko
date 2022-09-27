@@ -1,0 +1,21 @@
+.auth-modal {
+  &__title {
+	text-align: center;
+  }
+
+  &__fields {
+	margin-top: 50px;
+  }
+
+  &__field {
+	&:not(:last-child) {
+	  margin-bottom: 24px;
+	}
+  }
+
+  &__submit {
+	display: block;
+	margin: 0 auto;
+	margin-top: 50px;
+  }
+}
