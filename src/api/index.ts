@@ -45,6 +45,15 @@ export default {
     }
   },
 
+  async fetchUser () {
+    try {
+      const { data } = await axios.post<IUser>('/user')
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async fetchProjects () {
     try {
       const { data } = await axios.get<IProject[]>('/projects')
@@ -54,9 +63,29 @@ export default {
     }
   },
 
-  async fetchUser () {
+  async addProject (sendData: any) {
     try {
-      const { data } = await axios.post<IUser>('/user')
+      const { data } = await axios.post('/project', sendData)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async editProject (sendData: any) {
+    try {
+      const { data } = await axios.put('/project', sendData)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async removeProject (sendData: any) {
+    try {
+      const { data } = await axios.delete('/project', {
+        data: sendData
+      })
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)

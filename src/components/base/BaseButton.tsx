@@ -1,5 +1,4 @@
 const BaseButton = (props: any) => {
-  console.log(props)
   return (
     <button
       {...props}

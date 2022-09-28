@@ -2,12 +2,23 @@ import './Projects.scss'
 
 import api from '~/api'
 
-import { useEffect, useState } from 'react'
+import { RootState } from '~/store/reducers'
 import { IProject } from '~/types'
 
+// @ts-ignore
+import { NotificationManager } from 'react-notifications'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useActions } from '~/hooks/useActions'
+
 import ProjectCard from '~/components/shared/ProjectCard/ProjectCard'
+import BaseButton from '~/components/base/BaseButton'
+
 
 const Projects = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const { createProjectModalToggle } = useActions()
+
   const [projects, setProjects] = useState<IProject[]>([])
 
   const fetchProjects = async () => {
@@ -18,6 +29,41 @@ const Projects = () => {
   useEffect(() => {
     fetchProjects()
   }, [])
+
+  const onAddProject = () => {
+    createProjectModalToggle({
+      'title': 'Add project',
+      'handler': addProject
+    })
+  }
+
+  const onUpdateProject = (project: any) => {
+    const index = projects.findIndex(item => item.id === project.id)
+    if (index > -1) {
+      const newProject = [...projects]
+      newProject[index] = project
+      setProjects(newProject)
+    }
+  }
+
+  const onRemoveProject = (id: any) => {
+    const newProject = projects.filter(project => project.id !== id)
+    setProjects(newProject)
+  }
+
+  const addProject = async (fields: any) => {
+    try {
+      const response: any = await api.addProject(fields)
+      const newProject = [...projects]
+      newProject.push(response?.project)
+      setProjects(newProject)
+
+      NotificationManager.success('CREATED')
+      return Promise.resolve(response)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
   return (
     <section className='projects'>
@@ -42,11 +88,22 @@ const Projects = () => {
                   likes={project.likes}
                   created_at={project.created_at}
                   updated_at={project.updated_at}
+                  updateProjectHandler={onUpdateProject}
+                  removeProjectHandler={onRemoveProject}
                 />
               </div>
             ))}
           </div>
         </div>
+
+        {isLoggedIn &&
+          <BaseButton
+            className='projects__add'
+            onClick={onAddProject}
+          >
+            ADD
+          </BaseButton>
+        }
       </div>
     </section>
   )
