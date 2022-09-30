@@ -1,0 +1,15 @@
+.project {
+  &__image {
+	@include aspect-ratio(4 / 1);
+
+	margin-top: 32px;
+  }
+
+  &__label {
+	margin-top: 32px;
+  }
+
+  &__description {
+	margin-top: 32px;
+  }
+}

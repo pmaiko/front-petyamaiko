@@ -1,15 +1,18 @@
 @mixin h1 {
   font-size: 3.5rem;
+  font-weight: 700;
   line-height: 110%;
 }
 
 @mixin h2 {
   font-size: 3rem;
+  font-weight: 700;
   line-height: 110%;
 }
 
 @mixin h3 {
   font-size: 2.5rem;
+  font-weight: 700;
   line-height: 110%;
 }
 

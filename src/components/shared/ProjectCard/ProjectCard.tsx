@@ -2,7 +2,7 @@ import './ProjectCard.scss'
 
 import api from '~/api'
 
-import { IProject } from '~/types'
+import { Link } from 'react-router-dom'
 import { useCallback, useState } from 'react'
 
 import BaseImage from '~/components/base/BaseImage'
@@ -28,7 +28,9 @@ const ProjectCard = (props: any) => {
     setLiked(!liked)
   }, [liked])
 
-  const onEdit = () => {
+  const onEdit = (event: any) => {
+    event.preventDefault()
+
     createProjectModalToggle({
       'title': 'Edit project',
       'handler': edit,
@@ -50,7 +52,8 @@ const ProjectCard = (props: any) => {
     }
   }
 
-  const onDelete = () => {
+  const onDelete = (event: any) => {
+    event.preventDefault()
     confirmProjectDeleteModalToggle({ 'onConfirm': confirmedDelete })
   }
 
@@ -67,7 +70,10 @@ const ProjectCard = (props: any) => {
   }
 
   return (
-    <article className='projects-card'>
+    <Link
+      className='projects-card'
+      to={`/project/${props.id}`}
+    >
       {isLoggedIn &&
         <div className='projects-card__controls'>
           <div
@@ -120,7 +126,7 @@ const ProjectCard = (props: any) => {
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   )
 }
 

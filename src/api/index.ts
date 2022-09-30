@@ -63,6 +63,15 @@ export default {
     }
   },
 
+  async fetchProject (id: any) {
+    try {
+      const { data } = await axios.get<IProject>(`/project/${id}`)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async addProject (sendData: any) {
     try {
       const { data } = await axios.post('/project', sendData)
