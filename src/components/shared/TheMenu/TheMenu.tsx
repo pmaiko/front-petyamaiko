@@ -17,7 +17,7 @@ const TheMenu = () => {
           >
             <Link
               to={ item.link }
-              className='menu__list-item-link'
+              className='menu__list-item-link link'
             >
               { item.label }
             </Link>
