@@ -1,6 +1,6 @@
 import api from 'axios'
 
-import { IGlobalData, ILogin, IProject, IUser } from '~/types'
+import { IGlobalData, ILogin, IProject, ISuccess, IUser } from '~/types'
 
 export const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -74,7 +74,7 @@ export default {
 
   async addProject (sendData: any) {
     try {
-      const { data } = await axios.post('/project', sendData)
+      const { data } = await axios.post<IProject>('/project', sendData)
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)
@@ -83,7 +83,7 @@ export default {
 
   async editProject (sendData: any) {
     try {
-      const { data } = await axios.put('/project', sendData)
+      const { data } = await axios.put<IProject>('/project', sendData)
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)
@@ -92,9 +92,27 @@ export default {
 
   async removeProject (sendData: any) {
     try {
-      const { data } = await axios.delete('/project', {
+      const { data } = await axios.delete<ISuccess>('/project', {
         data: sendData
       })
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async viewProject (sendData: {id: number, view: boolean}) {
+    try {
+      const { data } = await axios.put<ISuccess>('/project-view', sendData)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async likeProject (sendData: {id: number, like: boolean}) {
+    try {
+      const { data } = await axios.put<ISuccess>('/project-like', sendData)
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)

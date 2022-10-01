@@ -37,7 +37,7 @@ const Projects = () => {
     })
   }
 
-  const onUpdateProject = (project: any) => {
+  const onUpdateProject = (project: IProject) => {
     const index = projects.findIndex(item => item.id === project.id)
     if (index > -1) {
       const newProject = [...projects]
@@ -46,16 +46,16 @@ const Projects = () => {
     }
   }
 
-  const onRemoveProject = (id: any) => {
+  const onRemoveProject = (id: number) => {
     const newProject = projects.filter(project => project.id !== id)
     setProjects(newProject)
   }
 
   const addProject = async (fields: any) => {
     try {
-      const response: any = await api.addProject(fields)
+      const response = await api.addProject(fields)
       const newProject = [...projects]
-      newProject.push(response?.project)
+      newProject.push(response)
       setProjects(newProject)
 
       NotificationManager.success('CREATED')

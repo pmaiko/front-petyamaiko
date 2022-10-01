@@ -46,3 +46,8 @@ export interface IProject {
   created_at: string,
   updated_at: string
 }
+
+export interface ISuccess {
+  success: boolean,
+  message?: string
+}

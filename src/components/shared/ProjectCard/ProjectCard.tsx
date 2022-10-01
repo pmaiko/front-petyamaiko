@@ -3,7 +3,8 @@ import './ProjectCard.scss'
 import api from '~/api'
 
 import { Link } from 'react-router-dom'
-import { useCallback, useState } from 'react'
+import { IProject } from '~/types'
+import React, { createRef, useEffect, useState } from 'react'
 
 import BaseImage from '~/components/base/BaseImage'
 import Like from '~/components/shared/Like/Like'
@@ -19,16 +20,35 @@ import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
 import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
 import { useActions } from '~/hooks/useActions'
 
-const ProjectCard = (props: any) => {
+import Observer from '~/plugins/observer'
+
+interface Props extends IProject {
+  updateProjectHandler?: (response: IProject) => void
+  removeProjectHandler?: (id: number) => void
+}
+
+const ProjectCard = (props: Props) => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   const { confirmProjectDeleteModalToggle, createProjectModalToggle } = useActions()
 
   const [liked, setLiked] = useState(false)
-  const onLiked = useCallback(() => {
+  const [likes, setLikes] = useState(props.likes)
+  const onLiked = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
     setLiked(!liked)
-  }, [liked])
 
-  const onEdit = (event: any) => {
+    if (!liked) {
+      setLikes(likes + 1)
+    } else {
+      setLikes(likes - 1)
+    }
+    api.likeProject({
+      id: props.id,
+      like: !liked
+    })
+  }
+
+  const onEdit = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
 
     createProjectModalToggle({
@@ -38,13 +58,20 @@ const ProjectCard = (props: any) => {
     })
   }
 
+  const onDelete = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    confirmProjectDeleteModalToggle({ 'onConfirm': confirmedDelete })
+  }
+
   const edit = async (fields: any) => {
     try {
-      const response: any = await api.editProject({
+      const response = await api.editProject({
         id: props.id,
         ...fields
       })
-      props?.updateProjectHandler(response?.project)
+      if (props.updateProjectHandler) {
+        props.updateProjectHandler(response)
+      }
       NotificationManager.success('UPDATED')
       return Promise.resolve(response)
     } catch (error) {
@@ -52,22 +79,41 @@ const ProjectCard = (props: any) => {
     }
   }
 
-  const onDelete = (event: any) => {
-    event.preventDefault()
-    confirmProjectDeleteModalToggle({ 'onConfirm': confirmedDelete })
-  }
-
   const confirmedDelete = async () => {
     try {
       await api.removeProject({
         id: props.id
       })
-      props?.removeProjectHandler(props.id)
+      if (props.removeProjectHandler) {
+        props.removeProjectHandler(props.id)
+      }
       NotificationManager.success('DELETED')
     } catch (error) {
       NotificationManager.error('ERROR')
     }
   }
+
+  const onInView = () => {
+    api.viewProject({
+      id: props.id,
+      view: true
+    })
+  }
+
+  const root: React.RefObject<HTMLElement> = createRef()
+  const initObserver = () => {
+    const observer = new Observer({ root: null, rootMargin: '0px', threshold: 0 })
+    observer.observe(root.current)
+    root.current?.addEventListener('inview', onInView)
+  }
+
+  useEffect(() => {
+    initObserver()
+  }, [])
+
+  useEffect(() => () => {
+    root.current?.removeEventListener('inview', onInView)
+  }, [])
 
   return (
     <Link
@@ -77,6 +123,7 @@ const ProjectCard = (props: any) => {
       {isLoggedIn &&
         <div className='projects-card__controls'>
           <div
+            ref={root as React.RefObject<HTMLDivElement>}
             className='projects-card__remove'
             onClick={onDelete}
           >
@@ -119,7 +166,7 @@ const ProjectCard = (props: any) => {
           <div className='projects-card__foot-col'>
             <Like
               active={liked}
-              value={props.likes}
+              value={likes}
               onClick={onLiked}
               className='projects-card__like'
             />
