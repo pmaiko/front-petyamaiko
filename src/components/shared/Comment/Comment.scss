@@ -1,0 +1,19 @@
+.comment {
+  padding: 16px;
+  color: $c-text-reverse;
+  background-color: $c-text;
+  border: 1px solid $c-secondary;
+  border-radius: 8px;
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid $c-secondary;
+  }
+
+  &__name {
+    margin-right: 12px;
+  }
+}

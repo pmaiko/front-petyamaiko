@@ -4,7 +4,7 @@ import api from '~/api'
 
 import { Link } from 'react-router-dom'
 import { IProject } from '~/types'
-import React, { createRef, useEffect, useState } from 'react'
+import React from 'react'
 
 import BaseImage from '~/components/base/BaseImage'
 import Like from '~/components/shared/Like/Like'
@@ -19,8 +19,8 @@ import { NotificationManager } from 'react-notifications'
 import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
 import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
 import { useActions } from '~/hooks/useActions'
-
-import Observer from '~/plugins/observer'
+import { useProjectLikes } from '~/hooks/project/useProjectLikes'
+import { useProjectView } from '~/hooks/project/useProjectView'
 
 interface Props extends IProject {
   updateProjectHandler?: (response: IProject) => void
@@ -31,22 +31,14 @@ const ProjectCard = (props: Props) => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   const { confirmProjectDeleteModalToggle, createProjectModalToggle } = useActions()
 
-  const [liked, setLiked] = useState(false)
-  const [likes, setLikes] = useState(props.likes)
-  const onLiked = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault()
-    setLiked(!liked)
+  const { likes, isLiked, onLikeToggle } = useProjectLikes({
+    projectLikes: props.likes,
+    projectId: props.id
+  })
 
-    if (!liked) {
-      setLikes(likes + 1)
-    } else {
-      setLikes(likes - 1)
-    }
-    api.likeProject({
-      id: props.id,
-      like: !liked
-    })
-  }
+  const { root } = useProjectView({
+    projectId: props.id
+  })
 
   const onEdit = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -92,28 +84,6 @@ const ProjectCard = (props: Props) => {
       NotificationManager.error('ERROR')
     }
   }
-
-  const onInView = () => {
-    api.viewProject({
-      id: props.id,
-      view: true
-    })
-  }
-
-  const root: React.RefObject<HTMLElement> = createRef()
-  const initObserver = () => {
-    const observer = new Observer({ root: null, rootMargin: '0px', threshold: 0 })
-    observer.observe(root.current)
-    root.current?.addEventListener('inview', onInView)
-  }
-
-  useEffect(() => {
-    initObserver()
-  }, [])
-
-  useEffect(() => () => {
-    root.current?.removeEventListener('inview', onInView)
-  }, [])
 
   return (
     <Link
@@ -165,9 +135,9 @@ const ProjectCard = (props: Props) => {
 
           <div className='projects-card__foot-col'>
             <Like
-              active={liked}
+              active={isLiked}
               value={likes}
-              onClick={onLiked}
+              onClick={onLikeToggle}
               className='projects-card__like'
             />
           </div>

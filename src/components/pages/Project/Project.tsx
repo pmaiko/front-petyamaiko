@@ -1,4 +1,5 @@
 import './Project.scss'
+import { isEmpty } from 'lodash'
 
 import api from '~/api'
 
@@ -8,7 +9,8 @@ import { useMatches } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 import Default from '../../layout/default'
-import BaseImage from '~/components/base/BaseImage'
+import ProjectDetail from '~/components/blocks/ProjectDetail/ProjectDetail'
+import ProjectComments from '~/components/blocks/ProjectComments/ProjectComments'
 
 const Project = (props: any) => {
   const [route] = useMatches()
@@ -25,20 +27,10 @@ const Project = (props: any) => {
 
   return (
     <Default>
-      <section className='project'>
-        <div className='container'>
-          <div className='project__image'>
-            <BaseImage image={{ src: project.image || '' }} />
-          </div>
-
-          <h1 className='project__label'>
-            {project.label}
-          </h1>
-          <p className='project__description'>
-            {project.description}
-          </p>
-        </div>
-      </section>
+      {!isEmpty(project) && <ProjectDetail
+        {...project as IProject}
+      />}
+      <ProjectComments />
     </Default>
   )
 }

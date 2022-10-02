@@ -1,0 +1,15 @@
+.comment-add {
+  padding: 16px;
+  color: $c-text-reverse;
+  background-color: $c-text;
+  border: 1px solid $c-secondary;
+  border-radius: 8px;
+
+  &__field {
+    margin-top: 32px;
+  }
+
+  &__submit {
+    margin-top: 32px;
+  }
+}
