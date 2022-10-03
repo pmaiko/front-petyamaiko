@@ -51,3 +51,12 @@ export interface ISuccess {
   success: boolean,
   message?: string
 }
+
+export interface IProjectsComments {
+  id: number,
+  name: string,
+  comment: string,
+  project_id: string,
+  created_at: string,
+  updated_at: string
+}

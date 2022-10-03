@@ -5,8 +5,14 @@
   border: 1px solid $c-secondary;
   border-radius: 8px;
 
-  &__field {
+  &__fields {
     margin-top: 32px;
+  }
+
+  &__field {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 
   &__submit {

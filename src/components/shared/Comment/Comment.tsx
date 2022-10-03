@@ -1,5 +1,7 @@
 import './Comment.scss'
 
+import { convertDate } from '~/helpers'
+
 const Comment = ({ name, comment, created }: {
   name: string,
   comment: string,
@@ -12,7 +14,7 @@ const Comment = ({ name, comment, created }: {
           {name}
         </div>
         <div className='comment__created description'>
-          {created}
+          {convertDate(created)}
         </div>
       </div>
 

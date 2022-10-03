@@ -7,6 +7,7 @@ import React, { useMemo } from 'react'
 import Like from '~/components/shared/Like/Like'
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 import { useProjectView } from '~/hooks/project/useProjectView'
+import { convertDate } from '~/helpers'
 
 const ProjectDetail = ({ id, image, label, description, views, likes, created_at }: IProject) => {
   const { likes: likesCount, isLiked, onLikeToggle } = useProjectLikes({
@@ -19,22 +20,7 @@ const ProjectDetail = ({ id, image, label, description, views, likes, created_at
   })
 
   const created = useMemo(() => {
-    if (created_at) {
-      const date = new Date(created_at)
-      const pad = (value: number): string | number => {
-        if (value < 10) return '0' + value
-        return value
-      }
-      const day = pad(date.getDate())
-      const month = pad(date.getMonth() + 1)
-      const year = pad(date.getFullYear())
-      const hour = pad(date.getHours())
-      const minutes = pad(date.getMinutes())
-      const seconds = pad(date.getSeconds())
-      return `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`
-    }
-
-    return created_at
+    return convertDate(created_at)
   }, [created_at])
 
   return (

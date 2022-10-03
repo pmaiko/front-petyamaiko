@@ -1,23 +1,43 @@
 import './CommentAdd.scss'
+
+import api from '~/api'
+
+import { IProjectsComments } from '~/types'
+
+import { useForm } from 'react-hook-form'
+// @ts-ignore
+import { NotificationManager } from 'react-notifications'
+
 import BaseButton from '~/components/base/BaseButton'
 import BaseTextarea from '~/components/base/BaseTextarea'
-import { useForm } from 'react-hook-form'
+import BaseTextField from '~/components/base/BaseTextField'
 
-const CommentAdd = ({ }: any) => {
+const CommentAdd = ({ project_id, updateComments }: {
+  project_id: number,
+  updateComments: (newComment: IProjectsComments) => void
+}) => {
   type Fields = {
+    name: string
     comment: string
   }
 
-  const { register, handleSubmit, setError, formState: { errors } } = useForm<Fields>({
+  const { register, handleSubmit, setError, reset, formState: { errors } } = useForm<Fields>({
     defaultValues: {
+      name: '',
       comment: ''
     }
   })
 
   const onSubmit = async (fields: Fields) => {
-    console.log('onSubmit')
     try {
-      // const response: any = await login(fields)
+      const response: IProjectsComments = await api.addProjectsComments({
+        project_id,
+        ...fields
+      })
+
+      updateComments(response)
+      reset()
+      NotificationManager.success('ADDED')
     } catch (error: any) {
       Object.entries(error.response?.data?.errors || {}).forEach(([key, value]: any) => {
         setError(key, {
@@ -36,10 +56,22 @@ const CommentAdd = ({ }: any) => {
       <div className='comment-add__title h6'>
         Add Comment
       </div>
-      <BaseTextarea
-        label='Comment'
-        className='comment-add__field'
-      />
+
+      <div className='comment-add__fields'>
+        <BaseTextField
+          label='Name'
+          {...register('name')}
+          error={errors.name?.message}
+          className='comment-add__field'
+        />
+        <BaseTextarea
+          label='Comment'
+          {...register('comment')}
+          error={errors.comment?.message}
+          className='comment-add__field'
+        />
+      </div>
+
       <BaseButton
         className='comment-add__submit'
       >

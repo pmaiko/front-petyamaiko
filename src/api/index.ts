@@ -1,6 +1,6 @@
 import api from 'axios'
 
-import { IGlobalData, ILogin, IProject, ISuccess, IUser } from '~/types'
+import { IGlobalData, ILogin, IProject, IProjectsComments, ISuccess, IUser } from '~/types'
 
 export const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -113,6 +113,26 @@ export default {
   async likeProject (sendData: {id: number, like: boolean}) {
     try {
       const { data } = await axios.put<ISuccess>('/project-like', sendData)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async fetchProjectsComments (sendData: {project_id: number}) {
+    try {
+      const { data } = await axios.get<IProjectsComments[]>('/projects-comments', {
+        params: sendData
+      })
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async addProjectsComments (sendData: {project_id: number, name: string, comment: string}) {
+    try {
+      const { data } = await axios.post<IProjectsComments>('/projects-comments', sendData)
       return Promise.resolve(data)
     } catch (error) {
       return Promise.reject(error)

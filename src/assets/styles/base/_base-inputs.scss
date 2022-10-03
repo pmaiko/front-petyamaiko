@@ -1,3 +1,9 @@
+.base-textarea {
+  &__input {
+	min-height: 100px;
+  }
+}
+
 .base-textarea,
 .base-text-field {
   width: 100%;
