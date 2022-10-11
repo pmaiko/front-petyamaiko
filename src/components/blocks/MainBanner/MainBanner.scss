@@ -5,107 +5,75 @@
   overflow: hidden;
 
   .container {
-    display: flex;
-    height: 100%;
-
-    @include respDown(md) {
-      flex-wrap: wrap;
-    }
+    position: relative;
   }
 
-  &__content {
-    align-self: center;
-    width: calc(100% - 645px);
+  &__image {
+    @include aspect-ratio(1800 / 2400);
 
-    @include respUp(lg) {
-      padding-bottom: 86px;
-    }
+    max-width: 558px;
+    margin-top: 32px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 
-    @include respDown(md) {
-      width: calc(100% - 380px);
-    }
+  &__text {
+    position: absolute;
+    top: 0;
+    left: 0;
 
     @include respDown(sm) {
-      width: 100%;
+      left: 15px;
     }
   }
 
   &__title {
-    font-size: 5rem;
+    font-size: 7.2rem;
     font-weight: 700;
+    text-transform: uppercase;
     white-space: nowrap;
 
     @include respDown(md) {
-      font-size: 3rem;
-      white-space: normal;
+      font-size: 3.8rem;
     }
 
     @include respDown(sm) {
-      margin-top: 40px;
-      font-size: 2rem;
+      font-size: 1.8rem;
+    }
+
+    .text2 {
+      position: relative;
+      z-index: -1;
+    }
+
+    .name {
+      display: inline-block;
+      margin-top: 2.5rem;
+
+      @include respDown(sm) {
+        margin-top: 1rem;
+      }
     }
   }
 
   &__description {
-    margin-top: 15px;
-    font-size: 1.2rem;
-
-    @include respDown(md) {
-      font-size: 1rem;
-    }
+    margin-top: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.4;
+    text-transform: uppercase;
 
     @include respDown(sm) {
-      font-size: 0.8rem;
+      margin-top: 4rem;
+      font-size: 1rem;
     }
   }
 
   &__button {
-    margin-top: 50px;
+    margin-top: 5rem;
 
     @include respDown(sm) {
-      margin-top: 30px;
-    }
-  }
-
-  &__photo {
-    position: relative;
-    display: flex;
-    align-items: center;
-    align-self: center;
-    width: 645px;
-    height: 100%;
-    padding: 30px 0;
-
-    @include respDown(md) {
-      width: 380px;
-    }
-
-    @include respDown(sm) {
-      width: 100%;
-      height: auto;
-      padding: 0;
-    }
-
-    @include respDown(sm) {
-      margin-top: 30px;
-    }
-
-    &-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    &-code {
-      position: absolute;
-      right: -200px;
-      bottom: 145px;
-      z-index: -1;
-
-      @include respDown(md) {
-        right: -115px;
-        bottom: -95px;
-      }
+      margin-top: 1rem;
     }
   }
 }
