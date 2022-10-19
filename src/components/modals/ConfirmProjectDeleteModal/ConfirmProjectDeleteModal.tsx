@@ -1,19 +1,16 @@
 import './ConfirmProjectDeleteModal.scss'
 
-import { RootState } from '~/store/reducers'
-import { useSelector } from 'react-redux'
 import { useRef } from 'react'
-import { useActions } from '~/hooks/useActions'
 // @ts-ignore
 import { NotificationManager } from 'react-notifications'
 
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
 
-const ConfirmProjectDeleteModal = (props: any) => {
-  const confirmProjectDeleteModal = useSelector((state: RootState) => state.modals.confirmProjectDeleteModal)
-  const { confirmProjectDeleteModalHide, logout } = useActions()
+import { useModal } from '~/providers/ModalProvider'
 
+const ConfirmProjectDeleteModal = (props: any) => {
+  const { hide } = useModal()
   const closeModal: any = useRef()
 
   const onConfirm = async () => {
@@ -26,9 +23,9 @@ const ConfirmProjectDeleteModal = (props: any) => {
   }
   return (
     <BaseModal
-      isOpen={confirmProjectDeleteModal}
+      isOpen={true}
       ref={closeModal}
-      closeModal={confirmProjectDeleteModalHide}
+      closeModal={hide}
     >
       <div className='confirm-project-delete-modal'>
         <h3 className='confirm-project-delete-modal__title'>

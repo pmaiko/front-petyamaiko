@@ -4,7 +4,6 @@ import { RootState } from '~/store/reducers'
 
 import BaseModal from '~/components/base/BaseModal'
 
-import { useSelector } from 'react-redux'
 import { useActions } from '~/hooks/useActions'
 import { useForm } from 'react-hook-form'
 // @ts-ignore
@@ -13,16 +12,11 @@ import { NotificationManager } from 'react-notifications'
 import BaseTextField from '~/components/base/BaseTextField'
 import BaseButton from '~/components/base/BaseButton'
 import { useRef } from 'react'
+import { useModal } from '~/providers/ModalProvider'
 
 const AuthModal = (props: any) => {
-  const authModal = useSelector((state: RootState) => state.modals.authModal)
-  const { authModalHide } = useActions()
+  const { hide } = useModal()
   const { login, setUser } = useActions()
-
-  type Fields = {
-    email: string,
-    password: string
-  }
 
   const { register, handleSubmit, setError, formState: { errors } } = useForm<Fields>({
     defaultValues: {
@@ -51,9 +45,9 @@ const AuthModal = (props: any) => {
 
   return (
     <BaseModal
-      isOpen={authModal}
+      isOpen={true}
       ref={closeModal}
-      closeModal={authModalHide}
+      closeModal={hide}
     >
       <form
         className='auth-modal'
@@ -94,3 +88,8 @@ const AuthModal = (props: any) => {
 }
 
 export default AuthModal
+
+type Fields = {
+  email: string,
+  password: string
+}

@@ -9,7 +9,7 @@ import { NotificationContainer } from 'react-notifications'
 
 // const OtherComponent = React.lazy(() => import('./OtherComponent'))
 
-import Modals from '~/components/modals'
+import ModalProvider from '~/providers/ModalProvider'
 
 const App = () => {
   const { fetchGlobalData, checkToken, fetchUser } = useActions()
@@ -28,9 +28,10 @@ const App = () => {
 
   return (
     <>
-      <RouterProvider router={router} />
-      <Modals />
-      <NotificationContainer />
+      <ModalProvider>
+        <RouterProvider router={router} />
+        <NotificationContainer />
+      </ModalProvider>
     </>
   )
 }

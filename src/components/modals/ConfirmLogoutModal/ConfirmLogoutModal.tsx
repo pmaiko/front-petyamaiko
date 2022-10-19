@@ -10,9 +10,11 @@ import { NotificationManager } from 'react-notifications'
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
 
+import { useModal } from '~/providers/ModalProvider'
+
 const ConfirmLogoutModal = () => {
-  const confirmLogoutModal = useSelector((state: RootState) => state.modals.confirmLogoutModal)
-  const { confirmLogoutModalHide, logout } = useActions()
+  const { hide } = useModal()
+  const { logout } = useActions()
 
   const closeModal: any = useRef()
 
@@ -31,9 +33,9 @@ const ConfirmLogoutModal = () => {
   }
   return (
     <BaseModal
-      isOpen={confirmLogoutModal}
+      isOpen={true}
       ref={closeModal}
-      closeModal={confirmLogoutModalHide}
+      closeModal={hide}
     >
       <div className='confirm-logout-modal'>
         <h3 className='confirm-logout-modal__title'>

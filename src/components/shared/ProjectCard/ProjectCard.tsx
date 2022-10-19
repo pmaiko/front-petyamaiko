@@ -18,9 +18,11 @@ import { NotificationManager } from 'react-notifications'
 
 import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
 import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
-import { useActions } from '~/hooks/useActions'
+
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 import { useProjectView } from '~/hooks/project/useProjectView'
+
+import { useModal, names } from '~/providers/ModalProvider'
 
 interface Props extends IProject {
   updateProjectHandler?: (response: IProject) => void
@@ -29,7 +31,21 @@ interface Props extends IProject {
 
 const ProjectCard = (props: Props) => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
-  const { confirmProjectDeleteModalToggle, createProjectModalToggle } = useActions()
+
+  const { show } = useModal()
+  const showConfirmProjectDeleteModal = (data: any) => {
+    show({
+      name: names.ConfirmProjectDeleteModal,
+      props: data
+    })
+  }
+
+  const showCreateProjectModal = (data: any) => {
+    show({
+      name: names.CreateProjectModal,
+      props: data
+    })
+  }
 
   const { likes, isLiked, onLikeToggle } = useProjectLikes({
     projectLikes: props.likes,
@@ -43,7 +59,7 @@ const ProjectCard = (props: Props) => {
   const onEdit = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
 
-    createProjectModalToggle({
+    showCreateProjectModal({
       'title': 'Edit project',
       'handler': edit,
       'fields': props
@@ -52,7 +68,7 @@ const ProjectCard = (props: Props) => {
 
   const onDelete = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    confirmProjectDeleteModalToggle({ 'onConfirm': confirmedDelete })
+    showConfirmProjectDeleteModal({ 'onConfirm': confirmedDelete })
   }
 
   const edit = async (fields: any) => {

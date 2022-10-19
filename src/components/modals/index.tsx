@@ -1,27 +1,19 @@
-import { RootState } from '~/store/reducers'
-import { useSelector } from 'react-redux'
-
 import AuthModal from '~/components/modals/AuthModal/AuthModal'
 import ConfirmLogoutModal from '~/components/modals/ConfirmLogoutModal/ConfirmLogoutModal'
 import ConfirmProjectDeleteModal from '~/components/modals/ConfirmProjectDeleteModal/ConfirmProjectDeleteModal'
 import CreateProjectModal from '~/components/modals/CreateProjectModal/CreateProjectModal'
 
+import { useModal, names } from '~/providers/ModalProvider'
+
 const Modals = () => {
-  const authModal = useSelector((state: RootState) => state.modals.authModal)
-  const confirmLogoutModal = useSelector((state: RootState) => state.modals.confirmLogoutModal)
-
-  const confirmProjectDeleteModal = useSelector((state: RootState) => state.modals.confirmProjectDeleteModal)
-  const confirmProjectDeleteModalProps = useSelector((state: RootState) => state.modals.confirmProjectDeleteModalProps)
-
-  const createProjectModal = useSelector((state: RootState) => state.modals.createProjectModal)
-  const createProjectModalProps = useSelector((state: RootState) => state.modals.createProjectModalProps)
+  const { state } = useModal()
 
   return (
     <>
-      {authModal && <AuthModal />}
-      {confirmLogoutModal && <ConfirmLogoutModal />}
-      {confirmProjectDeleteModal && <ConfirmProjectDeleteModal {...confirmProjectDeleteModalProps} />}
-      {createProjectModal && <CreateProjectModal {...createProjectModalProps} />}
+      {state.name === names.AuthModal && <AuthModal {...state.props} />}
+      {state.name === names.ConfirmLogoutModal && <ConfirmLogoutModal {...state.props} />}
+      {state.name === names.ConfirmProjectDeleteModal && <ConfirmProjectDeleteModal {...state.props} />}
+      {state.name === names.CreateProjectModal && <CreateProjectModal {...state.props} />}
     </>
   )
 }

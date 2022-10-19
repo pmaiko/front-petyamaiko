@@ -9,16 +9,22 @@ import { IProject } from '~/types'
 import { NotificationManager } from 'react-notifications'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useActions } from '~/hooks/useActions'
 
 import ProjectCard from '~/components/shared/ProjectCard/ProjectCard'
 import BaseButton from '~/components/base/BaseButton'
+import { useModal, names } from '~/providers/ModalProvider'
 
 
 const Projects = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
-  const { createProjectModalToggle } = useActions()
+  const { show } = useModal()
+  const showCreateProjectModal = (data: any) => {
+    show({
+      name: names.CreateProjectModal,
+      props: data
+    })
+  }
 
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   const [projects, setProjects] = useState<IProject[]>([])
 
   const fetchProjects = async () => {
@@ -31,7 +37,7 @@ const Projects = () => {
   }, [])
 
   const onAddProject = () => {
-    createProjectModalToggle({
+    showCreateProjectModal({
       'title': 'Add project',
       'handler': addProject
     })

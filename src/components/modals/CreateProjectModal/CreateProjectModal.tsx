@@ -10,14 +10,13 @@ import { NotificationManager } from 'react-notifications'
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
 import BaseTextField from '~/components/base/BaseTextField'
+
 import { useForm } from 'react-hook-form'
-import modalsReducers from '~/store/reducers/modalsReducers'
+import { useModal } from '~/providers/ModalProvider'
 
 const CreateProjectModal = (props: any) => {
-  const createProjectModal = useSelector((state: RootState) => state.modals.createProjectModal)
-  const { createProjectModalHide, logout } = useActions()
-
   const closeModal: any = useRef()
+  const { hide } = useModal()
 
   // const onCansel = () => {
   //   closeModal?.current()
@@ -52,9 +51,9 @@ const CreateProjectModal = (props: any) => {
 
   return (
     <BaseModal
-      isOpen={createProjectModal}
+      isOpen={true}
       ref={closeModal}
-      closeModal={createProjectModalHide}
+      closeModal={hide}
     >
 
       <form
