@@ -6,3 +6,8 @@
 @import "base/base-image";
 @import "base/base-modal";
 @import "base/base-inputs";
+
+.base-animation {
+  width: max-content;
+  overflow: hidden;
+}

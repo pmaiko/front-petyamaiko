@@ -25,6 +25,9 @@
     }
 
     &_left {
+      position: relative;
+      z-index: 1;
+
       @include respDown(sm) {
         margin-bottom: 3rem;
       }
@@ -56,6 +59,7 @@
 
   &__figure {
     position: relative;
+    color: $c-text;
 
     @include aspect-ratio(1 / 1);
 
@@ -84,6 +88,12 @@
         height: 100%;
         background: $c-secondary;
         border-radius: 100%;
+      }
+
+      &-text {
+        position: absolute;
+        top: 16%;
+        right: 10%;
       }
     }
 
