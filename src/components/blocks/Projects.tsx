@@ -1,4 +1,4 @@
-import './Projects.scss'
+import '../../assets/styles/blocks/Projects.scss'
 
 import api from '~/api'
 
@@ -10,7 +10,7 @@ import { NotificationManager } from 'react-notifications'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import ProjectCard from '~/components/shared/ProjectCard/ProjectCard'
+import ProjectCard from '~/components/shared/ProjectCard'
 import BaseButton from '~/components/base/BaseButton'
 import { useModal, names } from '~/providers/ModalProvider'
 

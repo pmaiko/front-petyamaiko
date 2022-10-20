@@ -1,4 +1,4 @@
-import './TheMenu.scss'
+import '../../assets/styles/shared/TheMenu.scss'
 
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'

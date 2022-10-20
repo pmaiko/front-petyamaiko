@@ -1,8 +1,8 @@
-import './ProjectComments.scss'
+import '../../assets/styles/blocks/ProjectComments.scss'
 import { IProjectsComments } from '~/types'
 
-import Comment from '~/components/shared/Comment/Comment'
-import CommentAdd from '~/components/shared/CommentAdd/CommentAdd'
+import Comment from '~/components/shared/Comment'
+import CommentAdd from '~/components/shared/CommentAdd'
 
 const ProjectComments = ({ comments, project_id, updateComments } : {
   comments: IProjectsComments[],

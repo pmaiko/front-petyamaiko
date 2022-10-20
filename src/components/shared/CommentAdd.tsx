@@ -1,4 +1,4 @@
-import './CommentAdd.scss'
+import '../../assets/styles/shared/CommentAdd.scss'
 
 import api from '~/api'
 

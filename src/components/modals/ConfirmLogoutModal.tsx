@@ -1,6 +1,7 @@
-import './ConfirmProjectDeleteModal.scss'
+import '../../assets/styles/modals/ConfirmLogoutModal.scss'
 
 import { useRef } from 'react'
+import { useActions } from '~/hooks/useActions'
 // @ts-ignore
 import { NotificationManager } from 'react-notifications'
 
@@ -9,13 +10,20 @@ import BaseButton from '~/components/base/BaseButton'
 
 import { useModal } from '~/providers/ModalProvider'
 
-const ConfirmProjectDeleteModal = (props: any) => {
+const ConfirmLogoutModal = () => {
   const { hide } = useModal()
+  const { logout } = useActions()
+
   const closeModal: any = useRef()
 
   const onConfirm = async () => {
-    props?.onConfirm()
-    closeModal?.current()
+    try {
+      const response: any = await logout()
+      NotificationManager.success(response?.message)
+      closeModal?.current()
+    } catch (error) {
+      NotificationManager.success('ERROR')
+    }
   }
 
   const onCansel = () => {
@@ -27,21 +35,21 @@ const ConfirmProjectDeleteModal = (props: any) => {
       ref={closeModal}
       closeModal={hide}
     >
-      <div className='confirm-project-delete-modal'>
-        <h3 className='confirm-project-delete-modal__title'>
-          delete project?
+      <div className='confirm-logout-modal'>
+        <h3 className='confirm-logout-modal__title'>
+          Are you sure you want to leave?
         </h3>
 
-        <div className='confirm-project-delete-modal__buttons'>
-          <div className='confirm-project-delete-modal__buttons-inner'>
-            <div className='confirm-project-delete-modal__buttons-col'>
+        <div className='confirm-logout-modal__buttons'>
+          <div className='confirm-logout-modal__buttons-inner'>
+            <div className='confirm-logout-modal__buttons-col'>
               <BaseButton
                 onClick={onConfirm}
               >
                 Confirm
               </BaseButton>
             </div>
-            <div className='confirm-project-delete-modal__buttons-col'>
+            <div className='confirm-logout-modal__buttons-col'>
               <BaseButton
                 theme='secondary'
                 onClick={onCansel}
@@ -56,4 +64,4 @@ const ConfirmProjectDeleteModal = (props: any) => {
   )
 }
 
-export default ConfirmProjectDeleteModal
+export default ConfirmLogoutModal

@@ -1,11 +1,6 @@
-import './CreateProjectModal.scss'
+import '../../assets/styles/modals/CreateProjectModal.scss'
 
-import { RootState } from '~/store/reducers'
-import { useSelector } from 'react-redux'
 import { useRef } from 'react'
-import { useActions } from '~/hooks/useActions'
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
 
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'

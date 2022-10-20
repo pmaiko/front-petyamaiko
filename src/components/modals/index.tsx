@@ -1,7 +1,7 @@
-import AuthModal from '~/components/modals/AuthModal/AuthModal'
-import ConfirmLogoutModal from '~/components/modals/ConfirmLogoutModal/ConfirmLogoutModal'
-import ConfirmProjectDeleteModal from '~/components/modals/ConfirmProjectDeleteModal/ConfirmProjectDeleteModal'
-import CreateProjectModal from '~/components/modals/CreateProjectModal/CreateProjectModal'
+import AuthModal from '~/components/modals/AuthModal'
+import ConfirmLogoutModal from '~/components/modals/ConfirmLogoutModal'
+import ConfirmProjectDeleteModal from '~/components/modals/ConfirmProjectDeleteModal'
+import CreateProjectModal from '~/components/modals/CreateProjectModal'
 
 import { useModal, names } from '~/providers/ModalProvider'
 

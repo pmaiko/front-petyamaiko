@@ -1,9 +1,9 @@
-import './TheHeader.scss'
+import '../../assets/styles/shared/TheHeader.scss'
 
 import { ReactComponent as UserIcon } from '~/assets/svg/user-icon.svg'
 import { ReactComponent as LogoutIcon } from '~/assets/svg/logout-icon.svg'
 
-import TheNav from '~/components/shared/TheNav/TheNav'
+import TheNav from '~/components/shared/TheNav'
 import { useSelector } from 'react-redux'
 import { RootState } from '~/store/reducers'
 import { useModal, names } from '~/providers/ModalProvider'

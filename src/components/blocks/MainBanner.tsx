@@ -1,4 +1,4 @@
-import './MainBanner.scss'
+import '../../assets/styles/blocks/MainBanner.scss'
 
 
 // @ts-ignore

@@ -1,4 +1,4 @@
-import './ProjectCard.scss'
+import '../../assets/styles/shared/ProjectCard.scss'
 
 import api from '~/api'
 
@@ -7,8 +7,8 @@ import { IProject } from '~/types'
 import React from 'react'
 
 import BaseImage from '~/components/base/BaseImage'
-import Like from '~/components/shared/Like/Like'
-import View from '~/components/shared/View/View'
+import Like from '~/components/shared/Like'
+import View from '~/components/shared/View'
 
 import { useSelector } from 'react-redux'
 import { RootState } from '~/store/reducers'

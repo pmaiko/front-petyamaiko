@@ -1,4 +1,4 @@
-import './Comment.scss'
+import '../../assets/styles/shared/Comment.scss'
 
 import { convertDate } from '~/helpers'
 

@@ -1,6 +1,6 @@
-import './About.scss'
+import '../../assets/styles/pages/About.scss'
 
-import Default from '../../layout/default'
+import Default from '../layout/default'
 
 const About = () => {
   return (

@@ -1,4 +1,4 @@
-import './View.scss'
+import '../../assets/styles/shared/View.scss'
 
 import { ReactComponent as ViewIcon } from '~/assets/svg/view-icon.svg'
 

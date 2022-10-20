@@ -1,4 +1,4 @@
-import './Like.scss'
+import '../../assets/styles/shared/Like.scss'
 
 import React from 'react'
 import { ReactComponent as LikeIcon } from '~/assets/svg/like-icon.svg'

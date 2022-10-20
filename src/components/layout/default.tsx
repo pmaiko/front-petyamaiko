@@ -1,4 +1,4 @@
-import TheHeader from '../shared/TheHeader/TheHeader'
+import TheHeader from '../shared/TheHeader'
 
 const Default = (props: any) => {
   return (

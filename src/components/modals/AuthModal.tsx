@@ -1,6 +1,4 @@
-import './AuthModal.scss'
-
-import { RootState } from '~/store/reducers'
+import '../../assets/styles/modals/AuthModal.scss'
 
 import BaseModal from '~/components/base/BaseModal'
 

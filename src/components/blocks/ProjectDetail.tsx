@@ -1,10 +1,11 @@
-import './ProjectDetail.scss'
+import '../../assets/styles/blocks/ProjectDetail.scss'
+
+import Like from '~/components/shared/Like'
+import BaseImage from '~/components/base/BaseImage'
+import View from '~/components/shared/View'
 
 import { IProject } from '~/types'
-import BaseImage from '~/components/base/BaseImage'
-import View from '~/components/shared/View/View'
 import React, { useMemo } from 'react'
-import Like from '~/components/shared/Like/Like'
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 import { useProjectView } from '~/hooks/project/useProjectView'
 import { convertDate } from '~/helpers'
@@ -43,7 +44,7 @@ const ProjectDetail = ({ id, image, label, description, views, likes, created_at
                 <span className='project-detail__author-label'>author: </span><span className='project-detail__author-value'>Petya</span>
               </div>
               <div className='project-detail__site description'>
-                <span className='project-detail__site-label'>site: </span><a href='#' className='project-detail__site-value'>https://novus.online</a>
+                <span className='project-detail__site-label'>site: </span><a href='/' className='project-detail__site-value'>https://novus.online</a>
               </div>
             </div>
             <div className='project-detail__info-col'>
