@@ -10,6 +10,7 @@
 
   @include respDown(sm) {
     width: map-get($container-max-widths, sm);
+    max-width: 414px;
   }
 }
 

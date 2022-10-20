@@ -8,72 +8,93 @@
     position: relative;
   }
 
-  &__image {
-    @include aspect-ratio(1800 / 2400);
-
-    max-width: 558px;
-    margin-top: 32px;
-    margin-right: auto;
-    margin-left: auto;
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 3rem 0;
   }
 
-  &__text {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    @include respDown(sm) {
-      left: 15px;
-    }
-  }
-
-  &__title {
-    font-size: 7.2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    white-space: nowrap;
+  &__col {
+    flex: 1 1 50%;
+    max-width: 50%;
 
     @include respDown(md) {
-      font-size: 3.8rem;
+      flex: 1 1 100%;
+      max-width: 100%;
     }
 
-    @include respDown(sm) {
-      font-size: 1.8rem;
-    }
-
-    .text2 {
-      position: relative;
-      z-index: -1;
-    }
-
-    .name {
-      display: inline-block;
-      margin-top: 2.5rem;
-
+    &_left {
       @include respDown(sm) {
-        margin-top: 1rem;
+        margin-bottom: 3rem;
       }
     }
   }
 
+  &__title,
   &__description {
-    margin-top: 2.5rem;
-    font-size: 1.5rem;
-    font-weight: 300;
-    line-height: 1.4;
     text-transform: uppercase;
+  }
 
-    @include respDown(sm) {
-      margin-top: 4rem;
-      font-size: 1rem;
+  &__title {
+    @include respUp(md) {
+      width: 120%;
     }
   }
 
-  &__button {
-    margin-top: 5rem;
+  &__description {
+    margin-top: 1rem;
+  }
 
-    @include respDown(sm) {
-      margin-top: 1rem;
+  &__button {
+    margin-top: 3rem;
+
+    @include respDown(md) {
+      margin-top: 2rem;
+    }
+  }
+
+  &__figure {
+    position: relative;
+
+    @include aspect-ratio(1 / 1);
+
+    &-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 5%;
+      overflow: hidden;
+      border-radius: 100%;
+
+      &-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      &-bg {
+        position: absolute;
+        top: 7%;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        background: $c-secondary;
+        border-radius: 100%;
+      }
+    }
+
+    .base-image {
+      top: 50%;
+      left: 50%;
+      width: calc(100% * 1.8);
+      height: calc(100% * 1.8);
+      margin-top: 35%;
+      margin-left: -5%;
+      transform: translate(-50%, -50%);
     }
   }
 }

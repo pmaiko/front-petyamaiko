@@ -3,6 +3,7 @@ export type Image = {
     alt?: string,
     src: string,
     objectFit?: string
+    lazy?: boolean
   }
 }
 

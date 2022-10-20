@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, useState } from 'react'
 import { Image } from '~/types'
 
 // @ts-ignore
@@ -17,9 +17,10 @@ const BaseImage = (props: Image) => {
         alt={props.image.alt}
         src={props.image.src}
         placeholderSrc='/favicon.ico'
-        // useIntersectionObserver={false}
+        useIntersectionObserver={false}
         effect='blur'
         threshold={0}
+        visibleByDefault={props.image.lazy === false}
       />
     </div>
   )

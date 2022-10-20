@@ -1,29 +1,41 @@
 @mixin h1 {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: 700;
-  line-height: 110%;
+  line-height: 120%;
+
+  @include respDown(md) {
+    font-size: 2.155rem;
+  }
+
+  @include respDown(sm) {
+    font-size: 1.74rem;
+  }
 }
 
 @mixin h2 {
   font-size: 3rem;
   font-weight: 700;
-  line-height: 110%;
+  line-height: 120%;
 }
 
 @mixin h3 {
   font-size: 2.5rem;
   font-weight: 700;
-  line-height: 110%;
+  line-height: 120%;
 }
 
 @mixin h4 {
   font-size: 2rem;
-  line-height: 110%;
+  line-height: 120%;
 }
 
 @mixin h5 {
-  font-size: 1.5rem;
-  line-height: 110%;
+  font-size: 1rem;
+  line-height: 120%;
+
+  @include respDown(md) {
+    font-size: 0.555rem;
+  }
 }
 
 @mixin p {
