@@ -2,7 +2,7 @@
   "name": "petyamaiko",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
+  "homepage": "/",
   "scripts": {
     "dev": "node scripts/start.js",
     "start": "node server.js",

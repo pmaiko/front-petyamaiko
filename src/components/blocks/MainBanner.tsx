@@ -42,8 +42,8 @@ const MainBanner = () => {
         .to(imageElement, {
           y: 0,
           delay: 0.5,
-          duration: 1.5,
-          ease: 'bounce.out' // expo.out
+          duration: 1.5
+          // ease: 'bounce.out' // expo.out
         }, 'start')
         .to(text.current, {
           opacity: 1
