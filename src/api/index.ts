@@ -26,6 +26,16 @@ export default {
     }
   },
 
+  async fetchPageData (page: string) {
+    try {
+      const { data } = await axios.get<any>('/pages' + page)
+
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async login (sendData: any) {
     try {
       const { data } = await axios.post<ILogin>('/login', sendData)

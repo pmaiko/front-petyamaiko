@@ -1,12 +1,30 @@
+import api from '~/api'
+
 import Default from '../layout/default'
-import HomeBanner from '~/components/blocks/MainBanner'
-import Projects from '~/components/blocks/Projects'
+import React, { useEffect, useState } from 'react'
+import { BLOCKS } from '~/types'
 
 const Home = () => {
+  const [blocks, blocksSet] = useState([])
+
+  const getPageData = async () => {
+
+    const data : any = await api.fetchPageData('/home')
+
+    blocksSet(data.sections)
+  }
+
+  useEffect(() => {
+    getPageData()
+  }, [])
   return (
     <Default>
-      <HomeBanner />
-      <Projects />
+      {blocks.map((section: any, index) : JSX.Element => {
+        const component = BLOCKS[section.name]
+        return React.createElement(component, {
+          key: index
+        })
+      })}
     </Default>
   )
 }

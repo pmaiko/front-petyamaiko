@@ -1,3 +1,5 @@
+import { lazy } from 'react'
+
 export type Image = {
   image: {
     alt?: string,
@@ -60,4 +62,10 @@ export interface IProjectsComments {
   project_id: string,
   created_at: string,
   updated_at: string
+}
+
+export const BLOCKS: any = {
+  'section_main_banner': lazy(() => import('~/components/blocks/MainBanner')),
+  'section_projects': lazy(() => import('~/components/blocks/Projects')),
+  'section_services': 'div'
 }
