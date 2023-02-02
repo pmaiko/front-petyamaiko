@@ -2,7 +2,6 @@ import '../../assets/styles/blocks/MainBanner.scss'
 
 
 // @ts-ignore
-import image from '~/assets/images/petya-light.png'
 import BaseButton from '~/components/base/BaseButton'
 import BaseImage from '~/components/base/BaseImage'
 import BaseAnimation from '~/components/base/BaseAnimation'
@@ -12,7 +11,13 @@ import Observer from '~/plugins/observer'
 
 import { useEffect, useRef } from 'react'
 
-const MainBanner = () => {
+const MainBanner = ({ title, description, hint, image, button_label }: {
+  title: string,
+  description: string,
+  hint: string,
+  image: string,
+  button_label: string
+}) => {
   const figure: any = useRef()
   const text: any = useRef()
 
@@ -66,20 +71,17 @@ const MainBanner = () => {
       <div className='container'>
         <div className='main-banner__inner'>
           <div className='main-banner__col main-banner__col_left'>
-            <BaseAnimation>
-              <h1 className='main-banner__title'>
-                Front-End Developer <br />
-                Petya Maiko
-              </h1>
+            <BaseAnimation className='main-banner__title'>
+              <h1 dangerouslySetInnerHTML={{ __html: title }} />
             </BaseAnimation>
             <BaseAnimation delay={0.5}>
               <h6 className='main-banner__description'>
-                Building the best websites in the world!!!
+                { description }
               </h6>
             </BaseAnimation>
             <BaseAnimation delay={1}>
               <BaseButton className='main-banner__button'>
-                SEND REQUEST
+                { button_label }
               </BaseButton>
             </BaseAnimation>
           </div>
@@ -94,7 +96,7 @@ const MainBanner = () => {
                     ref={text}
                     className='main-banner__figure-circle-text h1'
                   >
-                    HI!!!
+                    { hint }
                   </div>
                   <BaseImage image={{
                     src: image,

@@ -2,7 +2,7 @@ import '../../assets/styles/modals/AuthModal.scss'
 
 import BaseModal from '~/components/base/BaseModal'
 
-import { useActions } from '~/hooks/useActions'
+import { useStoreActions } from '~/store'
 import { useForm } from 'react-hook-form'
 // @ts-ignore
 import { NotificationManager } from 'react-notifications'
@@ -14,7 +14,7 @@ import { useModal } from '~/providers/ModalProvider'
 
 const AuthModal = (props: any) => {
   const { hide } = useModal()
-  const { login, setUser } = useActions()
+  const { login, setUser } = useStoreActions()
 
   const { register, handleSubmit, setError, formState: { errors } } = useForm<Fields>({
     defaultValues: {

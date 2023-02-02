@@ -1,7 +1,7 @@
 import '../../assets/styles/modals/ConfirmLogoutModal.scss'
 
 import { useRef } from 'react'
-import { useActions } from '~/hooks/useActions'
+import { useStoreActions } from '~/store'
 // @ts-ignore
 import { NotificationManager } from 'react-notifications'
 
@@ -12,7 +12,7 @@ import { useModal } from '~/providers/ModalProvider'
 
 const ConfirmLogoutModal = () => {
   const { hide } = useModal()
-  const { logout } = useActions()
+  const { logout } = useStoreActions()
 
   const closeModal: any = useRef()
 

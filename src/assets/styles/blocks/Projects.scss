@@ -1,15 +1,4 @@
 .projects {
-  padding: 120px 0;
-
-  @include respDown(sm) {
-	padding: 60px 0;
-  }
-
-  &__title {
-	margin-bottom: 50px;
-	text-align: center;
-  }
-
   &__list {
 	&-inner {
 	  display: flex;
@@ -18,8 +7,8 @@
 	}
 
 	&-item {
-	  flex: 1 1 25%;
-	  max-width: 25%;
+	  flex: 1 1 33.333%;
+	  max-width: 33.333%;
 	  padding: 0 15px;
 	  margin-bottom: 50px;
 

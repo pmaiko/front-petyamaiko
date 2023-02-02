@@ -1,22 +1,35 @@
-import '../../assets/styles/blocks/Projects.scss'
+import '~/assets/styles/blocks/Projects.scss'
 
 import api from '~/api'
 
-import { RootState } from '~/store/reducers'
 import { IProject } from '~/types'
 
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import NotificationManager from '~/plugins/notification'
+import { useEffect, useRef, useState } from 'react'
 
 import ProjectCard from '~/components/shared/ProjectCard'
 import BaseButton from '~/components/base/BaseButton'
+
+import { useStoreState } from '~/store'
+
 import { useModal, names } from '~/providers/ModalProvider'
+import { useBreakpoint } from '~/providers/BreakpointProvider'
+
+import gsap from '~/plugins/gsap'
+import BaseAnimation from '~/components/base/BaseAnimation'
 
 
-const Projects = () => {
+const Projects = ({ title } : {
+  title: string
+}) => {
+  const root: any = useRef()
+
   const { show } = useModal()
+  const isLoggedIn = useStoreState(state => state.auth.isLoggedIn)
+  const [projects, setProjects] = useState<IProject[]>([])
+  const { breakpoints } = useBreakpoint()
+
+  // methods
   const showCreateProjectModal = (data: any) => {
     show({
       name: names.CreateProjectModal,
@@ -24,17 +37,10 @@ const Projects = () => {
     })
   }
 
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
-  const [projects, setProjects] = useState<IProject[]>([])
-
   const fetchProjects = async () => {
     const data = await api.fetchProjects()
     setProjects(data)
   }
-
-  useEffect(() => {
-    fetchProjects()
-  }, [])
 
   const onAddProject = () => {
     showCreateProjectModal({
@@ -71,12 +77,93 @@ const Projects = () => {
     }
   }
 
+  // methods
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  useEffect(() => {
+    if (projects && projects.length) {
+      const container = root.current?.getElementsByClassName('container')
+      const cards = root.current?.getElementsByClassName('projects-card')
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          markers: false,
+          trigger: container,
+          start: 'top-=15% center',
+          scrub: 1,
+          onLeave: (self: any) => {
+            self.kill(true, true)
+            self.animation.progress(1)
+          }
+        }
+      })
+
+      const cardsLeft = Array.from(cards).filter((card: any, index: any)=>!((index) % 3))
+      const cardsRight = Array.from(cards).filter((card: any, index: any)=>!((index + 1) % 3))
+      const cardsCenter = Array.from(cards).filter((card: any, index: any)=>!((index + 2) % 3))
+
+      const isDesktop = !breakpoints.sm && !breakpoints.md
+
+      const cartOptions = {
+        stagger: 0.5,
+        opacity: 0
+      }
+
+      if (isDesktop) {
+        timeline
+          .addLabel('start')
+          .from(cardsLeft, {
+            ...cartOptions,
+            xPercent: -100,
+            rotate: 45
+          }, 'start')
+          .from(cardsRight, {
+            ...cartOptions,
+            xPercent: 100,
+            rotate: -45
+          }, 'start')
+          .from(cardsCenter, {
+            ...cartOptions,
+            yPercent: 100,
+            rotate: 0
+          }, 'start')
+          .to(cards, {
+            xPercent: 0,
+            yPercent: 0,
+            rotate: 0,
+            opacity: 1
+          })
+      } else {
+        timeline
+          .addLabel('start')
+          .from(cards, {
+            ...cartOptions,
+            stagger: 0,
+            yPercent: 50,
+            opacity: 0
+          }, 'start')
+          .to(cards, {
+            yPercent: 0,
+            opacity: 1
+          })
+      }
+    }
+  }, [projects])
+
   return (
-    <section className='projects'>
+    <section
+      ref={root}
+      className='projects base-section'
+    >
       <div className='container'>
-        <h2 className='projects__title'>
-          Projects
-        </h2>
+        <BaseAnimation className='base-title'>
+          <h2>
+            { title }
+          </h2>
+        </BaseAnimation>
 
         <div className='projects__list'>
           <div className='projects__list-inner'>

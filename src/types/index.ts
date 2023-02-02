@@ -14,6 +14,11 @@ export interface IReducerAction<T> {
   payload: any
 }
 
+export type TReducerAction = {
+  type: any,
+  payload: any
+}
+
 export interface IGlobalData {
   header: {
     menu: {
@@ -23,6 +28,15 @@ export interface IGlobalData {
         link: string
       }[]
     }
+  },
+  footer: {
+    text: string,
+    copyright: string
+  },
+  socials: {
+    instagram: string,
+    telegram: string,
+    skype: string
   }
 }
 
@@ -64,8 +78,20 @@ export interface IProjectsComments {
   updated_at: string
 }
 
+
+export interface PageData {
+  title: string,
+  description: string,
+  blocks: [{
+    name: string,
+    attributes: object
+  }]
+}
+
 export const BLOCKS: any = {
-  'section_main_banner': lazy(() => import('~/components/blocks/MainBanner')),
-  'section_projects': lazy(() => import('~/components/blocks/Projects')),
-  'section_services': 'div'
+  'block_main_banner': lazy(() => import('~/components/blocks/MainBanner')),
+  'block_services': lazy(() => import('~/components/blocks/Services')),
+  'block_projects': lazy(() => import('~/components/blocks/Projects')),
+  'block_about': lazy(() => import('~/components/blocks/About')),
+  'block_contacts': lazy(() => import('~/components/blocks/Contacts'))
 }

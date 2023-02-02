@@ -3,35 +3,39 @@ import router from '~/plugins/router'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
-import { useActions } from '~/hooks/useActions'
+import { useStoreActions } from '~/store'
 // @ts-ignore
 import { NotificationContainer } from 'react-notifications'
 
 // const OtherComponent = React.lazy(() => import('./OtherComponent'))
 
 import ModalProvider from '~/providers/ModalProvider'
+import BreakpointProvider from '~/providers/BreakpointProvider'
 
 const App = () => {
-  const { fetchGlobalData, checkToken, fetchUser } = useActions()
+  const { fetchAndSetGlobalData, checkToken, fetchUser } = useStoreActions()
 
   const init = async () : Promise<any> => {
     await checkToken()
 
     await Promise.all([
-      fetchGlobalData(),
+      fetchAndSetGlobalData(),
       fetchUser()
     ])
   }
+
   useEffect(() => {
     init()
   }, [])
 
   return (
     <>
-      <ModalProvider>
-        <RouterProvider router={router} />
-        <NotificationContainer />
-      </ModalProvider>
+      <BreakpointProvider>
+        <ModalProvider>
+          <RouterProvider router={router} />
+          <NotificationContainer />
+        </ModalProvider>
+      </BreakpointProvider>
     </>
   )
 }

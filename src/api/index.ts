@@ -1,6 +1,6 @@
 import api from 'axios'
 
-import { IGlobalData, ILogin, IProject, IProjectsComments, ISuccess, IUser } from '~/types'
+import { IGlobalData, ILogin, IProject, IProjectsComments, ISuccess, IUser, PageData } from '~/types'
 
 export const axios = api.create({
   baseURL: process.env.REACT_APP_API_URL
@@ -28,7 +28,7 @@ export default {
 
   async fetchPageData (page: string) {
     try {
-      const { data } = await axios.get<any>('/pages' + page)
+      const { data } = await axios.get<PageData>('/pages' + page)
 
       return Promise.resolve(data)
     } catch (error) {

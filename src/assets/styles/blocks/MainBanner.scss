@@ -4,6 +4,20 @@
   width: 100%;
   overflow: hidden;
 
+  @include respUp(lg) {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - #{$header-height}px);
+  }
+
+  & + section {
+    //margin-top: 120px;
+    //
+    //@include respDown(sm) {
+    //  margin-top: 60px;
+    //}
+  }
+
   .container {
     position: relative;
   }
@@ -13,6 +27,10 @@
     flex-wrap: wrap;
     align-items: center;
     padding: 3rem 0;
+
+    @include respDown(md) {
+      padding: 3rem 0 0;
+    }
   }
 
   &__col {
@@ -40,6 +58,8 @@
   }
 
   &__title {
+    width: max-content;
+
     @include respUp(md) {
       width: 120%;
     }

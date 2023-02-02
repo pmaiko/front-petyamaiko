@@ -1,0 +1,92 @@
+.editor {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+	margin-bottom: 16px;
+
+	@include respDown(sm) {
+	  margin-bottom: 12px;
+	}
+  }
+
+  ul,
+  li,
+  p {
+	font-size: 16px;
+	line-height: 160%;
+  }
+
+  em {
+	font-style: italic;
+  }
+
+  b,
+  strong {
+	font-weight: 700;
+  }
+
+  ul {
+	position: relative;
+	margin: 16px 0;
+	list-style: none;
+
+	li {
+	  position: relative;
+	  padding-left: 16px;
+	  margin-bottom: 12px;
+
+	  @include respDown(sm) {
+		margin-bottom: 8px;
+	  }
+	}
+
+	li::before {
+	  position: absolute;
+	  top: 0.7em;
+	  left: 0;
+	  width: 5px;
+	  height: 5px;
+	  content: "";
+	  background: $c-secondary;
+	  border-radius: 50%;
+	}
+  }
+
+  ol {
+	position: relative;
+	margin: 16px 0;
+	list-style: none;
+	list-style-type: none;
+	counter-reset: section;
+
+	li {
+	  position: relative;
+	  padding-left: 16px;
+	  margin-bottom: 12px;
+
+	  @include respDown(sm) {
+		margin-bottom: 12px;
+	  }
+	}
+
+	li::before {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  color: $c-secondary;
+	  content: counters(section, '.') '.';
+	  counter-increment: section;
+	}
+
+	p {
+	  margin-bottom: 16px;
+
+	  @include respDown(sm) {
+		margin-bottom: 12px;
+	  }
+	}
+  }
+}

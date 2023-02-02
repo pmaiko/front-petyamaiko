@@ -1,4 +1,4 @@
-import '../../assets/styles/blocks/ProjectDetail.scss'
+import '~/assets/styles/blocks/ProjectDetail.scss'
 
 import Like from '~/components/shared/Like'
 import BaseImage from '~/components/base/BaseImage'

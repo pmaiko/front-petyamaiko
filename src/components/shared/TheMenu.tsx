@@ -1,16 +1,16 @@
 import '../../assets/styles/shared/TheMenu.scss'
 
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
-import { RootState } from '~/store/reducers'
+import { useStoreState } from '~/store'
 
 const TheMenu = () => {
-  const items = useSelector((state: RootState) => state.globalData.result.header?.menu.items)
+  const items = useStoreState(state => state.globalData.header?.menu.items)
+
   return (
     <div className='menu'>
       <ul className='menu__list'>
-        { items?.map((item, index) => (
+        { items?.map((item: any, index: any) => (
           <li
             key={ index }
             className='menu__list-item'

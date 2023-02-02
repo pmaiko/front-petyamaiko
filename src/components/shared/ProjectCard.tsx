@@ -10,11 +10,7 @@ import BaseImage from '~/components/base/BaseImage'
 import Like from '~/components/shared/Like'
 import View from '~/components/shared/View'
 
-import { useSelector } from 'react-redux'
-import { RootState } from '~/store/reducers'
-
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
+import NotificationManager from '~/plugins/notification'
 
 import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
 import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
@@ -22,6 +18,7 @@ import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 import { useProjectView } from '~/hooks/project/useProjectView'
 
+import { useStoreState } from '~/store'
 import { useModal, names } from '~/providers/ModalProvider'
 
 interface Props extends IProject {
@@ -30,7 +27,7 @@ interface Props extends IProject {
 }
 
 const ProjectCard = (props: Props) => {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const isLoggedIn = useStoreState(state => state.auth.isLoggedIn)
 
   const { show } = useModal()
   const showConfirmProjectDeleteModal = (data: any) => {

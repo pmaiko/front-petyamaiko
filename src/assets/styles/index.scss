@@ -6,8 +6,38 @@
 @import "base/base-image";
 @import "base/base-modal";
 @import "base/base-inputs";
+@import "base/editor";
 
 .base-animation {
-  width: max-content;
   overflow: hidden;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.base-section {
+  padding: 120px 0;
+
+  @include respDown(sm) {
+    padding: 60px 0;
+  }
+
+  &:last-of-type {
+    margin-bottom: 120px;
+
+    @include respDown(sm) {
+      margin-bottom: 60px;
+    }
+  }
+}
+
+.base-title {
+  width: 100%;
+  margin-bottom: 90px;
+  text-align: center;
 }

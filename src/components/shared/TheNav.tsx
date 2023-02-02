@@ -1,13 +1,12 @@
 import '../../assets/styles/shared/TheNav.scss'
 
-import { useSelector } from 'react-redux'
-import { RootState } from '~/store/reducers'
+import { Link } from 'react-router-dom'
+import { useStoreState } from '~/store'
 
 import TheMenu from '~/components/shared/TheMenu'
-import { Link } from 'react-router-dom'
 
 const TheNav = () => {
-  const logo = useSelector((state: RootState) => state.globalData.result.header?.menu.logo) || ''
+  const logo = useStoreState(state => state.globalData.header?.menu.logo) || ''
 
   return (
     <nav className='nav'>
