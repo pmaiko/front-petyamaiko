@@ -123,18 +123,27 @@ const ProjectCard = (props: Props) => {
       }
       <div className='projects-card__image'>
         <BaseImage image={{
-          src: props.image
+          src: props.image,
+          effect: 'move'
         }}/>
       </div>
 
       <div className='projects-card__body'>
-        <p className='projects-card__label label'>
+        <p className='projects-card__label'>
           { props.label }
         </p>
 
-        <p className='projects-card__description description'>
+        <p className='projects-card__description'>
           { props.description }
         </p>
+
+        <div
+          data-href={props.url}
+          data-target='_blank'
+          className='projects-card__url link-2'
+        >
+          { props.url }
+        </div>
       </div>
 
       <div className='projects-card__foot'>

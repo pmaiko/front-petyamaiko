@@ -117,13 +117,13 @@ const Projects = ({ title } : {
           .addLabel('start')
           .from(cardsLeft, {
             ...cartOptions,
-            xPercent: -100,
-            rotate: 45
+            xPercent: -100
+            // rotate: 45
           }, 'start')
           .from(cardsRight, {
             ...cartOptions,
-            xPercent: 100,
-            rotate: -45
+            xPercent: 100
+            // rotate: -45
           }, 'start')
           .from(cardsCenter, {
             ...cartOptions,
@@ -177,6 +177,7 @@ const Projects = ({ title } : {
                   image={project.image}
                   label={project.label}
                   description={project.description}
+                  url={project.url}
                   views={project.views}
                   likes={project.likes}
                   created_at={project.created_at}

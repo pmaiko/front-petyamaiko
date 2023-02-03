@@ -16,6 +16,10 @@
   font-size: 4rem;
   font-weight: 700;
   line-height: 120%;
+
+  @include respDown(sm) {
+    font-size: 3rem;
+  }
 }
 
 @mixin h3 {
@@ -31,6 +35,10 @@
 @mixin h4 {
   font-size: 2rem;
   line-height: 140%;
+
+  @include respDown(md) {
+    font-size: 1.3rem;
+  }
 }
 
 @mixin h5 {
@@ -43,6 +51,6 @@
   line-height: 160%;
 
   @include respDown(md) {
-    font-size: 0.555rem;
+    font-size: 0.775rem;
   }
 }

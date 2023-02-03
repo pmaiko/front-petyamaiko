@@ -29,6 +29,10 @@
 
   &__label {
 	margin-bottom: 24px;
+
+	@include respDown(sm) {
+	  margin-bottom: 0;
+	}
   }
 
   &__description {

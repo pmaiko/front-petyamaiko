@@ -5,7 +5,9 @@ const Default = (props: any) => {
   return (
     <div className='layout layout_default'>
       <TheHeader />
-      {props.children}
+      <div className='page-content'>
+        {props.children}
+      </div>
       <TheFooter />
     </div>
   )

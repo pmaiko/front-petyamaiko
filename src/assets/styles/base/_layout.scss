@@ -14,13 +14,6 @@
   }
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-top: #{$header-height}px;
-}
-
 html,
 body {
   height: 100%;
@@ -29,4 +22,18 @@ body {
 #root {
   height: 1px;
   min-height: 100%;
+}
+
+.layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: #{$header-height}px;
+}
+
+.page-content {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
 }

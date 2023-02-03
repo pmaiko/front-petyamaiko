@@ -22,6 +22,7 @@
 
 .base-section {
   padding: 120px 0;
+  overflow: hidden;
 
   @include respDown(sm) {
     padding: 60px 0;
@@ -40,4 +41,8 @@
   width: 100%;
   margin-bottom: 90px;
   text-align: center;
+
+  @include respDown(sm) {
+    margin-bottom: 55px;
+  }
 }

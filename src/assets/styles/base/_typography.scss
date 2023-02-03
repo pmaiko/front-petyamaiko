@@ -48,17 +48,6 @@ p,
   @include p;
 }
 
-.label {
-  font-size: 1.2rem;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.description {
-  font-size: 0.775rem;
-  line-height: 1.6;
-}
-
 .link {
   &::before,
   &::after {
@@ -88,3 +77,16 @@ p,
   }
 }
 
+
+.link-2 {
+  font-size: 0.875rem;
+  line-height: 160%;
+
+  @include respDown(md) {
+    font-size: 0.775rem;
+  }
+
+  @include hover {
+    text-decoration: underline;
+  }
+}

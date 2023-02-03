@@ -80,6 +80,7 @@
   &__figure {
     position: relative;
     color: $c-text;
+    opacity: 0;
 
     @include aspect-ratio(1 / 1);
 

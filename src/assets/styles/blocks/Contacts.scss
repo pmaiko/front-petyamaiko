@@ -21,6 +21,11 @@
 	  width: 100px;
 	  height: 100px;
 	  margin-right: 15px;
+
+	  @include respDown(sm) {
+		width: 72px;
+		height: 72px;
+	  }
 	}
 
 	&-description {

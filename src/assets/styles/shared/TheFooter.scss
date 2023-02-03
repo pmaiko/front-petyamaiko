@@ -5,6 +5,7 @@
   &__socials {
     &-list {
       display: flex;
+      justify-content: center;
       margin: 0 -15px -15px;
 
       &-item {
@@ -16,6 +17,21 @@
 
   &__social {
     display: block;
-    width: 45px;
+    width: 35px;
+    color: $c-grey;
+    transition: color 0.3s;
+
+    @include hover {
+      color: $c-text;
+    }
+  }
+
+  &__text,
+  &__copyright {
+    text-align: center;
+  }
+
+  &__text {
+    margin-top: 24px;
   }
 }

@@ -14,6 +14,8 @@ const icons = {
 }
 const TheFooter = () => {
   const socials = useStoreState(state => state.globalData.socials) || {}
+  const text = useStoreState(state => state.globalData.footer?.text) || ''
+  const copyright = useStoreState(state => state.globalData.footer?.copyright) || ''
 
   const _socials = useMemo(() => {
     return Object.entries(socials).map(([key, value]) => {
@@ -49,6 +51,13 @@ const TheFooter = () => {
             ))}
           </ul>
         </div>
+
+        <p className='footer__text'>
+          { text }
+        </p>
+        <p className='footer__copyright'>
+          { copyright }
+        </p>
       </div>
     </footer>
   )

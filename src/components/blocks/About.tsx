@@ -28,7 +28,7 @@ const About = ({ title, label, description, image, buttonText, buttonLink }: {
               <BaseImage
                 image={{
                   src: image,
-                  objectFit: 'cover'
+                  objectFit: 'contain'
                 }}
               />
             </div>

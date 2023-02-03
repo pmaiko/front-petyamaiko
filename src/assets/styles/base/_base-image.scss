@@ -13,6 +13,18 @@
     background-size: cover !important;
   }
 
+  &__placeholder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 101%;
+    height: 101%;
+    overflow: hidden;
+    pointer-events: none;
+    background: $c-primary;
+  }
+
   img {
     width: 100%;
     height: 100%;
@@ -30,6 +42,42 @@
     img {
       object-fit: contain;
       //font-family: "object-fit: contain;object-position: center;";
+    }
+  }
+
+  &_effect {
+    &-blur {
+      .base-image {
+        &__placeholder {
+          opacity: 1;
+          transition: opacity 0.3s ease;
+
+          img {
+            filter: blur(2px);
+          }
+
+          &_load {
+            opacity: 0;
+          }
+        }
+      }
+    }
+
+    &-move {
+      .base-image {
+        &__placeholder {
+          will-change: transform;
+          transition: transform 0.5s cubic-bezier(.42, 0, .58, 1);
+
+          img {
+            object-fit: contain;
+          }
+
+          &_load {
+            transform: translateX(100%);
+          }
+        }
+      }
     }
   }
 }

@@ -4,8 +4,9 @@ export type Image = {
   image: {
     alt?: string,
     src: string,
-    objectFit?: string
-    lazy?: boolean
+    objectFit?: 'contain' | 'cover'
+    lazy?: boolean,
+    effect?: 'blur' | 'move'
   }
 }
 
@@ -58,6 +59,7 @@ export interface IProject {
   image: string,
   label: string,
   description: string,
+  url: string,
   likes: number,
   views: number,
   created_at: string,
