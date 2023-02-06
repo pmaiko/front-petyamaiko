@@ -1,13 +1,12 @@
-import '../../assets/styles/modals/CreateProjectModal.scss'
+import '~/assets/styles/modals/CreateProjectModal.scss'
 
 import { useRef } from 'react'
+import { useForm } from 'react-hook-form'
+import { useModal } from '~/providers/ModalProvider'
 
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
 import BaseTextField from '~/components/base/BaseTextField'
-
-import { useForm } from 'react-hook-form'
-import { useModal } from '~/providers/ModalProvider'
 
 const CreateProjectModal = (props: any) => {
   const closeModal: any = useRef()

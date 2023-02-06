@@ -13,12 +13,12 @@ const icons = {
   skype: SkypeIcon
 }
 const TheFooter = () => {
-  const socials = useStoreState(state => state.globalData.socials) || {}
+  const socials = Object.entries(useStoreState(state => state.globalData.socials) || {})
   const text = useStoreState(state => state.globalData.footer?.text) || ''
   const copyright = useStoreState(state => state.globalData.footer?.copyright) || ''
 
   const _socials = useMemo(() => {
-    return Object.entries(socials).map(([key, value]) => {
+    return socials.map(([key, value]) => {
       return {
         type: key,
         icon: icons[key as keyof typeof icons],
@@ -39,6 +39,7 @@ const TheFooter = () => {
                 <a
                   href={item.link}
                   target='_blank'
+                  rel='noreferrer'
                   className='footer__social'
                 >
                   <div className='footer__social-icon'>

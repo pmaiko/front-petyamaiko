@@ -1,4 +1,4 @@
-import './assets/styles/index.scss'
+import './assets/styles/index.critical.scss'
 import 'react-notifications/lib/notifications.css'
 
 import ReactDOM from 'react-dom/client'

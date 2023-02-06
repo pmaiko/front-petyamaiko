@@ -20,7 +20,7 @@ export const useProjectView = (props: { projectId: number }) => {
     })
 
     return () => {
-      root.current?.removeEventListener('inview', onInView)
+      // root.current?.removeEventListener('inview', onInView)
     }
   }, [])
 

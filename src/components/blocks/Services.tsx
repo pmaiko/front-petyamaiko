@@ -16,7 +16,6 @@ const Services = ({ title, list }: {
 }) => {
   const root: any = useRef()
   useEffect(() => {
-    const container = root.current?.getElementsByClassName('container')
     const images = root.current?.getElementsByClassName('services-card__image')
 
     const timeline = gsap.timeline({

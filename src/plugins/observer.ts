@@ -12,11 +12,11 @@ const createEvent = (name: any, bubbles = false, cancelable = true) => {
   event.initEvent(name, bubbles, cancelable)
   return event
 }
-interface EVENTS {
+interface IEVENTS {
   INVIEW: string
   OUTVIEW: string
 }
-const EVENTS: EVENTS = {
+const EVENTS: IEVENTS = {
   INVIEW: 'inview',
   OUTVIEW: 'outview'
 }

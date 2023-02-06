@@ -5,10 +5,7 @@ import api from '~/api'
 import { IProject } from '~/types'
 
 import NotificationManager from '~/plugins/notification'
-import { useEffect, useRef, useState } from 'react'
-
-import ProjectCard from '~/components/shared/ProjectCard'
-import BaseButton from '~/components/base/BaseButton'
+import { lazy, useEffect, useRef, useState } from 'react'
 
 import { useStoreState } from '~/store'
 
@@ -17,6 +14,9 @@ import { useBreakpoint } from '~/providers/BreakpointProvider'
 
 import gsap from '~/plugins/gsap'
 import BaseAnimation from '~/components/base/BaseAnimation'
+
+const ProjectCard = lazy(() => import('~/components/shared/ProjectCard'))
+const BaseButton = lazy(() => import('~/components/base/BaseButton'))
 
 
 const Projects = ({ title } : {

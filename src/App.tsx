@@ -4,10 +4,9 @@ import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { useStoreActions } from '~/store'
+
 // @ts-ignore
 import { NotificationContainer } from 'react-notifications'
-
-// const OtherComponent = React.lazy(() => import('./OtherComponent'))
 
 import ModalProvider from '~/providers/ModalProvider'
 import BreakpointProvider from '~/providers/BreakpointProvider'
@@ -25,7 +24,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    init()
+    init().then()
   }, [])
 
   return (

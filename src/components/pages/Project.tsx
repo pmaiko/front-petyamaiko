@@ -6,11 +6,12 @@ import api from '~/api'
 import { IProject, IProjectsComments } from '~/types'
 
 import { useMatches } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
 
 import Default from '../layout/default'
-import ProjectDetail from '~/components/blocks/ProjectDetail'
-import ProjectComments from '~/components/blocks/ProjectComments'
+
+const ProjectDetail = lazy(() => import('~/components/blocks/ProjectDetail'))
+const ProjectComments = lazy(() => import('~/components/blocks/ProjectComments'))
 
 const Project = (props: any) => {
   const [route] = useMatches()

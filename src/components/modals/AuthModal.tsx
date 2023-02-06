@@ -1,16 +1,16 @@
 import '../../assets/styles/modals/AuthModal.scss'
 
-import BaseModal from '~/components/base/BaseModal'
+import NotificationManager from '~/plugins/notification'
 
 import { useStoreActions } from '~/store'
 import { useForm } from 'react-hook-form'
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
 
-import BaseTextField from '~/components/base/BaseTextField'
-import BaseButton from '~/components/base/BaseButton'
 import { useRef } from 'react'
 import { useModal } from '~/providers/ModalProvider'
+
+import BaseModal from '~/components/base/BaseModal'
+import BaseTextField from '~/components/base/BaseTextField'
+import BaseButton from '~/components/base/BaseButton'
 
 const AuthModal = (props: any) => {
   const { hide } = useModal()
@@ -25,7 +25,6 @@ const AuthModal = (props: any) => {
 
   const closeModal: any = useRef()
 
-  // @ts-ignore
   const onSubmit = async (fields: Fields) => {
     try {
       const response: any = await login(fields)

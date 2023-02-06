@@ -38,7 +38,7 @@ const BaseAnimation = ({ children, delay, className, animation, }: any) => {
 
     root.current?.addEventListener('inview', onInView)
     return () => {
-      root.current?.removeEventListener('inview', onInView)
+      // root.current?.removeEventListener('inview', onInView)
     }
   }, [])
   return (

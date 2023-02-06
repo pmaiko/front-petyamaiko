@@ -1,14 +1,13 @@
-import '../../assets/styles/modals/ConfirmLogoutModal.scss'
+import '~/assets/styles/modals/ConfirmLogoutModal.scss'
+
+import NotificationManager from '~/plugins/notification'
 
 import { useRef } from 'react'
 import { useStoreActions } from '~/store'
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
+import { useModal } from '~/providers/ModalProvider'
 
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
-
-import { useModal } from '~/providers/ModalProvider'
 
 const ConfirmLogoutModal = () => {
   const { hide } = useModal()

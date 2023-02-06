@@ -1,5 +1,7 @@
-import TheHeader from '../shared/TheHeader'
-import TheFooter from '../shared/TheFooter'
+import { lazy } from 'react'
+
+const TheHeader = lazy(() => import('~/components/shared/TheHeader'))
+const TheFooter = lazy(() => import('~/components/shared/TheFooter'))
 
 const Default = (props: any) => {
   return (

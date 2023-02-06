@@ -1,4 +1,4 @@
-import { lazy, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Image } from '~/types'
 
 // @ts-ignore

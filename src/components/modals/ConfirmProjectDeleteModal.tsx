@@ -1,11 +1,10 @@
-import '../../assets/styles/modals/ConfirmProjectDeleteModal.scss'
+import '~/assets/styles/modals/ConfirmProjectDeleteModal.scss'
 
 import { useRef } from 'react'
+import { useModal } from '~/providers/ModalProvider'
 
 import BaseModal from '~/components/base/BaseModal'
 import BaseButton from '~/components/base/BaseButton'
-
-import { useModal } from '~/providers/ModalProvider'
 
 const ConfirmProjectDeleteModal = (props: any) => {
   const { hide } = useModal()

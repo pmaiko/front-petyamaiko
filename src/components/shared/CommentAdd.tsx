@@ -1,12 +1,12 @@
-import '../../assets/styles/shared/CommentAdd.scss'
+import '~/assets/styles/shared/CommentAdd.scss'
 
 import api from '~/api'
+
+import NotificationManager from '~/plugins/notification'
 
 import { IProjectsComments } from '~/types'
 
 import { useForm } from 'react-hook-form'
-// @ts-ignore
-import { NotificationManager } from 'react-notifications'
 
 import BaseButton from '~/components/base/BaseButton'
 import BaseTextarea from '~/components/base/BaseTextarea'

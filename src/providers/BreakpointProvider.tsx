@@ -28,7 +28,7 @@ const BreakpointProvider = ({ children }: any) => {
     const newState: T_Breakpoints = { ...initialState }
 
     _breakpoints.forEach(([name, breakpoint], index) => {
-      const [nextName, nextBreakpoint] = _breakpoints[index + 1] || []
+      const [, nextBreakpoint] = _breakpoints[index + 1] || []
       // console.log('name', name)
       // console.log('nextName', nextName)
       if (windowSize >= breakpoint && (windowSize < nextBreakpoint || !nextBreakpoint)) {

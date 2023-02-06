@@ -3,8 +3,7 @@ import '~/assets/styles/blocks/Contacts.scss'
 import BaseAnimation from '~/components/base/BaseAnimation'
 import BaseImage from '~/components/base/BaseImage'
 
-import gsap from '~/plugins/gsap'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 const Contacts = ({ title, list }: {
   title: string,

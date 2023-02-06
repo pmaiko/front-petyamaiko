@@ -1,14 +1,15 @@
 import '~/assets/styles/blocks/ProjectDetail.scss'
 
-import Like from '~/components/shared/Like'
-import BaseImage from '~/components/base/BaseImage'
-import View from '~/components/shared/View'
-
 import { IProject } from '~/types'
-import React, { useMemo } from 'react'
+import React, { lazy, useMemo } from 'react'
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 import { useProjectView } from '~/hooks/project/useProjectView'
 import { convertDate } from '~/helpers'
+
+import BaseImage from '~/components/base/BaseImage'
+
+const Like = lazy(() => import('~/components/shared/Like'))
+const View = lazy(() => import('~/components/shared/View'))
 
 const ProjectDetail = ({ id, image, label, description, views, likes, created_at }: IProject) => {
   const { likes: likesCount, isLiked, onLikeToggle } = useProjectLikes({

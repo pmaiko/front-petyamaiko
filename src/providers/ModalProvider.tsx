@@ -1,8 +1,8 @@
-import Modals from '~/components/modals'
-
-import React, { useReducer, useContext } from 'react'
+import React, { lazy, useReducer, useContext } from 'react'
 
 const ModalContext = React.createContext({} as IProvider)
+
+const Modals = lazy(() => import('~/components/modals'))
 
 const reducer = <T extends { type: string, payload: IState }>(state: IState, action: T) => {
   if (action.type === 'SHOW_MODAL') {
