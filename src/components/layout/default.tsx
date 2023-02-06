@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import { Outlet } from 'react-router-dom'
 
 const TheHeader = lazy(() => import('~/components/shared/TheHeader'))
 const TheFooter = lazy(() => import('~/components/shared/TheFooter'))
@@ -8,7 +9,7 @@ const Default = (props: any) => {
     <div className='layout layout_default'>
       <TheHeader />
       <div className='page-content'>
-        {props.children}
+        <Outlet />
       </div>
       <TheFooter />
     </div>

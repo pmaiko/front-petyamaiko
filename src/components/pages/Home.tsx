@@ -2,8 +2,7 @@
 import { PageData, BLOCKS } from '~/types'
 
 import api from '~/api'
-import Default from '~/components/layout/default'
-import React, { useEffect, useState } from 'react'
+import { createElement, useEffect, useState } from 'react'
 
 const Home = () => {
   const [blocks, blocksSet] = useState<any>([])
@@ -20,11 +19,11 @@ const Home = () => {
 
 
   return (
-    <Default>
+    <>
       {blocks.map((block: any, index: any) : JSX.Element => {
         const component = BLOCKS[block.name]
         if (component) {
-          return React.createElement(component, {
+          return createElement(component, {
             key: index,
             ...block.attributes
           })
@@ -32,7 +31,7 @@ const Home = () => {
 
         return <span key={index} style={{ color: 'red', fontSize: '2em', marginBottom: '0.5em' }}>Not Found {block.name}</span>
       })}
-    </Default>
+    </>
   )
 }
 

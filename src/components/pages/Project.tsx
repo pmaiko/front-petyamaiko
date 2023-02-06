@@ -8,8 +8,6 @@ import { IProject, IProjectsComments } from '~/types'
 import { useMatches } from 'react-router-dom'
 import { lazy, useEffect, useState } from 'react'
 
-import Default from '../layout/default'
-
 const ProjectDetail = lazy(() => import('~/components/blocks/ProjectDetail'))
 const ProjectComments = lazy(() => import('~/components/blocks/ProjectComments'))
 
@@ -42,7 +40,7 @@ const Project = (props: any) => {
   }, [route.params.id])
 
   return (
-    <Default>
+    <>
       {!isEmpty(project) && (project?.id || project?.id === 0) &&
         <>
           <ProjectDetail
@@ -56,7 +54,7 @@ const Project = (props: any) => {
           />
         </>
       }
-    </Default>
+    </>
   )
 }
 export default Project

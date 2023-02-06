@@ -1,10 +1,8 @@
-import '../../assets/styles/pages/About.scss'
-
-import Default from '../layout/default'
+import '~/assets/styles/pages/About.scss'
 
 const About = () => {
   return (
-    <Default>
+    <>
       <div className='body'>
         body
       </div>
@@ -32,7 +30,7 @@ const About = () => {
           p
         </p>
       </div>
-    </Default>
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ import api from '~/api'
 import { IProject } from '~/types'
 
 import NotificationManager from '~/plugins/notification'
-import { lazy, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 
 import { useStoreState } from '~/store'
 
@@ -14,9 +14,9 @@ import { useBreakpoint } from '~/providers/BreakpointProvider'
 
 import gsap from '~/plugins/gsap'
 import BaseAnimation from '~/components/base/BaseAnimation'
+import BaseButton from '~/components/base/BaseButton'
 
 const ProjectCard = lazy(() => import('~/components/shared/ProjectCard'))
-const BaseButton = lazy(() => import('~/components/base/BaseButton'))
 
 
 const Projects = ({ title } : {
@@ -172,19 +172,21 @@ const Projects = ({ title } : {
                 key={project.id}
                 className='projects__list-item'
               >
-                <ProjectCard
-                  id={project.id}
-                  image={project.image}
-                  label={project.label}
-                  description={project.description}
-                  url={project.url}
-                  views={project.views}
-                  likes={project.likes}
-                  created_at={project.created_at}
-                  updated_at={project.updated_at}
-                  updateProjectHandler={onUpdateProject}
-                  removeProjectHandler={onRemoveProject}
-                />
+                <Suspense fallback={'...loading'}>
+                  <ProjectCard
+                    id={project.id}
+                    image={project.image}
+                    label={project.label}
+                    description={project.description}
+                    url={project.url}
+                    views={project.views}
+                    likes={project.likes}
+                    created_at={project.created_at}
+                    updated_at={project.updated_at}
+                    updateProjectHandler={onUpdateProject}
+                    removeProjectHandler={onRemoveProject}
+                  />
+                </Suspense>
               </div>
             ))}
           </div>
