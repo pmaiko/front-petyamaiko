@@ -15,11 +15,6 @@ export interface IReducerAction<T> {
   payload: any
 }
 
-export type TReducerAction = {
-  type: any,
-  payload: any
-}
-
 export interface IGlobalData {
   header: {
     menu: {

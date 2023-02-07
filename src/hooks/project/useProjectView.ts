@@ -13,14 +13,12 @@ export const useProjectView = (props: { projectId: number }) => {
       })
     }
 
-    setTimeout(() => {
-      const observer = new Observer({ root: null, rootMargin: '0px', threshold: 0 })
-      observer.observe(root.current)
-      root.current?.addEventListener('inview', onInView)
-    })
+    const observer = new Observer({ root: null, rootMargin: '0px', threshold: 0 })
+    observer.observe(root.current)
+    root.current?.addEventListener('inview', onInView)
 
     return () => {
-      // root.current?.removeEventListener('inview', onInView)
+      root.current?.removeEventListener('inview', onInView)
     }
   }, [])
 

@@ -9,12 +9,13 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 
 import { useStoreState } from '~/store'
 
-import { useModal, names } from '~/providers/ModalProvider'
+import { useModal, ModalNames } from '~/providers/ModalProvider'
 import { useBreakpoint } from '~/providers/BreakpointProvider'
 
 import gsap from '~/plugins/gsap'
 import BaseAnimation from '~/components/base/BaseAnimation'
 import BaseButton from '~/components/base/BaseButton'
+import SuspenseLoader from '~/components/shared/SuspenseLoader'
 
 const ProjectCard = lazy(() => import('~/components/shared/ProjectCard'))
 
@@ -27,12 +28,13 @@ const Projects = ({ title } : {
   const { show } = useModal()
   const isLoggedIn = useStoreState(state => state.auth.isLoggedIn)
   const [projects, setProjects] = useState<IProject[]>([])
+  const [loadedCardsCount, setLoadedCardsCount] = useState(0)
   const { breakpoints } = useBreakpoint()
 
   // methods
   const showCreateProjectModal = (data: any) => {
     show({
-      name: names.CreateProjectModal,
+      name: ModalNames.CreateProjectModal,
       props: data
     })
   }
@@ -77,14 +79,16 @@ const Projects = ({ title } : {
     }
   }
 
-  // methods
+  const onLoadProjectCard = () => {
+    setLoadedCardsCount(prev => prev + 1)
+  }
 
   useEffect(() => {
     fetchProjects()
   }, [])
 
   useEffect(() => {
-    if (projects && projects.length) {
+    if (projects && projects.length && loadedCardsCount >= projects.length) {
       const container = root.current?.getElementsByClassName('container')
       const cards = root.current?.getElementsByClassName('projects-card')
 
@@ -151,7 +155,7 @@ const Projects = ({ title } : {
           })
       }
     }
-  }, [projects])
+  }, [projects, loadedCardsCount])
 
   return (
     <section
@@ -173,19 +177,21 @@ const Projects = ({ title } : {
                 className='projects__list-item'
               >
                 <Suspense fallback={'...loading'}>
-                  <ProjectCard
-                    id={project.id}
-                    image={project.image}
-                    label={project.label}
-                    description={project.description}
-                    url={project.url}
-                    views={project.views}
-                    likes={project.likes}
-                    created_at={project.created_at}
-                    updated_at={project.updated_at}
-                    updateProjectHandler={onUpdateProject}
-                    removeProjectHandler={onRemoveProject}
-                  />
+                  <SuspenseLoader onLoad={onLoadProjectCard}>
+                    <ProjectCard
+                      id={project.id}
+                      image={project.image}
+                      label={project.label}
+                      description={project.description}
+                      url={project.url}
+                      views={project.views}
+                      likes={project.likes}
+                      created_at={project.created_at}
+                      updated_at={project.updated_at}
+                      updateProjectHandler={onUpdateProject}
+                      removeProjectHandler={onRemoveProject}
+                    />
+                  </SuspenseLoader>
                 </Suspense>
               </div>
             ))}

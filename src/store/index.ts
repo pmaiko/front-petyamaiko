@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import thunk from 'redux-thunk'
 
 // modules
-import { globalDataReducers, actions as globalDataActions } from './globalData'
+import { globalReducers, actions as globalActions } from './global'
 import authReducers from './reducers/authReducers'
 import userReducers from './reducers/userReducers'
 import * as authActions from '~/store/actions/authActions'
@@ -11,7 +11,7 @@ import * as userActions from '~/store/actions/userActions'
 
 
 const rootReducer = combineReducers({
-  globalData: globalDataReducers,
+  global: globalReducers,
   auth: authReducers,
   user: userReducers
 })
@@ -32,7 +32,7 @@ export const store = createStore(
 
 // actions
 const actions = {
-  ...globalDataActions,
+  ...globalActions,
   ...authActions,
   ...userActions
 }

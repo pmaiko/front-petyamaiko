@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { useStoreState } from '~/store'
 
 const TheMenu = () => {
-  const items = useStoreState(state => state.globalData.header?.menu.items)
+  const items = useStoreState(state => state.global.globalData.header?.menu.items)
 
   return (
     <div className='menu'>

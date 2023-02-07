@@ -1,17 +1,8 @@
 import { isElement } from 'lodash'
+import { createEvent } from '~/helpers/create-event'
 
-const createEvent = (name: any, bubbles = false, cancelable = true) => {
-  if (window.Event) {
-    return new Event(name, {
-      bubbles,
-      cancelable
-    })
-  }
+import globalStore from '~/globalStore'
 
-  const event = document.createEvent('Event')
-  event.initEvent(name, bubbles, cancelable)
-  return event
-}
 interface IEVENTS {
   INVIEW: string
   OUTVIEW: string
@@ -53,7 +44,15 @@ export default class Observer {
 
     this.observe = (el: any) => {
       if (isElement(el)) {
-        observer.observe(el)
+        if (!globalStore.state.preloaderDone) {
+          globalStore.watch('preloaderDone', (newValue) => {
+            if (newValue) {
+              observer.observe(el)
+            }
+          })
+        } else {
+          observer.observe(el)
+        }
       } else {
         console.error(`Intersection Observer: ${el} is not DOM element!`)
       }

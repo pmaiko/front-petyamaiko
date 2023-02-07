@@ -1,43 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+	<meta charset="utf-8"/>
+	<link rel="icon" href="%PUBLIC_URL%/favicon.ico"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="theme-color" content="#000000"/>
+	<meta
+		name="description"
+		content="Web site created using create-react-app"
+	/>
+	<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
+	<!--
+		manifest.json provides metadata used when your web app is installed on a
+		user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+	-->
+	<link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
+	<!--
+		Notice the use of %PUBLIC_URL% in the tags above.
+		It will be replaced with the URL of the `public` folder during the build.
+		Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Petya Maiko</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+		Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+		work correctly both with client-side routing and a non-root public URL.
+		Learn how to configure a non-root public URL by running `npm run build`.
+	-->
+	<title>Petya Maiko</title>
+	<style>
+		.preloader {
+			display: flex;
+			position: fixed;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 9999;
+			background: #111;
+			color: white;
+			transition: opacity 0.5s, transform 1s;
+		}
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+		.preloader-image {
+			width: 100px;
+			height: 100px;
+		}
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+		.preloader-progress {
+		}
+
+		.preloader-progress-bar {
+			width: 200px;
+			height: 3px;
+			margin-top: 4px;
+		}
+
+		.preloader-progress-bar-line {
+			background: white;
+			height: 100%;
+			width: 0;
+		}
+	</style>
+	<script>
+		var appLoaded = false
+		var $progress
+		var $progress_line
+		var $preloader
+		window.addEventListener('DOMContentLoaded', () => {
+			$preloader = document.getElementsByClassName('preloader')[0]
+			$progress = document.getElementsByClassName('preloader-progress')[0]
+			$progress_line = document.getElementsByClassName('preloader-progress-bar-line')[0]
+		})
+		var progress = 0
+		var current_progress = 0
+		var interval
+
+		var CURRENT_PROGRESS_MAX = 100
+		var TIME_INTERVAL = 10
+		var DELAY_BEFORE_HIDE = 500
+
+		var preloaderDoneEvent = createEvent('preloader:done')
+
+		document.documentElement.addEventListener('app:loaded', function () {
+			appLoaded = true
+			hidePreloader()
+
+			$preloader.addEventListener('transitionend', function () {
+				$preloader.style.display = 'none'
+				document.body.style.overflow = null
+				document.documentElement.dispatchEvent(preloaderDoneEvent)
+			})
+		})
+
+		document.documentElement.addEventListener('app:progress', function () {
+			var prev_progress = progress
+			progress += 25
+			renderProgress(progress, prev_progress)
+		})
+
+		function hidePreloader () {
+			if (appLoaded && current_progress >= CURRENT_PROGRESS_MAX) {
+				setTimeout(function () {
+					$preloader.style.opacity = 0
+					$preloader.style.transform = 'scale(3)'
+				}, DELAY_BEFORE_HIDE)
+			}
+		}
+
+		function renderProgress (value, prevValue) {
+			const handler = () => {
+				if ($progress && $progress_line && current_progress) {
+					$progress.innerHTML = current_progress + '%'
+					$progress_line.style.width = current_progress + '%'
+				}
+			}
+
+			clearInterval(interval)
+			current_progress = prevValue
+			handler()
+
+			interval = setInterval(() => {
+				current_progress++
+				if (current_progress <= value) {
+					handler()
+				} else {
+					clearTimeout(interval)
+				}
+
+				hidePreloader()
+			}, TIME_INTERVAL)
+		}
+		function createEvent (name) {
+			var event = document.createEvent('Event')
+			event.initEvent(name, false, false)
+			return event
+		}
+	</script>
+</head>
+<body style="overflow: hidden;">
+<div class="preloader">
+	<img
+		src="./logo192.png"
+		class="preloader-image"
+	>
+
+	<div class="preloader-progress">0%</div>
+	<div class="preloader-progress-bar">
+		<div class="preloader-progress-bar-line"></div>
+	</div>
+</div>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<!--
+	This HTML file is a template.
+	If you open it directly in the browser, you will see an empty page.
+
+	You can add webfonts, meta tags, or analytics to this file.
+	The build step will place the bundled scripts into the <body> tag.
+
+	To begin the development, run `npm start` or `yarn start`.
+	To create a production bundle, use `npm run build` or `yarn build`.
+-->
+</body>
 </html>

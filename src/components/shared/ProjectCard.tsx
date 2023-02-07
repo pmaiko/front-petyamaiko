@@ -2,9 +2,10 @@ import '../../assets/styles/shared/ProjectCard.scss'
 
 import api from '~/api'
 
-import { Link } from 'react-router-dom'
 import { IProject } from '~/types'
+
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import BaseImage from '~/components/base/BaseImage'
 import Like from '~/components/shared/Like'
@@ -16,10 +17,9 @@ import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
 import { ReactComponent as EditIcon } from '~/assets/svg/edit-icon.svg'
 
 import { useProjectLikes } from '~/hooks/project/useProjectLikes'
-import { useProjectView } from '~/hooks/project/useProjectView'
 
 import { useStoreState } from '~/store'
-import { useModal, names } from '~/providers/ModalProvider'
+import { useModal, ModalNames } from '~/providers/ModalProvider'
 
 interface Props extends IProject {
   updateProjectHandler?: (response: IProject) => void
@@ -32,24 +32,20 @@ const ProjectCard = (props: Props) => {
   const { show } = useModal()
   const showConfirmProjectDeleteModal = (data: any) => {
     show({
-      name: names.ConfirmProjectDeleteModal,
+      name: ModalNames.ConfirmProjectDeleteModal,
       props: data
     })
   }
 
   const showCreateProjectModal = (data: any) => {
     show({
-      name: names.CreateProjectModal,
+      name: ModalNames.CreateProjectModal,
       props: data
     })
   }
 
   const { likes, isLiked, onLikeToggle } = useProjectLikes({
     projectLikes: props.likes,
-    projectId: props.id
-  })
-
-  const { root } = useProjectView({
     projectId: props.id
   })
 
@@ -106,7 +102,6 @@ const ProjectCard = (props: Props) => {
       {isLoggedIn &&
         <div className='projects-card__controls'>
           <div
-            ref={root as React.RefObject<HTMLDivElement>}
             className='projects-card__remove'
             onClick={onDelete}
           >

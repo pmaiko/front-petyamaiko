@@ -38,7 +38,7 @@ const BaseImage = (props: Image) => {
     <div className={classes}>
       {!visibleByDefault &&
         <div className={`base-image__placeholder ${load ? 'base-image__placeholder_load' : ''}`}>
-          <img src='/logo512.png' alt=''/>
+          <img src='/logo192.png' alt=''/>
         </div>
       }
       <LazyLoadImage

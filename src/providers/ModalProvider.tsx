@@ -25,7 +25,7 @@ const reducer = <T extends { type: string, payload: IState }>(state: IState, act
 
 const ModalProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, {
-    name: '' as names,
+    name: '' as ModalNames,
     props: {}
   })
 
@@ -40,7 +40,7 @@ const ModalProvider = ({ children }: any) => {
     dispatch({
       type: 'HIDE_MODAL',
       payload: {
-        name: '' as names,
+        name: '' as ModalNames,
         props: {}
       }
     })
@@ -59,7 +59,7 @@ const ModalProvider = ({ children }: any) => {
 }
 
 interface IState {
-  name: names,
+  name: ModalNames,
   props?: object
 }
 
@@ -70,7 +70,7 @@ interface IProvider {
 }
 
 
-export enum names {
+export enum ModalNames {
   AuthModal = 'AuthModal',
   ConfirmLogoutModal = 'ConfirmLogoutModal',
   ConfirmProjectDeleteModal = 'ConfirmProjectDeleteModal',

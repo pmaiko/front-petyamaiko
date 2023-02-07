@@ -1,9 +1,11 @@
 import router from '~/plugins/router'
 
+import { createEvent } from '~/helpers/create-event'
 import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
-import { useStoreActions } from '~/store'
+import globalStore from '~/globalStore'
+import { useStoreActions, useStoreState } from '~/store'
 
 // @ts-ignore
 import { NotificationContainer } from 'react-notifications'
@@ -11,8 +13,20 @@ import { NotificationContainer } from 'react-notifications'
 import ModalProvider from '~/providers/ModalProvider'
 import BreakpointProvider from '~/providers/BreakpointProvider'
 
+const appLoadedEvent = createEvent('app:loaded')
+const appProgressEvent = createEvent('app:progress')
+
 const App = () => {
-  const { fetchAndSetGlobalData, checkToken, fetchUser } = useStoreActions()
+  const { loaded, loadedPage } = useStoreState(state => ({
+    loaded: state.global.loaded,
+    loadedPage: state.global.loadedPage
+  }))
+  const {
+    fetchAndSetGlobalData,
+    setLoaded,
+    checkToken,
+    fetchUser
+  } = useStoreActions()
 
   const init = async () : Promise<any> => {
     await checkToken()
@@ -24,8 +38,26 @@ const App = () => {
   }
 
   useEffect(() => {
-    init().then()
+    init().finally(() => {
+      setLoaded(true)
+      document.documentElement.dispatchEvent(appProgressEvent)
+    })
+
+    const setPreloaderDone = () => {
+      globalStore.commit('SET_PRELOADER_DONE', true)
+    }
+
+    document.documentElement.addEventListener('preloader:done', setPreloaderDone)
+    return () => {
+      document.documentElement.removeEventListener('preloader:done', setPreloaderDone)
+    }
   }, [])
+
+  useEffect(() => {
+    if (loaded && loadedPage) {
+      document.documentElement.dispatchEvent(appLoadedEvent)
+    }
+  }, [loaded, loadedPage])
 
   return (
     <>

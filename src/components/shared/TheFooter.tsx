@@ -13,9 +13,9 @@ const icons = {
   skype: SkypeIcon
 }
 const TheFooter = () => {
-  const socials = Object.entries(useStoreState(state => state.globalData.socials) || {})
-  const text = useStoreState(state => state.globalData.footer?.text) || ''
-  const copyright = useStoreState(state => state.globalData.footer?.copyright) || ''
+  const socials = Object.entries(useStoreState(state => state.global.globalData.socials) || {})
+  const text = useStoreState(state => state.global.globalData.footer?.text) || ''
+  const copyright = useStoreState(state => state.global.globalData.footer?.copyright) || ''
 
   const _socials = useMemo(() => {
     return socials.map(([key, value]) => {

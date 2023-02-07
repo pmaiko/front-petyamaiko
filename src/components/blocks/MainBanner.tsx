@@ -62,7 +62,7 @@ const MainBanner = ({ title, description, hint, image, button_label }: {
 
     figure.current?.addEventListener('inview', onInView)
     return () => {
-      // figure.current?.removeEventListener('inview', onInView)
+      figure.current?.removeEventListener('inview', onInView)
     }
   }, [])
 

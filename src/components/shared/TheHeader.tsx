@@ -5,18 +5,18 @@ import { ReactComponent as LogoutIcon } from '~/assets/svg/logout-icon.svg'
 
 import TheNav from '~/components/shared/TheNav'
 import { useStoreState } from '~/store'
-import { useModal, names } from '~/providers/ModalProvider'
+import { useModal, ModalNames } from '~/providers/ModalProvider'
 
 const TheHeader = () => {
   const { show } = useModal()
   const showAuthModal = () => {
     show({
-      name: names.AuthModal
+      name: ModalNames.AuthModal
     })
   }
   const showConfirmLogoutModal = () => {
     show({
-      name: names.ConfirmLogoutModal
+      name: ModalNames.ConfirmLogoutModal
     })
   }
 

@@ -6,7 +6,7 @@ import { useStoreState } from '~/store'
 import TheMenu from '~/components/shared/TheMenu'
 
 const TheNav = () => {
-  const logo = useStoreState(state => state.globalData.header?.menu.logo) || ''
+  const logo = useStoreState(state => state.global.globalData.header?.menu.logo) || ''
 
   return (
     <nav className='nav'>
