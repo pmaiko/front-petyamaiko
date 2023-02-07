@@ -1,7 +1,11 @@
 import { isElement } from 'lodash'
 import { createEvent } from '~/helpers/create-event'
 
-import globalStore from '~/globalStore'
+import { store } from '~/store'
+
+function preloaderDone (state: any = store.getState()) {
+  return state?.global?.preloaderDone
+}
 
 interface IEVENTS {
   INVIEW: string
@@ -44,14 +48,21 @@ export default class Observer {
 
     this.observe = (el: any) => {
       if (isElement(el)) {
-        if (!globalStore.state.preloaderDone) {
-          globalStore.watch('preloaderDone', (newValue) => {
-            if (newValue) {
+        let unsubscribe: any
+        if (!preloaderDone()) {
+          unsubscribe = store.subscribe(() => {
+            if (preloaderDone()) {
               observer.observe(el)
+              if (unsubscribe) {
+                unsubscribe()
+              }
             }
           })
         } else {
           observer.observe(el)
+          if (unsubscribe) {
+            unsubscribe()
+          }
         }
       } else {
         console.error(`Intersection Observer: ${el} is not DOM element!`)

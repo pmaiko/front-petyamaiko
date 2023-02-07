@@ -23,6 +23,7 @@ const App = () => {
   }))
   const {
     fetchAndSetGlobalData,
+    setPreloaderDone,
     setLoaded,
     checkToken,
     fetchUser
@@ -43,13 +44,13 @@ const App = () => {
       document.documentElement.dispatchEvent(appProgressEvent)
     })
 
-    const setPreloaderDone = () => {
-      globalStore.commit('SET_PRELOADER_DONE', true)
+    const onPreloaderDone = () => {
+      setPreloaderDone(true)
     }
 
-    document.documentElement.addEventListener('preloader:done', setPreloaderDone)
+    document.documentElement.addEventListener('preloader:done', onPreloaderDone)
     return () => {
-      document.documentElement.removeEventListener('preloader:done', setPreloaderDone)
+      document.documentElement.removeEventListener('preloader:done', onPreloaderDone)
     }
   }, [])
 
