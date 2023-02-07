@@ -3,17 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import thunk from 'redux-thunk'
 
 // modules
-import { globalReducers, actions as globalActions } from './global'
-import authReducers from './reducers/authReducers'
-import userReducers from './reducers/userReducers'
-import * as authActions from '~/store/actions/authActions'
-import * as userActions from '~/store/actions/userActions'
-
+import { reducer as globalReducer, actions as globalActions } from './global'
+import { reducer as authReducer, actions as authActions } from './auth'
+import { reducer as userReducer, actions as userActions } from './user'
 
 const rootReducer = combineReducers({
-  global: globalReducers,
-  auth: authReducers,
-  user: userReducers
+  global: globalReducer,
+  auth: authReducer,
+  user: userReducer
 })
 
 // types

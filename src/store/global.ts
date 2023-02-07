@@ -1,5 +1,5 @@
 import api from '~/api'
-import { IGlobalData, IReducerAction } from '~/types'
+import { IReducerAction, IGlobalData } from '~/types'
 
 // state
 interface IState {
@@ -25,8 +25,7 @@ enum MUTATIONS_TYPES {
   SET_LOADED_PAGE_DATA = 'SET_LOADED_PAGE_DATA'
 }
 
-// reducers
-export const globalReducers = <T extends IReducerAction<MUTATIONS_TYPES>>(_state = state, action: T): IState => {
+export const reducer = <T extends IReducerAction<MUTATIONS_TYPES>>(_state = state, action: T): IState => {
   if (action.type === MUTATIONS_TYPES.SET_GLOBAL_DATA) {
     return {
       ..._state,
