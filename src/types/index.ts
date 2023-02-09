@@ -87,6 +87,8 @@ export interface PageData {
 
 export const BLOCKS: any = {
   'block_main_banner': lazy(() => import('~/components/blocks/MainBanner')),
+  // tslint:disable-next-line:no-empty
+  // 'block_main_banner': lazy(() => new Promise(() => {})),
   'block_services': lazy(() => import('~/components/blocks/Services')),
   'block_projects': lazy(() => import('~/components/blocks/Projects')),
   'block_about': lazy(() => import('~/components/blocks/About')),

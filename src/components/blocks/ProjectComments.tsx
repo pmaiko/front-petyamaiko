@@ -1,17 +1,22 @@
 import '../../assets/styles/blocks/ProjectComments.scss'
 import { IProjectsComments } from '~/types'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
 
 import Comment from '~/components/shared/Comment'
 import CommentAdd from '~/components/shared/CommentAdd'
 
-const ProjectComments = ({ comments, project_id, updateComments } : {
+const ProjectComments = (props : {
   comments: IProjectsComments[],
   project_id: number,
   updateComments: (newComment: IProjectsComments) => void
 }) => {
+  const { comments, project_id, updateComments } = props
+
+  useComponentLoaded(props)
+
   return (
-    <div className='project-comments'>
-      <div className='container'>
+    <section className='project-comments base-section'>
+      <div className='container container_md'>
         <div className='project-comments__title h3'>
           Comments
         </div>
@@ -37,7 +42,7 @@ const ProjectComments = ({ comments, project_id, updateComments } : {
           />
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

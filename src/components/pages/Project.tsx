@@ -6,7 +6,10 @@ import api from '~/api'
 import { IProject, IProjectsComments } from '~/types'
 
 import { useMatches } from 'react-router-dom'
-import { lazy, useEffect, useState } from 'react'
+import { lazy, useEffect, useMemo, useState } from 'react'
+import { useAppLoaded } from '~/hooks/useAppLoaded'
+
+import Spinner from '~/components/shared/Spinner'
 
 const ProjectDetail = lazy(() => import('~/components/blocks/ProjectDetail'))
 const ProjectComments = lazy(() => import('~/components/blocks/ProjectComments'))
@@ -16,6 +19,19 @@ const Project = (props: any) => {
   const [project, setProject] = useState<Partial<IProject>>({})
   const [comments, setComments] = useState<Partial<IProjectsComments[]>>([])
 
+  const isLoading = useMemo(() => {
+    return (isEmpty(project))
+  }, [project])
+
+  const {
+    setLoadedPage,
+    dispatchAppProgressEvent,
+    SuspenseLoader
+  } = useAppLoaded()
+
+  const onLoaded = () => {
+    setLoadedPage(true)
+  }
   const updateComments = (newComment: IProjectsComments) => {
     setComments((prev) => [...prev, newComment])
   }
@@ -35,23 +51,37 @@ const Project = (props: any) => {
       }
     }
 
-    fetchProject()
-    fetchProjectsComments()
+    Promise.all(
+      [
+        fetchProject(),
+        fetchProjectsComments()
+      ]
+    ).finally(() => {
+      dispatchAppProgressEvent()
+    })
   }, [route.params.id])
 
   return (
     <>
-      {!isEmpty(project) && (project?.id || project?.id === 0) &&
+      {!isLoading &&
         <>
-          <ProjectDetail
-            {...project as IProject}
-          />
+          <SuspenseLoader onLoaded={onLoaded}>
+            <ProjectDetail
+              {...project as IProject}
+            />
 
-          <ProjectComments
-            comments={comments as IProjectsComments[]}
-            project_id={project.id}
-            updateComments={updateComments}
-          />
+            <ProjectComments
+              comments={comments as IProjectsComments[]}
+              project_id={project?.id || 0}
+              updateComments={updateComments}
+            />
+          </SuspenseLoader>
+        </>
+      }
+      {
+        isLoading &&
+        <>
+          <Spinner />
         </>
       }
     </>

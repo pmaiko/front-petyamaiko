@@ -11,6 +11,7 @@ import { useStoreState } from '~/store'
 
 import { useModal, ModalNames } from '~/providers/ModalProvider'
 import { useBreakpoint } from '~/providers/BreakpointProvider'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
 
 import gsap from '~/plugins/gsap'
 import BaseAnimation from '~/components/base/BaseAnimation'
@@ -20,9 +21,13 @@ import SuspenseLoader from '~/components/shared/SuspenseLoader'
 const ProjectCard = lazy(() => import('~/components/shared/ProjectCard'))
 
 
-const Projects = ({ title } : {
+const Projects = (props : {
   title: string
 }) => {
+  const { title } = props
+
+  useComponentLoaded(props)
+
   const root: any = useRef()
 
   const { show } = useModal()
@@ -177,7 +182,7 @@ const Projects = ({ title } : {
                 className='projects__list-item'
               >
                 <Suspense fallback={'...loading'}>
-                  <SuspenseLoader onLoad={onLoadProjectCard}>
+                  <SuspenseLoader onLoaded={onLoadProjectCard}>
                     <ProjectCard
                       id={project.id}
                       image={project.image}

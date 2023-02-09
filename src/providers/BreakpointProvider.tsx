@@ -11,7 +11,7 @@ const breakpoints = {
   xl: 1920
 }
 
-const BreakpointProvider = ({ children }: any) => {
+export const BreakpointProvider = ({ children }: any) => {
   const initialState: T_Breakpoints = {
     sm: false,
     md: false,
@@ -56,8 +56,6 @@ const BreakpointProvider = ({ children }: any) => {
   )
 }
 
-
-export default BreakpointProvider
 export const useBreakpoint = () => {
   return useContext<{breakpoints: T_Breakpoints}>(BreakpointContext)
 }

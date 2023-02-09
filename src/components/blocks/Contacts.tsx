@@ -1,11 +1,12 @@
 import '~/assets/styles/blocks/Contacts.scss'
 
+import { useRef } from 'react'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
+
 import BaseAnimation from '~/components/base/BaseAnimation'
 import BaseImage from '~/components/base/BaseImage'
 
-import { useRef } from 'react'
-
-const Contacts = ({ title, list }: {
+const Contacts = (props: {
   title: string,
   list: [
     {
@@ -15,6 +16,10 @@ const Contacts = ({ title, list }: {
     }
   ]
 }) => {
+  const { title, list } = props
+
+  useComponentLoaded(props)
+
   const root: any = useRef()
 
   return (

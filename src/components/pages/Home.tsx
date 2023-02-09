@@ -1,76 +1,52 @@
 // types
 import { PageData, BLOCKS } from '~/types'
 
-import api from '~/api'
-
-import { createEvent } from '~/helpers/create-event'
-import { Suspense, createElement, useEffect, useState, useMemo } from 'react'
-import { useStoreActions } from '~/store'
-
-import SuspenseLoader from '~/components/shared/SuspenseLoader'
-
-const appProgressEvent = createEvent('app:progress')
+import { createElement, useEffect, useState, useMemo } from 'react'
+import { useAppLoaded } from '~/hooks/useAppLoaded'
+import { useLoaderData } from 'react-router-dom'
 
 const Home = () => {
-  const [blocks, blocksSet] = useState<any>([])
-  const [blocksLoadedCount, blocksLoadedCountSet] = useState(0)
-  const [isLoadedPageData, isLoadedPageDataSet] = useState(false)
+  const [blocksLoadedCount, setBlocksLoadedCount] = useState(0)
+  const [isLoadedPageData, setIsLoadedPageData] = useState(false)
 
-  const { setLoadedPage } = useStoreActions()
+  const {
+    setLoadedPage,
+    dispatchAppProgressEvent,
+    SuspenseLoader
+  } = useAppLoaded()
 
-  const getPageData = async () => {
-    const pageData:PageData = await api.fetchPageData('/home')
-    blocksSet(pageData.blocks)
-  }
+  const { blocks } = useLoaderData() as PageData
 
-  const blocksFiltered = useMemo(() => {
+  const existingBlocks = useMemo(() => {
     return blocks.filter((block: any, index: any) => BLOCKS[block.name])
   }, [blocks])
 
-  const blocksFilteredLength = useMemo(() => {
-    return blocksFiltered.length
-  }, [blocksFiltered])
-
-  const isLoadedAllBlocks = useMemo(() => {
-    return blocksLoadedCount >= blocksFilteredLength
-  }, [blocksFilteredLength, blocksLoadedCount])
-
   useEffect(() => {
-    getPageData().finally(() => {
-      isLoadedPageDataSet(true)
-      document.documentElement.dispatchEvent(appProgressEvent)
-    })
+    setIsLoadedPageData(true)
+    dispatchAppProgressEvent()
   }, [])
 
   useEffect(() => {
-    if (isLoadedAllBlocks) {
-      document.documentElement.dispatchEvent(appProgressEvent)
-    }
-  }, [isLoadedAllBlocks])
-
-  useEffect(() => {
+    const isLoadedAllBlocks = blocksLoadedCount >= existingBlocks.length
     if (isLoadedPageData && isLoadedAllBlocks) {
       setLoadedPage(true)
     }
-  }, [isLoadedPageData, isLoadedAllBlocks])
+  }, [isLoadedPageData, blocksLoadedCount])
 
   return (
     <>
       {blocks.map((block: any, index: any) : JSX.Element => {
         const component = BLOCKS[block.name]
         if (component) {
-          return createElement(Suspense, {
+          return createElement(SuspenseLoader, {
             key: index,
-            children: createElement(SuspenseLoader, {
-              children: createElement(component, {
-                ...block.attributes
-              }),
-
-              onLoad: () => {
-                blocksLoadedCountSet((prev) => {
-                  return prev + 1
-                })
-              }
+            onLoaded: () => {
+              setBlocksLoadedCount((prev) => {
+                return prev + 1
+              })
+            },
+            children: createElement(component, {
+              ...block.attributes
             })
           })
         }

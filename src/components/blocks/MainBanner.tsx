@@ -10,14 +10,19 @@ import gsap from 'gsap'
 import Observer from '~/plugins/observer'
 
 import { useEffect, useRef } from 'react'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
 
-const MainBanner = ({ title, description, hint, image, button_label }: {
+const MainBanner = (props: {
   title: string,
   description: string,
   hint: string,
   image: string,
   button_label: string
 }) => {
+  const { title, description, hint, image, button_label } = props
+
+  useComponentLoaded(props)
+
   const figure: any = useRef()
   const text: any = useRef()
 

@@ -23,7 +23,7 @@ const reducer = <T extends { type: string, payload: IState }>(state: IState, act
   return state
 }
 
-const ModalProvider = ({ children }: any) => {
+export const ModalProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, {
     name: '' as ModalNames,
     props: {}
@@ -77,8 +77,6 @@ export enum ModalNames {
   CreateProjectModal = 'CreateProjectModal'
 }
 
-
-export default ModalProvider
 export const useModal = () => {
   return useContext(ModalContext)
 }

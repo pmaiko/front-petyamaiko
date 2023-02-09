@@ -113,8 +113,7 @@ module.exports = function (webpackEnv) {
     const loaders = [
       // isEnvDevelopment && require.resolve('style-loader'),
       require.resolve('style-loader'),
-      // isEnvProduction &&
-      !critical &&
+      isEnvProduction && !critical &&
       {
         loader: MiniCssExtractPlugin.loader,
         // css is located in `static/css`, use '../../' to locate index.html folder
@@ -678,7 +677,7 @@ module.exports = function (webpackEnv) {
       // a plugin that prints an error when you attempt to do this.
       // See https://github.com/facebook/create-react-app/issues/240
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
-      // isEnvProduction &&
+      isEnvProduction &&
       new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional

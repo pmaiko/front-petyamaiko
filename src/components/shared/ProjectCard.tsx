@@ -7,10 +7,6 @@ import { IProject } from '~/types'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import BaseImage from '~/components/base/BaseImage'
-import Like from '~/components/shared/Like'
-import View from '~/components/shared/View'
-
 import NotificationManager from '~/plugins/notification'
 
 import { ReactComponent as TrashIcon } from '~/assets/svg/trash-icon.svg'
@@ -20,6 +16,11 @@ import { useProjectLikes } from '~/hooks/project/useProjectLikes'
 
 import { useStoreState } from '~/store'
 import { useModal, ModalNames } from '~/providers/ModalProvider'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
+
+import BaseImage from '~/components/base/BaseImage'
+import Like from '~/components/shared/Like'
+import View from '~/components/shared/View'
 
 interface Props extends IProject {
   updateProjectHandler?: (response: IProject) => void
@@ -27,6 +28,8 @@ interface Props extends IProject {
 }
 
 const ProjectCard = (props: Props) => {
+  useComponentLoaded(props)
+
   const isLoggedIn = useStoreState(state => state.auth.isLoggedIn)
 
   const { show } = useModal()

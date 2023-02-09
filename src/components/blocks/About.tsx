@@ -1,11 +1,13 @@
 import '~/assets/styles/blocks/About.scss'
 
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
+import { replaceUrl } from '~/helpers/replace-url'
+
 import BaseAnimation from '~/components/base/BaseAnimation'
 import BaseImage from '~/components/base/BaseImage'
 import BaseButton from '~/components/base/BaseButton'
-import { replaceUrl } from '~/helpers/replace-url'
 
-const About = ({ title, label, description, image, buttonText, buttonLink }: {
+const About = (props: {
   title: string,
   label: string,
   description: string,
@@ -13,6 +15,10 @@ const About = ({ title, label, description, image, buttonText, buttonLink }: {
   buttonText: string,
   buttonLink: string
 }) => {
+  const { title, label, description, image, buttonText, buttonLink } = props
+
+  useComponentLoaded(props)
+
   return (
     <section className='about base-section'>
       <div className='container'>

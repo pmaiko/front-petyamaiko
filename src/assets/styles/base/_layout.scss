@@ -12,6 +12,10 @@
     width: map-get($container-max-widths, sm);
     max-width: 414px;
   }
+
+  &_md {
+    width: 1000px;
+  }
 }
 
 html,

@@ -7,7 +7,7 @@
 	<meta name="theme-color" content="#000000"/>
 	<meta
 		name="description"
-		content="Web site created using create-react-app"
+		content="Petya Maiko site!!!"
 	/>
 	<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
 	<!--
@@ -84,6 +84,7 @@
 
 		document.documentElement.addEventListener('app:loaded', function () {
 			appLoaded = true
+			renderProgress(CURRENT_PROGRESS_MAX, current_progress)
 			hidePreloader()
 
 			$preloader.addEventListener('transitionend', function () {
@@ -96,6 +97,9 @@
 		document.documentElement.addEventListener('app:progress', function () {
 			var prev_progress = progress
 			progress += 25
+			if (progress > CURRENT_PROGRESS_MAX) {
+				progress = CURRENT_PROGRESS_MAX
+			}
 			renderProgress(progress, prev_progress)
 		})
 
@@ -141,7 +145,7 @@
 <body style="overflow: hidden;">
 <div class="preloader">
 	<img
-		src="./logo192.png"
+		src="/logo192.png"
 		class="preloader-image"
 	>
 

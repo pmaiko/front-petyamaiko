@@ -5,8 +5,9 @@ import BaseImage from '~/components/base/BaseImage'
 
 import gsap from '~/plugins/gsap'
 import { useEffect, useRef } from 'react'
+import { useComponentLoaded } from '~/hooks/useComponentLoaded'
 
-const Services = ({ title, list }: {
+const Services = (props: {
   title: string,
   list: [{
     image: string,
@@ -14,6 +15,9 @@ const Services = ({ title, list }: {
     description: string
   }]
 }) => {
+  const { title, list } = props
+  useComponentLoaded(props)
+
   const root: any = useRef()
   useEffect(() => {
     const images = root.current?.getElementsByClassName('services-card__image')
