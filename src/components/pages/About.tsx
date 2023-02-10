@@ -1,6 +1,7 @@
 import '~/assets/styles/pages/About.scss'
-import { useAppLoaded } from '~/hooks/useAppLoaded'
+
 import { useEffect } from 'react'
+import { useAppLoaded } from '~/hooks/useAppLoaded'
 
 const About = () => {
   const { setLoadedPage } = useAppLoaded()

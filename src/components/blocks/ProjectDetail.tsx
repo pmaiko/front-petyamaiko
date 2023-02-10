@@ -33,7 +33,7 @@ const ProjectDetail = (props: IProject) => {
   return (
     <section
       ref={root as React.RefObject<HTMLDivElement>}
-      className='project-detail'
+      className='project-detail pt-32'
     >
       <div className='container container_md'>
         <div className='project-detail__created description'>

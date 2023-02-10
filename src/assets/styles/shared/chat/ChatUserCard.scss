@@ -1,0 +1,32 @@
+.chat-user-card {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+
+  &__image {
+	position: relative;
+	margin-right: 10px;
+	overflow: hidden;
+
+	&::before {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 10px;
+	  height: 10px;
+	  content: '';
+	  background-color: green;
+	  border-radius: 100%;
+	}
+
+	&,
+	&-icon {
+	  width: 40px;
+	  height: 40px;
+	}
+
+	div {
+	  opacity: 0.5;
+	}
+  }
+}

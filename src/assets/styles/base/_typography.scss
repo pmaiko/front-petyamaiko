@@ -90,3 +90,7 @@ p,
     text-decoration: underline;
   }
 }
+
+.small {
+  @include small;
+}
