@@ -1,3 +1,25 @@
 .chat {
-  //
+  min-height: calc(100vh - #{$header-height}px);
+
+  &__wrapper {
+	height: 100%;
+
+	@include respDown(sm) {
+	  margin: 0 -15px;
+	}
+  }
+
+  &__holder {
+	position: relative;
+	display: flex;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 4px;
+  }
+
+  &__empty {
+	@include respDown(sm) {
+	  display: none;
+	}
+  }
 }

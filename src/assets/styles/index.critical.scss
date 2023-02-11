@@ -110,6 +110,10 @@
   padding: 32px 0;
 }
 
+.mt-32 {
+  margin: 32px 0;
+}
+
 .h-100 {
   height: 100%;
 }
@@ -129,13 +133,41 @@
   margin-right: 8px;
 }
 
+.ml-8 {
+  margin-left: 8px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .icon {
   display: block;
+  flex-shrink: 0;
   width: 30px;
   height: 30px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+
+  &_w-20 {
+    width: 20px;
+    height: 20px;
+  }
+
+  &_w-25 {
+    width: 25px;
+    height: 25px;
+  }
+
+  &_w-40 {
+    width: 40px;
+    height: 40px;
+  }
+
+  &_opacity-5 {
+    opacity: 0.5;
+  }
 
   &_address-book {
     background-image: url("../svg/address-book.svg");
@@ -144,4 +176,44 @@
   &_user-alt-6 {
     background-image: url("../svg/user-alt-6.svg");
   }
+
+  &_arrow-left {
+    background-image: url("../svg/arrow-left.svg");
+  }
+
+  &_ui-call {
+    background-image: url("../svg/ui-call.svg");
+  }
+
+  &_send-mail {
+    background-image: url("../svg/send-mail.svg");
+  }
+
+  &_nerd-smile {
+    background-image: url("../svg/nerd-smile.svg");
+  }
+
+  &_notification {
+    background-image: url("../svg/notification.svg");
+  }
+}
+
+.shadow-up {
+  box-shadow: 0 -2px 20px black;
+}
+
+.shadow-down {
+  box-shadow: 0 2px 20px black;
+}
+
+.shadow-right {
+  box-shadow: 2px 0 20px black;
+}
+
+.shadow-left {
+  box-shadow: -2px 0 20px black;
+}
+
+textarea {
+  font-family: $f-main;
 }

@@ -1,3 +1,102 @@
 .chat-main {
-  //
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s;
+
+  @include respDown(sm) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transform: translateX(100%);
+  }
+
+  &_active {
+	transform: translateX(0);
+  }
+
+  $padding: 15px;
+
+  &-panel {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	padding: $padding;
+	background-color: $c-darkness;
+
+	&__back {
+	  margin-right: 25px;
+	}
+
+	&__call {
+	  margin-left: auto;
+	}
+  }
+
+  &-chat {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	background-image: url("~/src/assets/images/messages.jpg");
+
+	&__messages {
+	  flex: 1;
+	  min-height: 300px;
+	  padding: $padding;
+
+	  &-item {
+		&:not(:last-child) {
+		  margin-bottom: 20px;
+		}
+	  }
+	}
+
+	&__message {
+	  display: inline-block;
+	  padding: 10px 12px;
+	  font-size: 0.9rem;
+	  background-color: $c-sidebar;
+	  border-radius: 12px;
+
+	  &_primary {
+		background-color: $c-message-primary;
+	  }
+
+	  &-text {
+		word-break: break-all;
+	  }
+	}
+
+	&__field {
+	  position: relative;
+	  display: flex;
+	  flex-shrink: 0;
+	  width: 100%;
+	  height: 100px;
+	  background-color: $c-darkness;
+	}
+
+	&__input {
+	  flex: 1;
+	  height: 100%;
+	  padding: $padding;
+	  font-size: 1rem;
+	  color: $c-text;
+	  resize: none;
+	  background-color: transparent;
+	  border: none;
+	  outline: none;
+	}
+
+	&__actions {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  justify-content: space-between;
+	  padding: $padding;
+	}
+  }
 }

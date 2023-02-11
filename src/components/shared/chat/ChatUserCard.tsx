@@ -1,12 +1,22 @@
 import '~/assets/styles/shared/chat/ChatUserCard.scss'
+import { TUser } from '~/providers/SocketProvider'
 
-const ChatUserCard = ({ socketId, name, date }: {
-  socketId: string,
-  name: string,
-  date?: string
-}) => {
+interface IProps extends TUser {
+  onUserCardClick: T_onUserCardClick
+}
+
+const ChatUserCard = ({ socketId, name, date, onUserCardClick }: IProps) => {
+  const _onUserCardClick = () => {
+    onUserCardClick({
+      socketId,
+      name
+    })
+  }
   return (
-    <div className='chat-user-card'>
+    <div
+      className='chat-user-card'
+      onClick={_onUserCardClick}
+    >
       <div className='chat-user-card__image'>
         <div className='chat-user-card__image-icon icon icon_user-alt-6' />
       </div>
@@ -22,3 +32,4 @@ const ChatUserCard = ({ socketId, name, date }: {
   )
 }
 export default ChatUserCard
+export type T_onUserCardClick = (data: TUser) => void
