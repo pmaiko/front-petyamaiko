@@ -1,20 +1,25 @@
 import '~/assets/styles/shared/chat/ChatUserCard.scss'
 import { TUser } from '~/providers/SocketProvider'
+import { convertTimestamp } from '~/helpers/convert-timestamp'
+import { useMemo } from 'react'
 
 interface IProps extends TUser {
   isActive: boolean
   onUserCardClick: T_onUserCardClick
 }
 
-const isTyping = true
-
-const ChatUserCard = ({ socketId, name, date, isActive, onUserCardClick }: IProps) => {
+const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCardClick }: IProps) => {
   const _onUserCardClick = () => {
     onUserCardClick({
       socketId,
       name
     })
   }
+
+  const date = useMemo(() => {
+    return convertTimestamp(timestamp)
+  }, [timestamp])
+
   return (
     <div
       className={`chat-user-card ${isActive ? 'chat-user-card_active' : ''}`}
@@ -29,7 +34,7 @@ const ChatUserCard = ({ socketId, name, date, isActive, onUserCardClick }: IProp
             { name }
           </p>
           <div className='chat-user-card__date small'>
-            09.36 PM
+            {date} PM
           </div>
         </div>
         <div className='chat-user-card__body'>

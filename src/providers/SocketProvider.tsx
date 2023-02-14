@@ -5,6 +5,8 @@ import io from 'socket.io-client'
 const SocketContext = createContext({} as TData)
 let socket: TSocket = {} as TSocket
 
+let typingTimer: any
+
 export const SocketProvider = ({ children }: any) => {
   const [state, setState] = useState({
     users: [] as Partial<[TUser]>,
@@ -25,7 +27,7 @@ export const SocketProvider = ({ children }: any) => {
       }))
     })
 
-    socket.on('update:users', (_users) => {
+    socket.on('users:update', (_users) => {
       setState((prev) => ({
         ...cloneDeep(prev),
         users: _users || []
@@ -57,6 +59,33 @@ export const SocketProvider = ({ children }: any) => {
       })
     })
 
+    socket.on('notification:typing', ({ from }: {from: string}) => {
+      const handler = (isTyping: boolean) => {
+        setState((prev) => {
+          const newUsers = cloneDeep(prev.users) || []
+
+          const _users = newUsers.map(user => {
+            if (user?.socketId === from) {
+              user.isTyping = isTyping
+            }
+            return user
+          })
+
+          return {
+            ...cloneDeep(prev),
+            users: _users as [TUser] || []
+          }
+        })
+      }
+      if (from) {
+        clearTimeout(typingTimer)
+        handler(true)
+        typingTimer = setTimeout(() => {
+          handler(false)
+        }, 2000)
+      }
+    })
+
     return () => {
       socket.disconnect()
     }
@@ -64,7 +93,7 @@ export const SocketProvider = ({ children }: any) => {
 
   const addNewUser = (name: string) => {
     return new Promise((resolve: any, reject: any) => {
-      socket.emit('add_new:user', { name }, (data: ISocketAfterEmit<[IPrivateMessage]>) => {
+      socket.emit('user:add_new', { name }, (data: ISocketAfterEmit<[IPrivateMessage]>) => {
         if (data.status !== 'error') {
           setState((prev) => ({
             ...cloneDeep(prev),
@@ -76,6 +105,12 @@ export const SocketProvider = ({ children }: any) => {
           reject('User name error')
         }
       })
+    })
+  }
+
+  const onTyping = (to: string) => {
+    socket.emit('notification:typing', {
+      to
     })
   }
 
@@ -114,7 +149,8 @@ export const SocketProvider = ({ children }: any) => {
       ...state,
       addNewUser,
       sendPrivateMessage,
-      getPrivateMessages
+      getPrivateMessages,
+      onTyping
     } as TData}>
       { children }
     </SocketContext.Provider>
@@ -134,12 +170,14 @@ type TData = {
   addNewUser: (name: string) => void | Promise<ISocketAfterEmit<[TUser]>>
   sendPrivateMessage: (data: TSendPrivateMessageData) => Promise<ISocketAfterEmit<[IPrivateMessage]>>
   getPrivateMessages: (data: { from: string, to: string }) => void | Promise<ISocketAfterEmit<[IPrivateMessage]>>
+  onTyping: (to: string) => void
 }
 
 export type TUser = {
   socketId: string,
   name: string,
-  date?: string
+  timestamp?: number,
+  isTyping?: boolean
 }
 
 export type TSendPrivateMessageData = {
@@ -160,5 +198,6 @@ export interface IPrivateMessages {
 export interface IPrivateMessage {
   from: string,
   to: string,
-  message: string
+  message: string,
+  timestamp?: number
 }

@@ -77,6 +77,12 @@ $padding-sm: 1rem;
 	  &-name {
 		word-break: break-word;
 	  }
+
+	  &-status {
+		&-typing {
+		  color: $c-chat-secondary;
+		}
+	  }
 	}
 
 	&__actions {

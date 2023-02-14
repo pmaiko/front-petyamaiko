@@ -42,6 +42,15 @@ const Chat = (props: any) => {
     return !!users.find(user => user.socketId === privateChatData.socketId)
   }, [users, privateChatData])
 
+  useEffect(() => {
+    if (users.length && privateChatData.socketId) {
+      const user = users.find(item => item.socketId === privateChatData.socketId)
+      if (user) {
+        setPrivateChatData(user)
+      }
+    }
+  }, [users])
+
   const openPrivateChat = (data: TUser) => {
     getPrivateMessages({
       from: mySocketId,

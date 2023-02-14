@@ -1,5 +1,5 @@
 import '~/assets/styles/shared/chat/ChatMain.scss'
-import { TUser, IPrivateMessages, IPrivateMessage } from '~/providers/SocketProvider'
+import { TUser, IPrivateMessages, IPrivateMessage, useSocket } from '~/providers/SocketProvider'
 import React, { useMemo, useState } from 'react'
 import ChatMessage from '~/components/shared/chat/ChatMessage'
 
@@ -10,18 +10,19 @@ const createHash = (value1: string, value2: string) => {
   }
 }
 
-interface TProps {
+interface TProps extends TUser {
   activeChatMain: boolean
   onHide: () => void
   users: [TUser]
   mySocketId: string
-  socketId: string
-  name: string
   privateMessages: IPrivateMessages
   onSendMessage: (message: string) => void
 }
 
-const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, privateMessages, onSendMessage }: TProps) => {
+const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, isTyping, privateMessages, onSendMessage }: TProps) => {
+  const {
+    onTyping
+  } = useSocket()
   const [message, setMessage] = useState('')
 
   const hash: string = useMemo<any>(() => {
@@ -29,6 +30,7 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
   }, [socketId])
 
   const onMessageChange = (event: React.ChangeEvent<any>) => {
+    onTyping(socketId)
     setMessage(_ => event.target.value || '')
   }
 
@@ -57,7 +59,7 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
               {name}
             </p>
             <p className='chat-main-panel__recipient-status small'>
-              Online
+              {isTyping ? <span className='chat-main-panel__recipient-status-typing'>...typing</span> : 'Online'}
             </p>
           </div>
         </div>
