@@ -48,7 +48,7 @@
 
 @mixin p {
   font-size: 0.875rem;
-  line-height: 160%;
+  line-height: 140%;
 
   @include respDown(md) {
     font-size: 0.775rem;

@@ -27,10 +27,6 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
     return createHash(mySocketId, socketId)
   }, [socketId])
 
-  const isActiveUser = useMemo(() => {
-    return !!users.find(user => user.socketId === socketId)
-  }, [users])
-
   const onMessageChange = (event: React.ChangeEvent<any>) => {
     setMessage(_ => event.target.value || '')
   }
@@ -44,21 +40,40 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
   }
   return (
     <div className={`chat-main ${activeChatMain ? 'chat-main_active' : ''}`}>
-      {isActiveUser ?
-        <>
-          <div className='chat-main-panel shadow-down'>
-            <button
-              className='chat-main-panel__back icon icon_arrow-left icon_opacity-5 cursor-pointer'
-              onClick={onHide}
-            />
-            <div className='chat-main-panel__name h4'>
-              Send message: <span className='bold'>{name}</span>
-            </div>
-            <div className='chat-main-panel__call icon icon_ui-call icon_opacity-5 icon_w-25 cursor-pointer' />
+      <div className='chat-main-panel shadow-down'>
+        <button
+          className='chat-main-panel__back'
+          onClick={onHide}
+        >
+          <i className='fa-solid fa-chevron-left' />
+        </button>
+        <div className='chat-main-panel__recipient'>
+          <div className='chat-main-panel__recipient-image'>
+            <i className='fa-solid fa-circle-user' />
           </div>
-          <div className='chat-main-chat'>
-            <ul className='chat-main-chat__messages'>
-              {privateMessages[hash]?.map((item: IPrivateMessage, index: number) => (
+          <div className='chat-main-panel__recipient-info'>
+            <p className='chat-main-panel__recipient-name bold'>
+              {name}
+            </p>
+            <p className='chat-main-panel__recipient-status small'>
+              Online
+            </p>
+          </div>
+        </div>
+        <div className='chat-main-panel__actions'>
+          <button>
+            <i className='fa-solid fa-phone' />
+          </button>
+          <button>
+            <i className='fa-solid fa-video' />
+          </button>
+        </div>
+      </div>
+      <div className='chat-main-chat'>
+        <ul className='chat-main-chat__messages'>
+          {
+            privateMessages[hash]?.length ?
+              privateMessages[hash]?.reverse().map((item: IPrivateMessage, index: number) => (
                 <li
                   key={index}
                   className='chat-main-chat__messages-item'
@@ -71,24 +86,31 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
                     </div>
                   </div>
                 </li>
-              ))}
-            </ul>
-            <div className='chat-main-chat__field shadow-up'>
-              <textarea
-                value={message}
-                placeholder='Your message here! Sey Hello!'
-                className='chat-main-chat__input'
-                onKeyDown={_onSendMessage}
-                onChange={onMessageChange}
-              />
-              <div className='chat-main-chat__actions'>
-                <button className='chat-main-panel__send icon icon_nerd-smile icon_opacity-5 icon_w-20 cursor-pointer' />
-                <button className='chat-main-panel__send icon icon_send-mail icon_w-40 cursor-pointer' />
-              </div>
-            </div>
+              ))
+              :
+                <li className='chat-main-chat__messages-empty'>
+                  There is nothing here yet...
+                </li>
+          }
+        </ul>
+        <div className='chat-main-chat__new-message shadow-up'>
+          <div className='chat-main-chat__field'>
+            <button className='chat-main-chat__field-button chat-main-chat__field-button_smile'>
+              <i className='fa-regular fa-face-smile' />
+            </button>
+            <textarea
+              value={message}
+              placeholder='Your messages...'
+              className='chat-main-chat__field-input'
+              onKeyDown={_onSendMessage}
+              onChange={onMessageChange}
+            />
+            <button className='chat-main-chat__field-button chat-main-chat__field-button_send'>
+              <i className='fa-solid fa-paper-plane' />
+            </button>
           </div>
-        </> : <div>{name} leave!</div>
-      }
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import '~/assets/styles/pages/Chat.scss'
+import '~/assets/libs/fontawesome-free-6.3.0-web/css/all.css'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useAppLoaded } from '~/hooks/useAppLoaded'
 
 import { useSocket, TUser } from '~/providers/SocketProvider'
@@ -16,18 +17,12 @@ const Chat = (props: any) => {
   }, [])
 
   const {
-    socket,
     mySocketId,
     users,
     privateMessages,
     sendPrivateMessage,
     getPrivateMessages
   } = useSocket()
-  useEffect(() => {
-    return () => {
-      socket.disconnect()
-    }
-  }, [])
 
   const [state, setState] = useState({
     isAddNewUser: false
@@ -43,13 +38,20 @@ const Chat = (props: any) => {
   const [privateChatData, setPrivateChatData] = useState<TUser>({} as TUser)
   const [activeChatMain, setActiveChatMain] = useState(false)
 
+  const hasUser = useMemo(() => {
+    return !!users.find(user => user.socketId === privateChatData.socketId)
+  }, [users, privateChatData])
+
   const openPrivateChat = (data: TUser) => {
     getPrivateMessages({
       from: mySocketId,
       to: data.socketId
     })
     setPrivateChatData(_ => data)
-    setActiveChatMain(true)
+
+    setTimeout(() => {
+      setActiveChatMain(true)
+    })
   }
 
   const privateChatSendMessage = async (message: string) => {
@@ -63,37 +65,54 @@ const Chat = (props: any) => {
 
   const onHideChatMain = () => {
     setActiveChatMain(false)
+
+    setTimeout(() => {
+      setPrivateChatData({} as TUser)
+    }, 300)
   }
 
   return (
-    <div className='chat h-100'>
-      <div className='container h-100'>
+    <div className='chat'>
+      <div className='chat__container'>
         {
           !state.isAddNewUser &&
           <ChatStartForm onSuccess={onAddNewUser} />
         }
         {
           (state.isAddNewUser && users.length) ?
-          <div className='chat__wrapper pt-32'>
-            <div className='chat__holder'>
-              <ChatSidebar
-                mySocketId={mySocketId}
-                onUserCardClick={openPrivateChat}
-              />
-              {
-                privateChatData.socketId ?
-                <ChatMain
-                  activeChatMain={activeChatMain}
-                  onHide={onHideChatMain}
-                  {...privateChatData}
-                  users={users}
+            <div className='chat__wrapper pt-32'>
+              <div className='chat__holder'>
+                <ChatSidebar
                   mySocketId={mySocketId}
-                  privateMessages={privateMessages}
-                  onSendMessage={privateChatSendMessage}
-                /> : <div className='chat__empty h4 bold!'>Choose your interlocutor!</div>
-              }
-            </div>
-          </div> : <div className='pt-32'>Error refresh page!</div>
+                  privateChatData={privateChatData}
+                  onUserCardClick={openPrivateChat}
+                />
+                {
+                  privateChatData.socketId && hasUser ?
+                    <ChatMain
+                      activeChatMain={activeChatMain}
+                      onHide={onHideChatMain}
+                      {...privateChatData}
+                      users={users}
+                      mySocketId={mySocketId}
+                      privateMessages={privateMessages}
+                      onSendMessage={privateChatSendMessage}
+                    />
+                  : !privateChatData.socketId ?
+                    <div className='chat__empty'>
+                      <div className='chat__empty-text h4 bold!'>
+                        Select who you would like to write to!
+                      </div>
+                    </div>
+                  : !hasUser &&
+                    <div className='chat__empty'>
+                      <div className='chat__empty-text h4 bold!'>
+                        The user "{privateChatData.name}" left the chat!
+                      </div>
+                    </div>
+                }
+              </div>
+            </div> : state.isAddNewUser && <div className='pt-32'>Error refresh page!</div>
         }
       </div>
     </div>

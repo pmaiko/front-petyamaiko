@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 
 import Default from '~/components/layout/default'
+import Empty from '~/components/layout/empty'
 import Spinner from '~/components/shared/Spinner'
 import Error from '~/components/pages/Error'
 import { SocketProvider } from '~/providers/SocketProvider'
@@ -44,9 +45,17 @@ const router = createBrowserRouter([
           <Suspense fallback={<Spinner />}>
             <Project />
           </Suspense>
-      },
+      }
+    ]
+  },
+  {
+
+    path: '/chat',
+    element: <Empty />,
+    errorElement: <Error />,
+    children: [
       {
-        path: '/chat',
+        index: true,
         element:
           <Suspense fallback={<Spinner />}>
             <SocketProvider>

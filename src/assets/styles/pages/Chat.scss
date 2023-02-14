@@ -1,12 +1,14 @@
 .chat {
-  min-height: calc(100vh - #{$header-height}px);
+  height: 100%;
+  overflow: hidden;
+  //min-height: calc(100vh - #{$header-height}px);
+
+  &__container {
+	height: 100%;
+  }
 
   &__wrapper {
 	height: 100%;
-
-	@include respDown(sm) {
-	  margin: 0 -15px;
-	}
   }
 
   &__holder {
@@ -18,8 +20,27 @@
   }
 
   &__empty {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+
 	@include respDown(sm) {
 	  display: none;
 	}
   }
+}
+
+.badge {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.188rem;
+  min-height: 1.188rem;
+  padding: 0.3rem;
+  font-size: 0.5rem;
+  background-color: $c-chat-secondary;
+  border-radius: 100%;
 }

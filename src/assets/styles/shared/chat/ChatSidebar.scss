@@ -1,29 +1,78 @@
+$padding: 1rem;
+
 .chat-sidebar {
-  width: 275px;
-  padding: 15px;
-  background-color: $c-sidebar;
+  display: flex;
+  flex-direction: column;
+  width: 375px;
+  height: 100%;
+  padding: $padding;
+  background-color: $c-chat-sidebar;
 
   @include respDown(sm) {
     width: 100%;
   }
 
-  &__profile {
+  &__head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 24px;
-    margin-bottom: 48px;
+    margin-bottom: 2rem;
 
-    &-name {
-      word-break: break-word;
-
-      span {
-        //
-      }
+    &-title {
+      display: block;
+      margin-right: 0.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: -0.1rem;
     }
   }
 
   &__users {
-	margin-top: 24px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 1px;
+
+    &-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      color: $c-chat-gray;
+
+      &-icon {
+        font-size: 0.8rem;
+      }
+    }
+
+    &-list {
+      flex: 1;
+      padding: 0 1rem;
+      margin: 0 -1rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      &-item {
+        &:not(:last-child) {
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+
+    &-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem;
+      margin: auto;
+
+      &-icon {
+        font-size: 2rem;
+      }
+
+      &-text {
+        margin-top: 1rem;
+        text-align: center;
+      }
+    }
   }
 }

@@ -33,7 +33,14 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-top: #{$header-height}px;
+
+  &_default {
+    padding-top: #{$header-height}px;
+  }
+
+  &_empty {
+    //
+  }
 }
 
 .page-content {

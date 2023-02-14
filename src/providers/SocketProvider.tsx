@@ -3,7 +3,7 @@ import { useState, createContext, useContext, useEffect } from 'react'
 import io from 'socket.io-client'
 
 const SocketContext = createContext({} as TData)
-const socket = io(process.env.REACT_APP_NODE_API_URL as string)
+let socket: TSocket = {} as TSocket
 
 export const SocketProvider = ({ children }: any) => {
   const [state, setState] = useState({
@@ -11,6 +11,8 @@ export const SocketProvider = ({ children }: any) => {
     privateMessages: {} as Partial<IPrivateMessages>
   })
   useEffect(() => {
+    socket = io(process.env.REACT_APP_NODE_API_URL as string)
+
     socket.on('connect', () => {
       console.log('connect')
     })
@@ -54,6 +56,10 @@ export const SocketProvider = ({ children }: any) => {
         }
       })
     })
+
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
   const addNewUser = (name: string) => {

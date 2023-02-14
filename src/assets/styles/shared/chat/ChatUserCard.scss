@@ -1,33 +1,67 @@
 .chat-user-card {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 1rem;
   cursor: pointer;
+  background-color: #36373b;
+  border-radius: 1.4rem;
+  transition: all 0.5s;
+
+  &_active {
+	background-color: #1f394f;
+	box-shadow: 0 4px 20px 0 #1f394f;
+  }
 
   &__image {
 	position: relative;
-	margin-right: 10px;
+	padding: 0.1rem;
+	margin-right: 0.625rem;
 	overflow: hidden;
+	font-size: 2.5rem;
+	border: 2px solid $c-chat-secondary;
+	border-radius: 100%;
 
-	&::before {
-	  position: absolute;
-	  top: 0;
-	  left: 0;
-	  width: 10px;
-	  height: 10px;
-	  content: '';
-	  background-color: green;
-	  border-radius: 100%;
-	}
+	//&::before {
+	//  position: absolute;
+	//  top: 0;
+	//  left: 0;
+	//  width: 10px;
+	//  height: 10px;
+	//  content: '';
+	//  background-color: green;
+	//  border-radius: 100%;
+	//}
+  }
 
-	&,
-	&-icon {
-	  width: 40px;
-	  height: 40px;
-	}
+  &__inner {
+	flex: 1;
+  }
 
-	div {
-	  opacity: 0.5;
+  &__head,
+  &__body {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+  }
+
+  &__name {
+	font-size: 1rem;
+	font-weight: bold;
+	word-break: break-word;
+  }
+
+  &__status {
+	&-typing {
+	  color: $c-chat-secondary;
 	}
+  }
+
+  &__badge,
+  &__date {
+	margin-left: 0.5rem;
+  }
+
+  &__date {
+	color: $c-chat-gray;
   }
 }
