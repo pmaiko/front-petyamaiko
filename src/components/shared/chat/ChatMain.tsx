@@ -1,6 +1,7 @@
 import '~/assets/styles/shared/chat/ChatMain.scss'
 import { TUser, IPrivateMessages, IPrivateMessage } from '~/providers/SocketProvider'
 import React, { useMemo, useState } from 'react'
+import ChatMessage from '~/components/shared/chat/ChatMessage'
 
 const createHash = (value1: string, value2: string) => {
   if (value1 && value2 && typeof value1 === 'string' && typeof value2 === 'string') {
@@ -78,13 +79,11 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, p
                   key={index}
                   className='chat-main-chat__messages-item'
                 >
-                  <div
-                    className={`chat-main-chat__message ${item.from === mySocketId ? 'chat-main-chat__message_primary' : ''}`}
-                  >
-                    <div className='chat-main-chat__message-text'>
-                      {item.message}
-                    </div>
-                  </div>
+                  <ChatMessage
+                    {...item}
+                    name={name}
+                    isMyMessage={item.from === mySocketId}
+                  />
                 </li>
               ))
               :

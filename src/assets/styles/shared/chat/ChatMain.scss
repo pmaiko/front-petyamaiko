@@ -125,27 +125,11 @@ $padding-sm: 1rem;
 	  }
 
 	  &-item {
-		margin-bottom: 20px;
+		margin-bottom: 2.5rem;
 	  }
 
 	  &-empty {
 		margin: auto;
-	  }
-	}
-
-	&__message {
-	  display: inline-block;
-	  padding: 0.625rem 0.75rem;
-	  font-size: 0.9rem;
-	  background-color: $c-error;
-	  border-radius: 12px;
-
-	  &_primary {
-		background-color: $c-message-primary;
-	  }
-
-	  &-text {
-		word-break: break-all;
 	  }
 	}
 
@@ -166,7 +150,7 @@ $padding-sm: 1rem;
 	  align-items: center;
 	  width: 100%;
 	  height: 4.375rem;
-	  background-color: #36373b;
+	  background-color: $c-chat-user-card;
 	  border-radius: 1.4rem;
 
 	  &-input {

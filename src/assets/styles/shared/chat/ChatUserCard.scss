@@ -3,13 +3,13 @@
   align-items: center;
   padding: 1rem;
   cursor: pointer;
-  background-color: #36373b;
+  background-color: $c-chat-user-card;
   border-radius: 1.4rem;
   transition: all 0.5s;
 
   &_active {
-	background-color: #1f394f;
-	box-shadow: 0 4px 20px 0 #1f394f;
+	background-color: $c-chat-user-card-active;
+	box-shadow: 0 4px 20px 0 $c-chat-user-card-active;
   }
 
   &__image {
