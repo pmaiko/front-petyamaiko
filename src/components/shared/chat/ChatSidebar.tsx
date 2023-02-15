@@ -9,15 +9,15 @@ const ChatSidebar = ({ mySocketId, privateChatData, onUserCardClick }: {
   privateChatData: TUser
   onUserCardClick: T_onUserCardClick
 }) => {
-  const { users } = useSocket()
+  const { users, notifications } = useSocket()
 
   const _users = useMemo(() => {
     return users.filter(user => user.socketId !== mySocketId)
   }, [users])
 
-  const profile = useMemo(() => {
-    return users.find(user => user.socketId === mySocketId)
-  }, [users])
+  // const profile = useMemo(() => {
+  //   return users.find(user => user.socketId === mySocketId)
+  // }, [users])
   return (
     <div
       className='chat-sidebar'
@@ -26,9 +26,14 @@ const ChatSidebar = ({ mySocketId, privateChatData, onUserCardClick }: {
         <h2 className='chat-sidebar__head-title'>
           Messages
         </h2>
-        <div className='chat-sidebar__head-count badge'>
-          12
-        </div>
+        {
+          notifications.length ?
+            <div className='chat-sidebar__head-count badge'>
+              {notifications.length}
+            </div>
+          :
+            ''
+        }
       </div>
 
       <div className='chat-sidebar__users'>

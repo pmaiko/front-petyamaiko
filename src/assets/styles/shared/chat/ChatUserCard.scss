@@ -51,6 +51,8 @@
   }
 
   &__status {
+	color: $c-chat-gray;
+
 	&-typing {
 	  color: $c-chat-secondary;
 	}

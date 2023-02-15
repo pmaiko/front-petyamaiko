@@ -1,14 +1,10 @@
 import '~/assets/styles/shared/chat/ChatMain.scss'
+import { cloneDeep } from 'lodash'
 import { TUser, IPrivateMessages, IPrivateMessage, useSocket } from '~/providers/SocketProvider'
-import React, { useMemo, useState } from 'react'
-import ChatMessage from '~/components/shared/chat/ChatMessage'
+import React, { useEffect, useMemo, useState } from 'react'
+import EmojiPicker, { Theme, EmojiClickData } from 'emoji-picker-react'
 
-const createHash = (value1: string, value2: string) => {
-  if (value1 && value2 && typeof value1 === 'string' && typeof value2 === 'string') {
-    const hash = [value1, value2].sort()
-    return hash.join('')
-  }
-}
+import ChatMessage from '~/components/shared/chat/ChatMessage'
 
 interface TProps extends TUser {
   activeChatMain: boolean
@@ -21,26 +17,79 @@ interface TProps extends TUser {
 
 const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, isTyping, privateMessages, onSendMessage }: TProps) => {
   const {
-    onTyping
+    createHash,
+    notifications,
+    onTyping,
+    removeNotification,
+    updatePrivateMessage
   } = useSocket()
   const [message, setMessage] = useState('')
+  const [visibleEmojiPicker, setVisibleEmojiPicker] = useState(false)
 
   const hash: string = useMemo<any>(() => {
     return createHash(mySocketId, socketId)
   }, [socketId])
+
+  const messages = useMemo(() => {
+    const tmp = cloneDeep(privateMessages[hash])
+    return tmp?.reverse() || []
+  }, [privateMessages[hash]])
+
+  useEffect(() => {
+    if (messages.length && socketId) {
+      setTimeout(() => {
+        updatePrivateMessage(mySocketId, socketId)
+      }, 500)
+    }
+  }, [messages.length, socketId])
+
+  const newNotification = useMemo(() => {
+    return notifications.find(item => item.from === socketId)
+  }, [notifications, socketId])
+
+  const hasNewNotification = useMemo(() => {
+    return !!newNotification
+  }, [notifications, socketId])
+
+  useEffect(() => {
+    if (hasNewNotification) {
+      setTimeout(() => {
+        removeNotification(newNotification?.from)
+      }, 500)
+    }
+  }, [notifications, socketId])
 
   const onMessageChange = (event: React.ChangeEvent<any>) => {
     onTyping(socketId)
     setMessage(_ => event.target.value || '')
   }
 
-  const _onSendMessage = (event: React.KeyboardEvent) => {
+  const submit = () => {
+    onSendMessage(message)
+    setMessage(_ => '')
+  }
+
+  const onKeyPress = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13) {
       event.preventDefault()
-      onSendMessage(message)
-      setMessage(_ => '')
+      submit()
     }
   }
+
+  const onClick = (event: React.MouseEvent<HTMLElement>) => {
+    onSendMessage(message)
+    setMessage(_ => '')
+  }
+
+  const toggleEmojiPicker = (event: React.MouseEvent<HTMLElement>) => {
+    setVisibleEmojiPicker(prev => !prev)
+  }
+
+  const onEmojiClick = (event: EmojiClickData) => {
+    setMessage(prev => prev ? `${prev} ${event.emoji}` : event.emoji)
+    setVisibleEmojiPicker(false)
+  }
+
   return (
     <div className={`chat-main ${activeChatMain ? 'chat-main_active' : ''}`}>
       <div className='chat-main-panel shadow-down'>
@@ -75,8 +124,8 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
       <div className='chat-main-chat'>
         <ul className='chat-main-chat__messages'>
           {
-            privateMessages[hash]?.length ?
-              privateMessages[hash]?.reverse().map((item: IPrivateMessage, index: number) => (
+            messages.length ?
+              messages.map((item: IPrivateMessage, index: number) => (
                 <li
                   key={index}
                   className='chat-main-chat__messages-item'
@@ -96,17 +145,34 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
         </ul>
         <div className='chat-main-chat__new-message shadow-up'>
           <div className='chat-main-chat__field'>
-            <button className='chat-main-chat__field-button chat-main-chat__field-button_smile'>
+            <button
+              className='chat-main-chat__field-button chat-main-chat__field-button_smile'
+              onClick={toggleEmojiPicker}
+            >
               <i className='fa-regular fa-face-smile' />
             </button>
+            {
+              <div style={{
+                visibility: visibleEmojiPicker ? 'visible' : 'hidden',
+                opacity: visibleEmojiPicker ? 1 : 0
+              }}>
+                <EmojiPicker
+                  theme={Theme.DARK}
+                  onEmojiClick={onEmojiClick}
+                />
+              </div>
+            }
             <textarea
               value={message}
               placeholder='Your messages...'
               className='chat-main-chat__field-input'
-              onKeyDown={_onSendMessage}
+              onKeyDown={onKeyPress}
               onChange={onMessageChange}
             />
-            <button className='chat-main-chat__field-button chat-main-chat__field-button_send'>
+            <button
+              className='chat-main-chat__field-button chat-main-chat__field-button_send'
+              onClick={onClick}
+            >
               <i className='fa-solid fa-paper-plane' />
             </button>
           </div>

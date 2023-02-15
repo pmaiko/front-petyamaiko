@@ -89,7 +89,7 @@ const Chat = (props: any) => {
         }
         {
           (state.isAddNewUser && users.length) ?
-            <div className='chat__wrapper pt-32'>
+            <div className='chat__wrapper pt-321'>
               <div className='chat__holder'>
                 <ChatSidebar
                   mySocketId={mySocketId}

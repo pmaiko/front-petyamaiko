@@ -9,7 +9,7 @@ interface IProps extends IPrivateMessage {
   name: string
 }
 
-const ChatMessage = ({ message, timestamp, isMyMessage, name }: IProps) => {
+const ChatMessage = ({ message, timestamp, isWatched, isMyMessage, name }: IProps) => {
   const date = useMemo(() => {
     return convertTimestamp(timestamp, '*hour*:*minutes*:*seconds*')
   }, [timestamp])
@@ -27,8 +27,18 @@ const ChatMessage = ({ message, timestamp, isMyMessage, name }: IProps) => {
           {date} PM
         </p>
       </div>
-      <div className='chat-message__text'>
-        {message}
+      <div className='chat-message__message'>
+        <div className='chat-message__message-text'>
+          {message}
+        </div>
+        <div className='chat-message__message-icons'>
+          {
+            !isWatched ?
+              <i className='fa-solid fa-check' />
+            :
+              <i className='fa-solid fa-check-double' />
+          }
+        </div>
       </div>
     </div>
   )

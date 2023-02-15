@@ -30,7 +30,6 @@ export const convertTimestamp = (timestamp?: number, pattern: string = '*hour*:*
 
   if (pattern) {
     const fields = pattern.match(regex)?.map(match => match.slice(1, -1))
-    console.log(fields)
     fields?.forEach((field: any ) => {
       // @ts-ignore
       pattern = pattern.replace(`*${field}*`, obj[field])

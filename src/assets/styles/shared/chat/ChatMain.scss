@@ -131,7 +131,9 @@ $padding-sm: 1rem;
 	  }
 
 	  &-item {
-		margin-bottom: 2.5rem;
+		&:not(:first-child) {
+		  margin-bottom: 2.5rem;
+		}
 	  }
 
 	  &-empty {
@@ -158,6 +160,12 @@ $padding-sm: 1rem;
 	  height: 4.375rem;
 	  background-color: $c-chat-user-card;
 	  border-radius: 1.4rem;
+
+	  aside.EmojiPickerReact.epr-main {
+		position: absolute;
+		bottom: calc(100% + 0.5rem);
+		left: 0;
+	  }
 
 	  &-input {
 		flex: 1;

@@ -1,7 +1,8 @@
 import '~/assets/styles/shared/chat/ChatUserCard.scss'
-import { TUser } from '~/providers/SocketProvider'
+import { IPrivateMessage, TUser, useSocket } from '~/providers/SocketProvider'
 import { convertTimestamp } from '~/helpers/convert-timestamp'
 import { useMemo } from 'react'
+import { cloneDeep } from 'lodash'
 
 interface IProps extends TUser {
   isActive: boolean
@@ -9,6 +10,13 @@ interface IProps extends TUser {
 }
 
 const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCardClick }: IProps) => {
+  const {
+    mySocketId,
+    privateMessages,
+    createHash,
+    notifications
+  } = useSocket()
+
   const _onUserCardClick = () => {
     onUserCardClick({
       socketId,
@@ -16,9 +24,25 @@ const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCar
     })
   }
 
+  const hash: string = useMemo<any>(() => {
+    return createHash(mySocketId, socketId)
+  }, [socketId])
+
   const date = useMemo(() => {
     return convertTimestamp(timestamp)
   }, [timestamp])
+
+  const notification = useMemo(() => {
+    return notifications.find(item => item.from === socketId)
+  }, [notifications])
+
+  const lastMessage = useMemo(() => {
+    if (privateMessages[hash]) {
+      let messages = cloneDeep(privateMessages[hash])
+      messages = messages.reverse() as [IPrivateMessage]
+      return messages.find(item => item.to === mySocketId)?.message || ''
+    }
+  }, [privateMessages[hash], socketId])
 
   return (
     <div
@@ -39,11 +63,15 @@ const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCar
         </div>
         <div className='chat-user-card__body'>
           <p className='chat-user-card__status'>
-            {isTyping ? <span className='chat-user-card__status-typing'>...typing</span> : '-'}
+            {isTyping ? <span className='chat-user-card__status-typing'>...typing</span> : lastMessage ? lastMessage : '-'}
           </p>
-          <div className='chat-user-card__badge badge'>
-            1
-          </div>
+          {
+            notification ?
+              <div className='chat-user-card__badge badge badge_br'>
+                new
+              </div>
+            : ''
+          }
         </div>
       </div>
     </div>
