@@ -1,0 +1,145 @@
+.chat-call {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+
+  &__overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	background-color: rgb(black, 0.4);
+  }
+
+  &__button {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	padding: 0.5rem;
+	font-size: 1.5rem;
+	color: $c-text;
+	cursor: pointer;
+	border-radius: 100%;
+
+	&:not(:last-child) {
+	  margin-right: 1rem;
+	}
+
+	&_confirm {
+	  background-color: green;
+	}
+
+	&_cansel {
+	  background-color: red;
+	}
+  }
+
+  &-calling,
+  &-speaking {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	padding: 2.5rem;
+	margin: auto;
+	background-color: $c-chat-user-card-active;
+	border-radius: 1.5rem;
+  }
+
+  &-calling {
+	max-width: 300px;
+
+	&__name {
+	  text-align: center;
+	}
+
+	&__image {
+	  position: relative;
+	  padding: 0.1rem;
+	  margin-top: 1.5rem;
+	  margin-right: 0.625rem;
+	  overflow: hidden;
+	  font-size: 5.5rem;
+	  border: 2px solid $c-chat-secondary;
+	  border-radius: 100%;
+	}
+
+	&__buttons {
+	  display: flex;
+	  margin-top: 1.5rem;
+	}
+  }
+
+  &-speaking {
+	max-width: 1280px;
+
+	&__body {
+	  width: 100%;
+
+	  &-inner {
+		display: flex;
+		margin: 0 -0.5rem -1rem;
+	  }
+
+	  &-col {
+		display: flex;
+		flex-direction: column;
+		width: 50%;
+		padding: 0 0.5rem;
+		margin-bottom: 1rem;
+	  }
+	}
+
+	&__foot {
+	  margin-top: 2rem;
+	}
+
+	&__name {
+	  margin-bottom: 0.5rem;
+	}
+
+	&__video {
+	  display: flex;
+	  flex: 1;
+	  width: 100%;
+
+	  &-inner {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	  }
+
+	  &-tag {
+		width: 100%;
+	  }
+
+	  &-empty {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		color: $c-text;
+		background-color: black;
+
+		&-icon {
+		  margin-bottom: 0.3rem;
+		  font-size: 2rem;
+		}
+	  }
+	}
+  }
+}

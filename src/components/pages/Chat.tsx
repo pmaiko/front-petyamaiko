@@ -9,6 +9,7 @@ import { useSocket, TUser } from '~/providers/SocketProvider'
 import ChatStartForm from '~/components/shared/chat/ChatStartForm'
 import ChatSidebar from '~/components/shared/chat/ChatSidebar'
 import ChatMain from '~/components/shared/chat/ChatMain'
+import ChatCall from '~/components/shared/chat/ChatCall'
 
 const Chat = (props: any) => {
   const { setLoadedPage } = useAppLoaded()
@@ -19,9 +20,9 @@ const Chat = (props: any) => {
   const {
     mySocketId,
     users,
+    callType,
     privateMessages,
-    sendPrivateMessage,
-    getPrivateMessages
+    sendPrivateMessage
   } = useSocket()
 
   const [state, setState] = useState({
@@ -52,10 +53,6 @@ const Chat = (props: any) => {
   }, [users])
 
   const openPrivateChat = (data: TUser) => {
-    getPrivateMessages({
-      from: mySocketId,
-      to: data.socketId
-    })
     setPrivateChatData(_ => data)
 
     setTimeout(() => {
@@ -124,6 +121,12 @@ const Chat = (props: any) => {
             </div> : state.isAddNewUser && <div className='pt-32'>Error refresh page!</div>
         }
       </div>
+
+      {
+        callType ?
+          <ChatCall />
+        : ''
+      }
     </div>
   )
 }

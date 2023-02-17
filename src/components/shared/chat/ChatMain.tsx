@@ -19,6 +19,7 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
   const {
     createHash,
     notifications,
+    onCall,
     onTyping,
     removeNotification,
     updatePrivateMessage
@@ -90,6 +91,10 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
     setVisibleEmojiPicker(false)
   }
 
+  const onClickCall = () => {
+    onCall(mySocketId, socketId)
+  }
+
   return (
     <div className={`chat-main ${activeChatMain ? 'chat-main_active' : ''}`}>
       <div className='chat-main-panel shadow-down'>
@@ -112,7 +117,10 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
             </p>
           </div>
         </div>
-        <div className='chat-main-panel__actions'>
+        <div
+          className='chat-main-panel__actions'
+          onClick={onClickCall}
+        >
           <button>
             <i className='fa-solid fa-phone' />
           </button>
