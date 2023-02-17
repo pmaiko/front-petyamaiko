@@ -26,6 +26,7 @@ export const SocketProvider = ({ children }: any) => {
 
   const [callType, setCallType] = useState<callTypes>('' as callTypes)
   const [callInfo, setCallInfo] = useState<ICallInfo>({} as ICallInfo)
+  const [peerId, setPeerId] = useState('')
 
   const addNewUser = (name: string) => {
     return new Promise((resolve: any, reject: any) => {
@@ -204,6 +205,10 @@ export const SocketProvider = ({ children }: any) => {
     socket.on(callTypes.SPEAKING, ({ from, to }: {from: string, to: string}) => {
       setCallType(callTypes.SPEAKING)
     })
+
+    socket.on('peer', (data: {peerId: string}) => {
+      setPeerId(data.peerId)
+    })
   }
 
   return (
@@ -218,6 +223,7 @@ export const SocketProvider = ({ children }: any) => {
       onCancelCall,
       onCall,
       onSpeaking,
+      peerId,
       createHash,
       addNewUser,
       sendPrivateMessage,
@@ -244,6 +250,7 @@ type TData = {
   onCancelCall: () => void
   onCall: (from: string, to: string) => void
   onSpeaking: () => void
+  peerId: string
   createHash: typeof createHash
   privateMessages: IPrivateMessages
   notifications: [INotification]
