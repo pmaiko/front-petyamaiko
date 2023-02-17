@@ -9,13 +9,22 @@ const ChatCallSpeaking = () => {
   const [hasMyVideo, setHasMyVideo] = useState(false)
   const [hasPartnerVideo, setHasPartnerVideo] = useState(false)
 
-  const env = process.env.REACT_APP_NODE_API_URL?.substring(0, process.env.REACT_APP_NODE_API_URL.length - 1)
+  let options
+  if (process.env.NODE_ENV === 'development') {
+    options = {
+      host: 'localhost',
+      path: '/peerjs',
+      port: 3002
+    }
+  } else {
+    const host = process.env.REACT_APP_NODE_API_URL?.substring(0, process.env.REACT_APP_NODE_API_URL.length - 1).replace('https://', '')
 
-  const peer = new Peer({
-    host: process.env.NODE_ENV === 'development' ? 'localhost' : env,
-    path: '/peerjs',
-    port: process.env.NODE_ENV === 'development' ? 3002 : undefined
-  })
+    options = {
+      host,
+      path: '/peerjs'
+    }
+  }
+  const peer = new Peer(options)
 
   peer.on('open', (peerId) => {
     console.log(mySocketId, 'mySocketId')
