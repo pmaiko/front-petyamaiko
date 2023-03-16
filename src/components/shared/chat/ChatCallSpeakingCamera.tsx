@@ -45,6 +45,9 @@ const ChatCallSpeakingCamera = ({ name, hasCamera, refObject, onToggleCamera, is
       }}
     />
   )
+  const onPlay = () => {
+    refObject.current?.play()
+  }
   return (
     <div className='chat-call-speaking-camera'>
       {/*<div className='chat-call-speaking-camera__name h5'>*/}
@@ -67,7 +70,9 @@ const ChatCallSpeakingCamera = ({ name, hasCamera, refObject, onToggleCamera, is
           }
           <video
             ref={refObject}
+            playsInline={true}
             className='chat-call-speaking-camera__video-tag'
+            onClick={onPlay}
           />
           <div
             className='chat-call-speaking-camera__video-controls'
