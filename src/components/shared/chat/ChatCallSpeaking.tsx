@@ -112,7 +112,7 @@ const ChatCallSpeaking = () => {
   useEffect(() => {
     if (peerId) {
       onStream()
-      // usersCommunication()
+      usersCommunication()
     }
   }, [peerId])
 
