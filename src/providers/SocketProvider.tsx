@@ -108,6 +108,15 @@ export const SocketProvider = ({ children }: any) => {
     })
   }
 
+  const onCompletedCall = () => {
+    socket.emit(callTypes.COMPLETED, {
+      from: callInfo.from,
+      to: callInfo.to
+    })
+
+    setCallType(callTypes.COMPLETED)
+  }
+
   useEffect(() => {
     socket = io(process.env.REACT_APP_NODE_API_URL as string)
 
@@ -192,6 +201,10 @@ export const SocketProvider = ({ children }: any) => {
       setCallInfo({} as ICallInfo)
     })
 
+    socket.on(callTypes.COMPLETED, ({ from, to }: {from: string, to: string}) => {
+      setCallType(callTypes.COMPLETED)
+    })
+
     socket.on(callTypes.CALLING, ({ from, to }: {from: string, to: string}) => {
       setCallType(callTypes.CALLING)
       setCallInfo({
@@ -221,9 +234,11 @@ export const SocketProvider = ({ children }: any) => {
       callType,
       callInfo,
       onCancelCall,
+      onCompletedCall,
       onCall,
       onSpeaking,
       peerId,
+      setPeerId,
       createHash,
       addNewUser,
       sendPrivateMessage,
@@ -248,9 +263,11 @@ type TData = {
   callType: callTypes
   callInfo: ICallInfo
   onCancelCall: () => void
+  onCompletedCall: () => void
   onCall: (from: string, to: string) => void
   onSpeaking: () => void
   peerId: string
+  setPeerId: (id: string) => void,
   createHash: typeof createHash
   privateMessages: IPrivateMessages
   notifications: [INotification]

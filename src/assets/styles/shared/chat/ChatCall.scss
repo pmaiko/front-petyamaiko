@@ -14,6 +14,10 @@
 	left: 0;
 	display: flex;
 	background-color: rgb(black, 0.4);
+
+	@include respUp(md) {
+	  padding: 40px 16px;
+	}
   }
 
   &__button {
@@ -43,7 +47,8 @@
   }
 
   &-calling,
-  &-speaking {
+  &-speaking,
+  &-completed {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -51,7 +56,12 @@
 	padding: 2.5rem;
 	margin: auto;
 	background-color: $c-chat-user-card-active;
-	border-radius: 1.5rem;
+	border-radius: 1rem;
+
+	@include respDown(sm) {
+	  padding: 0.5rem;
+	  border-radius: 0.5rem;
+	}
   }
 
   &-calling {
@@ -80,12 +90,16 @@
 
   &-speaking {
 	max-width: 1280px;
+	height: 100%;
 
 	&__body {
+	  position: relative;
 	  width: 100%;
+	  height: 100%;
 
 	  &-inner {
 		display: flex;
+		height: 100%;
 		margin: 0 -0.5rem -1rem;
 	  }
 
@@ -98,52 +112,120 @@
 	  }
 	}
 
-	&__foot {
-	  margin-top: 2rem;
-	}
-
-	&__name {
-	  margin-bottom: 0.5rem;
-	}
-
 	&__video {
-	  display: flex;
-	  flex: 1;
-	  width: 100%;
-
-	  &-inner {
-		position: relative;
+	  &-partner {
 		width: 100%;
 		height: 100%;
 	  }
 
-	  &-tag {
-		width: 100%;
-	  }
-
-	  &-empty {
+	  &-my {
 		position: absolute;
-		top: 0;
 		right: 0;
 		bottom: 0;
-		left: 0;
-		z-index: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		color: $c-text;
-		background-color: black;
+		z-index: 9;
+		width: 200px;
+		height: 200px;
+		border: 1px solid $c-chat-sidebar;
 
-		&-icon {
-		  margin-bottom: 0.3rem;
-		  font-size: 2rem;
-		}
-
-		&-button {
-		  margin-top: 1rem;
+		@include respDown(sm) {
+		  width: 100px;
+		  height: 100px;
 		}
 	  }
 	}
+
+	&__foot {
+	  margin-top: 2rem;
+	}
+
+
+	&-camera {
+	  display: flex;
+	  flex: 1;
+	  flex-direction: column;
+	  height: 1px;
+	  min-height: 100%;
+
+	  &__name {
+		margin-bottom: 0.5rem;
+	  }
+
+	  &__video {
+		position: relative;
+		flex: 1;
+		width: 100%;
+		height: 1px;
+
+		&-inner {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		}
+
+		&-tag {
+		  width: 100%;
+		  height: 100%;
+		  background-color: black;
+		}
+
+		&-controls {
+		  position: absolute;
+		  bottom: 1rem;
+		  left: 0;
+		  z-index: 2;
+		  display: flex;
+		  justify-content: center;
+		  width: 100%;
+
+		  button {
+			width: 2.25rem;
+			padding: 0 0.5rem;
+			font-size: 1rem;
+			color: $c-chat-secondary;
+			cursor: pointer;
+
+			@include respDown(sm) {
+			  width: 1.625rem;
+			  padding: 0 0.3rem;
+			  font-size: 0.8rem;
+			}
+
+			&.active {
+			  color: $c-text;
+			}
+		  }
+		}
+
+		&-empty {
+		  position: absolute;
+		  top: 0;
+		  right: 0;
+		  bottom: 0;
+		  left: 0;
+		  z-index: 1;
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  justify-content: center;
+		  color: $c-text;
+		  background-color: black;
+
+		  &-icon {
+			margin-bottom: 0.3rem;
+			font-size: 2rem;
+		  }
+
+		  &-button {
+			margin-top: 1rem;
+		  }
+		}
+	  }
+	}
+  }
+
+  &-completed {
+	max-width: 300px;
   }
 }

@@ -2,12 +2,14 @@ import '~/assets/styles/shared/chat/ChatCall.scss'
 
 import ChatCallCalling from '~/components/shared/chat/ChatCallCalling'
 import ChatCallSpeaking from '~/components/shared/chat/ChatCallSpeaking'
+import ChatCallCompleted from '~/components/shared/chat/ChatCallCompleted'
 import { callTypes, useSocket } from '~/providers/SocketProvider'
+import { useEffect, useState } from 'react'
 
 const ChatCall = () => {
-  const {
-    callType
-  } = useSocket()
+  const { callType } = useSocket()
+  const [enableMediaStream, enableMediaStreamSet] = useState(false)
+
   return (
     <div className='chat-call'>
       <div className='chat-call__overlay'>
@@ -17,6 +19,9 @@ const ChatCall = () => {
         }
         {
           callType === callTypes.SPEAKING ? <ChatCallSpeaking /> : ''
+        }
+        {
+          callType === callTypes.COMPLETED ? <ChatCallCompleted /> : ''
         }
       </div>
     </div>

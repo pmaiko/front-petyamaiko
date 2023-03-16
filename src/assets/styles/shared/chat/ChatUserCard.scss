@@ -14,6 +14,7 @@
 
   &__image {
 	position: relative;
+	flex-shrink: 0;
 	padding: 0.1rem;
 	margin-right: 0.625rem;
 	overflow: hidden;
@@ -35,6 +36,7 @@
 
   &__inner {
 	flex: 1;
+	min-width: 1px;
   }
 
   &__head,
@@ -51,7 +53,10 @@
   }
 
   &__status {
+	overflow: hidden;
 	color: $c-chat-gray;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 
 	&-typing {
 	  color: $c-chat-secondary;

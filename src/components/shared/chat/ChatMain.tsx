@@ -1,7 +1,7 @@
 import '~/assets/styles/shared/chat/ChatMain.scss'
 import { cloneDeep } from 'lodash'
 import { TUser, IPrivateMessages, IPrivateMessage, useSocket } from '~/providers/SocketProvider'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import EmojiPicker, { Theme, EmojiClickData } from 'emoji-picker-react'
 
 import ChatMessage from '~/components/shared/chat/ChatMessage'
@@ -86,10 +86,10 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
     setVisibleEmojiPicker(prev => !prev)
   }
 
-  const onEmojiClick = (event: EmojiClickData) => {
+  const onEmojiClick = useCallback((event: EmojiClickData) => {
     setMessage(prev => prev ? `${prev} ${event.emoji}` : event.emoji)
     setVisibleEmojiPicker(false)
-  }
+  }, [])
 
   const onClickCall = () => {
     onCall(mySocketId, socketId)
@@ -160,6 +160,7 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
               <i className='fa-regular fa-face-smile' />
             </button>
             {
+              visibleEmojiPicker ?
               <div style={{
                 visibility: visibleEmojiPicker ? 'visible' : 'hidden',
                 opacity: visibleEmojiPicker ? 1 : 0
@@ -169,6 +170,7 @@ const ChatMain = ({ activeChatMain, onHide, users, mySocketId, socketId, name, i
                   onEmojiClick={onEmojiClick}
                 />
               </div>
+              : ''
             }
             <textarea
               value={message}
