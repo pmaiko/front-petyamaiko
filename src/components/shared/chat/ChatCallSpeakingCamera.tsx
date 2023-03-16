@@ -72,7 +72,6 @@ const ChatCallSpeakingCamera = ({ name, hasCamera, refObject, onToggleCamera, is
             ref={refObject}
             playsInline={true}
             className='chat-call-speaking-camera__video-tag'
-            onClick={onPlay}
           />
           <div
             className='chat-call-speaking-camera__video-controls'
