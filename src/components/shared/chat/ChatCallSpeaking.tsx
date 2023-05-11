@@ -30,16 +30,18 @@ const ChatCallSpeaking = () => {
     setPeerId,
     onCompletedCall
   } = useSocket()
-  const myStream = useRef<MediaStream>()
+  const $myStream = useRef<MediaStream>()
   const myVideo = useRef<HTMLVideoElement>(null)
   const partnerVideo = useRef<HTMLVideoElement>(null)
   const [hasMyVideo, hasMyVideoSet] = useState(false)
   const [hasPartnerVideo, hasPartnerVideoSet] = useState(false)
   const [isVideo, isVideoSet] = useState(true)
   const [isAudio, isAudioSet] = useState(false)
+  const [myPeerId, myPeerIdSet] = useState('')
+  const [networkStatus, networkStatusSet] = useState('')
 
   function stopStreamedVideo () {
-    const stream = myStream.current
+    const stream = $myStream.current
     if (stream) {
       stream.getTracks().forEach((track) => {
         track.stop()
@@ -48,17 +50,25 @@ const ChatCallSpeaking = () => {
   }
 
   useEffect(() => {
-    // onStream()
     peer = new Peer(options)
 
-    peer.on('open', (id) => {
-      console.log(mySocketId, 'mySocketId')
-      console.log(callInfo.to === mySocketId ? callInfo.from : callInfo.to, 'callInfo.to')
-      console.log(peerId, 'fromPeerId')
+    const toSOCKET = callInfo.to === mySocketId ? callInfo.from : callInfo.to
+    peer.on('open', (pid) => {
+      // console.log(mySocketId, 'mySocketId')
+      // console.log(callInfo.to === mySocketId ? callInfo.from : callInfo.to, 'callInfo.to')
+      // console.log(peerId, 'fromPeerId')
 
-      socket.emit('peer', {
-        peerId: id,
-        to: callInfo.to === mySocketId ? callInfo.from : callInfo.to
+      myPeerIdSet(pid)
+      socket.emit('peer:open', {
+        peerId: pid,
+        to: toSOCKET
+      })
+    })
+
+    peer.on('disconnected', (pid) => {
+      socket.emit('peer:disconnected', {
+        peerId: pid,
+        to: toSOCKET
       })
     })
 
@@ -70,17 +80,28 @@ const ChatCallSpeaking = () => {
     }
   }, [])
 
-  const usersCommunication = (_stream: MediaStream = new MediaStream()) => {
-    const call = peer.call(peerId, _stream)
+  const usersCommunication = (myStream: MediaStream = new MediaStream()) => {
+    const call = peer.call(peerId, myStream)
 
+    // console.log('call', call)
+    setInterval(() => {
+      console.log(call.peerConnection.iceConnectionState)
+      call.peerConnection.getStats().then(stats => {
+        stats.forEach((report) => {
+          console.log('Ping to peer ' + peerId + ': ' +
+            (report.currentRoundTripTime || 0) * 1000 + 'ms')
+        })
+      })
+    }, 1000)
     call.on('stream', (remoteStream) => {
       hasPartnerVideoSet(true)
       addVideoStream(partnerVideo.current, remoteStream)
     })
 
-    peer.on('call', (answer) => {
-      answer.answer(_stream)
-      answer.on('stream', (remoteStream) => {
+    peer.on('call', (_call) => {
+      // console.log('_call', _call)
+      _call.answer(myStream)
+      _call.on('stream', (remoteStream) => {
         hasPartnerVideoSet(true)
         addVideoStream(partnerVideo.current, remoteStream)
       })
@@ -95,14 +116,14 @@ const ChatCallSpeaking = () => {
     }
     try {
       stopStreamedVideo()
-      const stream = await navigator.mediaDevices.getUserMedia({
+      const myStream = await navigator.mediaDevices.getUserMedia({
         video,
         audio
       })
-      myStream.current = stream
+      $myStream.current = myStream
       hasMyVideoSet(true)
-      addVideoStream(myVideo.current, stream, true)
-      usersCommunication(stream)
+      addVideoStream(myVideo.current, myStream, true)
+      usersCommunication(myStream)
     } catch (error) {
       stopStreamedVideo()
       console.log(error)
@@ -116,8 +137,28 @@ const ChatCallSpeaking = () => {
     }
   }, [peerId])
 
-  const addVideoStream = (video: any, _stream: MediaStream, offVolume?: boolean) => {
-    video.srcObject = _stream
+  // useEffect(() => {
+  //   if (myPeerId && peerId) {
+  //     setInterval(() => {
+  //       // @ts-ignore
+  //       // console.log(peer._socket._wsPingTimer)
+  //       // console.log(peerId, ' ---- ', pid)
+  //       console.log(myPeerId, ' ', peerId)
+  //       console.log(peer.getConnection(peerId, myPeerId))
+  //       // @ts-ignore
+  //       // window.peer = peer
+  //       // const pc = peer.peerConnection
+  //       // if (pc && pc.iceConnectionState === 'connected') {
+  //       //   console.log('Network connection is active.');
+  //       // } else {
+  //       //   console.log('Network connection is lost.');
+  //       // }
+  //     }, 1000)
+  //   }
+  // }, [myPeerId, peerId])
+
+  const addVideoStream = (video: any, stream: MediaStream, offVolume?: boolean) => {
+    video.srcObject = stream
     if (offVolume) {
       video.volume = 0
     }

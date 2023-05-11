@@ -117,13 +117,25 @@ export const SocketProvider = ({ children }: any) => {
     setCallType(callTypes.COMPLETED)
   }
 
-  useEffect(() => {
+  const socketConnect = () => {
     socket = io(process.env.REACT_APP_NODE_API_URL as string)
+  }
+
+  useEffect(() => {
+    socketConnect()
 
     return () => {
       socket.disconnect()
     }
   }, [])
+
+  useEffect(() => {
+    if (!users.length) {
+      socketConnect()
+    }
+  }, [users])
+
+
 
   if (!isEmpty(socket)) {
     socket.on('connect', () => {
@@ -196,6 +208,16 @@ export const SocketProvider = ({ children }: any) => {
       }
     })
 
+    // WebRTC
+    socket.on('peer:open', (data: {peerId: string}) => {
+      setPeerId(data.peerId)
+    })
+
+    socket.on('peer:disconnected', (data: {peerId: string}) => {
+      setPeerId('')
+      setCallType(callTypes.COMPLETED)
+    })
+
     socket.on(callTypes.CANSEL, ({ from, to }: {from: string, to: string}) => {
       setCallType('' as callTypes)
       setCallInfo({} as ICallInfo)
@@ -217,10 +239,6 @@ export const SocketProvider = ({ children }: any) => {
 
     socket.on(callTypes.SPEAKING, ({ from, to }: {from: string, to: string}) => {
       setCallType(callTypes.SPEAKING)
-    })
-
-    socket.on('peer', (data: {peerId: string}) => {
-      setPeerId(data.peerId)
     })
   }
 

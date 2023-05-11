@@ -50,6 +50,13 @@ const Chat = (props: any) => {
         setPrivateChatData(user)
       }
     }
+
+    if (!users.length) {
+      setState((prev) => ({
+        ...prev,
+        isAddNewUser: false
+      }))
+    }
   }, [users])
 
   const openPrivateChat = (data: TUser) => {
