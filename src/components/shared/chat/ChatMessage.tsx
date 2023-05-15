@@ -1,27 +1,49 @@
 import '~/assets/styles/shared/chat/ChatMessage.scss'
+import { Message } from '~/types/chat'
+
+import Observer from '~/plugins/observer'
 import { convertTimestamp } from '~/helpers/convert-timestamp'
-import { useMemo } from 'react'
-import { IPrivateMessage } from '~/providers/SocketProvider'
+import { useEffect, useMemo, useRef } from 'react'
 
-
-interface IProps extends IPrivateMessage {
-  isMyMessage: boolean
-  name: string
+interface Props extends Message {
+  highlight: boolean
+  name: string,
+  onWatched?: (id: string) => void
 }
 
-const ChatMessage = ({ message, timestamp, isWatched, isMyMessage, name }: IProps) => {
-  const date = useMemo(() => {
-    return convertTimestamp(timestamp, '*hour*:*minutes*:*seconds*')
-  }, [timestamp])
+const ChatMessage = (props: Props) => {
+  const root: any = useRef()
 
+  const date = useMemo(() => {
+    return convertTimestamp(props.timestamp, '*hour*:*minutes*:*seconds*')
+  }, [props.timestamp])
+
+  useEffect(() => {
+    const onInView = () => {
+      if (props.onWatched) {
+        props.onWatched(props.id || '')
+      }
+    }
+
+    const observer = new Observer()
+    observer.observe(root.current)
+
+    root.current?.addEventListener('inview', onInView)
+    return () => {
+      root.current?.removeEventListener('inview', onInView)
+    }
+  }, [])
   return (
-    <div className={`chat-message ${isMyMessage ? 'chat-message_is-my-message' : ''}`}>
+    <div
+      ref={root}
+      className={`chat-message ${props.highlight ? 'chat-message_highlight' : ''}`}
+    >
       <div className='chat-message__info'>
         <div className='chat-message__image'>
           <i className='fa-solid fa-circle-user' />
         </div>
         <div className='chat-message__name'>
-          {isMyMessage ? 'You' : name}
+          {props.highlight ? 'You' : props.name}
         </div>
         <p className='chat-message__date small'>
           {date} PM
@@ -29,11 +51,11 @@ const ChatMessage = ({ message, timestamp, isWatched, isMyMessage, name }: IProp
       </div>
       <div className='chat-message__message'>
         <div className='chat-message__message-text'>
-          {message}
+          {props.text}
         </div>
         <div className='chat-message__message-icons'>
           {
-            !isWatched ?
+            !props.watched ?
               <i className='fa-solid fa-check' />
             :
               <i className='fa-solid fa-check-double' />

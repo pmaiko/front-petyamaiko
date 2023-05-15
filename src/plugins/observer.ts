@@ -20,7 +20,7 @@ export default class Observer {
   public observe: any
   public unobserve: any
 
-  constructor (settings: any) {
+  constructor (settings?: any) {
     const callback = (entries: any, obs: any) => {
       for (const entry of entries) {
         const options = {

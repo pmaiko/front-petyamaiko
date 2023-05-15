@@ -1,32 +1,25 @@
+import { ConnectUser, Authorization } from '~/types/chat'
 import '~/assets/styles/shared/chat/ChatStartForm.scss'
 
 import { useForm } from 'react-hook-form'
-import { useSocket } from '~/providers/SocketProvider'
 
 import BaseTextField from '~/components/base/BaseTextField'
 import BaseButton from '~/components/base/BaseButton'
 
-
-const ChatStartForm = ({ onSuccess }: {
-  onSuccess: () => any
-}) => {
-  const { addNewUser } = useSocket()
-
-  type Fields = { name: string }
-  const { register, handleSubmit, setError, reset, formState: { errors } } = useForm<Fields>({
+const ChatStartForm = ({ submit }: {submit: ConnectUser}) => {
+  const { register, handleSubmit, setError, reset, formState: { errors } } = useForm<Authorization>({
     defaultValues: {
-      name: ''
+      userName: ''
     }
   })
 
-  const onSubmit = async (fields: Fields) => {
+  const onSubmit = async (fields: Authorization) => {
     try {
-      await addNewUser(fields.name)
       reset()
-      onSuccess()
+      await submit(fields.userName)
     } catch (error: any) {
-      setError('name', {
-        message: error
+      setError('userName', {
+        message: error?.message
       })
     }
   }
@@ -41,8 +34,8 @@ const ChatStartForm = ({ onSuccess }: {
         <legend className='chat-start-form__title h3' >Enter you name!</legend>
         <BaseTextField
           label='Name'
-          {...register('name')}
-          error={errors.name?.message}
+          {...register('userName')}
+          error={errors.userName?.message}
           className='chat-start-form__field'
         />
         <BaseButton

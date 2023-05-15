@@ -51,7 +51,7 @@
     }
   }
 
-  &_is-my-message {
+  &_highlight {
     @include respDown(sm) {
       align-items: flex-end;
     }

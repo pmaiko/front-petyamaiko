@@ -1,4 +1,5 @@
 import api from 'axios'
+import * as chatApi from './chat'
 
 import { IGlobalData, ILogin, IProject, IProjectsComments, ISuccess, IUser, PageData } from '~/types'
 
@@ -16,6 +17,9 @@ axios.interceptors.request.use((config) => {
 })
 
 export default {
+  chat: {
+    ...chatApi
+  },
   async fetchGlobalData () {
     try {
       const { data } = await axios.get<IGlobalData>('/global-data')

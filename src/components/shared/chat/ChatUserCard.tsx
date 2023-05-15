@@ -1,53 +1,47 @@
 import '~/assets/styles/shared/chat/ChatUserCard.scss'
-import { IPrivateMessage, TUser, useSocket } from '~/providers/SocketProvider'
+import { User, onClickUserCard, Message } from '~/types/chat'
 import { convertTimestamp } from '~/helpers/convert-timestamp'
-import { useMemo } from 'react'
-import { cloneDeep } from 'lodash'
 
-interface IProps extends TUser {
-  isActive: boolean
-  onUserCardClick: T_onUserCardClick
+import { useMemo } from 'react'
+// import { cloneDeep } from 'lodash'
+
+interface IProps {
+  user: User
+  notificationsQuantity: number,
+  lastMessage: Message,
+  active: boolean,
+  onClickUserCard: onClickUserCard
 }
 
-const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCardClick }: IProps) => {
-  const {
-    mySocketId,
-    privateMessages,
-    createHash,
-    notifications
-  } = useSocket()
-
-  const _onUserCardClick = () => {
-    onUserCardClick({
-      socketId,
-      name
-    })
+const ChatUserCard = (props: IProps) => {
+  const onClick = () => {
+    props.onClickUserCard(props.user)
   }
 
-  const hash: string = useMemo<any>(() => {
-    return createHash(mySocketId, socketId)
-  }, [socketId])
-
+  // const hash: string = useMemo<any>(() => {
+  //   return createHash(mySocketId, socketId)
+  // }, [socketId])
+  //
   const date = useMemo(() => {
-    return convertTimestamp(timestamp)
-  }, [timestamp])
-
-  const notification = useMemo(() => {
-    return notifications.find(item => item.from === socketId)
-  }, [notifications])
-
-  const lastMessage = useMemo(() => {
-    if (privateMessages[hash]) {
-      let messages = cloneDeep(privateMessages[hash])
-      messages = messages.reverse() as [IPrivateMessage]
-      return messages.find(item => item.to === mySocketId)?.message || ''
-    }
-  }, [privateMessages[hash], socketId])
+    return convertTimestamp(props.user.timestamp)
+  }, [props.user.timestamp])
+  //
+  // const notification = useMemo(() => {
+  //   return notifications.find(item => item.from === socketId)
+  // }, [notifications])
+  //
+  // const lastMessage = useMemo(() => {
+  //   if (privateMessages[hash]) {
+  //     let messages = cloneDeep(privateMessages[hash])
+  //     messages = messages.reverse() as [IPrivateMessage]
+  //     return messages.find(item => item.to === mySocketId)?.message || ''
+  //   }
+  // }, [privateMessages[hash], socketId])
 
   return (
     <div
-      className={`chat-user-card ${isActive ? 'chat-user-card_active' : ''}`}
-      onClick={_onUserCardClick}
+      className={`chat-user-card ${props.active ? 'chat-user-card_active' : ''}`}
+      onClick={onClick}
     >
       <div className='chat-user-card__image'>
         <i className='fa-solid fa-circle-user' />
@@ -55,7 +49,7 @@ const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCar
       <div className='chat-user-card__inner'>
         <div className='chat-user-card__head'>
           <p className='chat-user-card__name'>
-            { name }
+            {props.user.name}
           </p>
           <div className='chat-user-card__date small'>
             {date} PM
@@ -63,14 +57,13 @@ const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCar
         </div>
         <div className='chat-user-card__body'>
           <p className='chat-user-card__status'>
-            {isTyping ? <span className='chat-user-card__status-typing'>...typing</span> : lastMessage ? lastMessage : '-'}
+            {props.user.typing ? <span className='chat-user-card__status-typing'>...typing</span> : props.lastMessage.text ? props.lastMessage.text : '-'}
           </p>
           {
-            notification ?
-              <div className='chat-user-card__badge badge badge_br'>
-                new
-              </div>
-            : ''
+            !!props.notificationsQuantity &&
+            <div className='chat-user-card__badge badge badge_br'>
+              {props.notificationsQuantity}
+            </div>
           }
         </div>
       </div>
@@ -78,4 +71,3 @@ const ChatUserCard = ({ socketId, name, timestamp, isTyping, isActive, onUserCar
   )
 }
 export default ChatUserCard
-export type T_onUserCardClick = (data: TUser) => void

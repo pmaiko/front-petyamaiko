@@ -58,9 +58,7 @@ const router = createBrowserRouter([
         index: true,
         element:
           <Suspense fallback={<Spinner />}>
-            <SocketProvider>
-              <Chat />
-            </SocketProvider>
+            <Chat />
           </Suspense>
       }
     ]

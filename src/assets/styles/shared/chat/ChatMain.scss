@@ -11,17 +11,17 @@ $padding-sm: 1rem;
   border-left: 1px solid $c-chat-border;
   transition: transform 0.3s;
 
-  @include respDown(sm) {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	transform: translateX(100%);
-  }
+  //@include respDown(sm) {
+	//position: absolute;
+	//top: 0;
+	//left: 0;
+	//width: 100%;
+	//transform: translateX(100%);
+  //}
 
-  &_active {
-	transform: translateX(0);
-  }
+  //&_active {
+	//transform: translateX(0);
+  //}
 
   &-panel {
 	position: relative;

@@ -1,23 +1,43 @@
 import '~/assets/styles/shared/chat/ChatSidebar.scss'
-import { useMemo } from 'react'
-import { useSocket, TUser } from '~/providers/SocketProvider'
+import { User, SocketID, onClickUserCard, Messages, Message } from '~/types/chat'
+import { getConversationId } from '~/helpers/get-сonversation-id'
 
-import ChatUserCard, { T_onUserCardClick } from '~/components/shared/chat/ChatUserCard'
+import { useMemo, useCallback } from 'react'
 
-const ChatSidebar = ({ mySocketId, privateChatData, onUserCardClick }: {
-  mySocketId: string,
-  privateChatData: TUser
-  onUserCardClick: T_onUserCardClick
-}) => {
-  const { users, notifications } = useSocket()
+import ChatUserCard from '~/components/shared/chat/ChatUserCard'
 
-  const _users = useMemo(() => {
-    return users.filter(user => user.socketId !== mySocketId)
-  }, [users])
+interface Props {
+  users: User[],
+  sender: User,
+  recipient: User,
+  messages: Messages,
+  onClickUserCard: onClickUserCard
+}
 
-  // const profile = useMemo(() => {
-  //   return users.find(user => user.socketId === mySocketId)
-  // }, [users])
+const ChatSidebar = (props: Props) => {
+  const formattedUsers = useMemo(() => {
+    return props.users.filter(user => user.socketId !== props.sender.socketId)
+  }, [props.users])
+
+  const notifications = useMemo(() => {
+    return Object.entries(props.messages).reduce((acc, [key, messages]) => {
+      acc[key as string] = messages?.filter(message => !message.watched && message.recipientId === props.sender.socketId).map(message => message.text)
+      return acc
+    }, {} as Partial<{ [key: string]: string[] }>)
+  }, [props.messages])
+
+  const notificationsQuantity = useMemo(() => {
+    const arr = Object.values(notifications).flatMap((messages) => messages)
+    return arr.length
+  }, [notifications])
+
+  const getLastMessage = useCallback((user: User) => {
+    const messages = props.messages[getConversationId(user.socketId, props.sender.socketId)]
+      ?.filter(message => message.recipientId === props.sender.socketId)
+      ?.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)) || []
+
+    return messages[messages.length - 1] || {}
+  }, [props.messages])
   return (
     <div
       className='chat-sidebar'
@@ -27,12 +47,10 @@ const ChatSidebar = ({ mySocketId, privateChatData, onUserCardClick }: {
           Messages
         </h2>
         {
-          notifications.length ?
-            <div className='chat-sidebar__head-count badge'>
-              {notifications.length}
-            </div>
-          :
-            ''
+          !!notificationsQuantity &&
+          <div className='chat-sidebar__head-count badge'>
+            {notificationsQuantity}
+          </div>
         }
       </div>
 
@@ -46,18 +64,20 @@ const ChatSidebar = ({ mySocketId, privateChatData, onUserCardClick }: {
           </div>
         </div>
         {
-          _users?.length ?
+          !!formattedUsers?.length ?
             <ul className='chat-sidebar__users-list'>
               {
-                _users.map((user, index) => (
+                formattedUsers.map((user, index) => (
                   <li
                     key={index}
                     className='chat-sidebar__users-list-item'
                   >
                     <ChatUserCard
-                      {...user}
-                      isActive={privateChatData.socketId === user.socketId}
-                      onUserCardClick={onUserCardClick}
+                      user={user}
+                      notificationsQuantity={notifications[getConversationId(user.socketId, props.sender.socketId)]?.length || 0}
+                      lastMessage={getLastMessage(user)}
+                      active={user.socketId === props.recipient.socketId}
+                      onClickUserCard={props.onClickUserCard}
                     />
                   </li>
                 ))
