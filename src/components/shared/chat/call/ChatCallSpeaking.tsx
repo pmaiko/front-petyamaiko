@@ -1,7 +1,7 @@
 import { useEffect, useRef, createRef, useState } from 'react'
 import { Peer, MediaConnection } from 'peerjs'
 import { useSocket } from '~/providers/SocketProvider'
-import ChatCallSpeakingCamera from '~/components/shared/chat/ChatCallSpeakingCamera'
+import ChatCallSpeakingCamera from '~/components/shared/chat/call/ChatCallSpeakingCamera'
 
 let options: object
 

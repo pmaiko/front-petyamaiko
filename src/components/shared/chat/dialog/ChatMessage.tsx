@@ -1,9 +1,9 @@
 import '~/assets/styles/shared/chat/ChatMessage.scss'
-import { Message } from '~/types/chat'
+import { Message } from '~/types/chatTypes'
 
 import Observer from '~/plugins/observer'
 import { convertTimestamp } from '~/helpers/convert-timestamp'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, memo } from 'react'
 
 interface Props extends Message {
   highlight: boolean
@@ -65,4 +65,4 @@ const ChatMessage = (props: Props) => {
     </div>
   )
 }
-export default ChatMessage
+export default memo(ChatMessage)

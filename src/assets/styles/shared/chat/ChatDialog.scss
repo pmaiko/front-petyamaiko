@@ -1,0 +1,117 @@
+$padding: 1rem 2rem;
+$padding-sm: 1rem;
+
+
+.chat-dialog {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-left: 1px solid $c-chat-border;
+  transition: transform 0.3s;
+
+  @include respDown(sm) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+  }
+
+  &-panel {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	padding: $padding;
+	background-color: $c-chat-sidebar;
+	border-bottom: 1px solid $c-chat-border;
+
+	@include respDown(sm) {
+	  padding: $padding-sm;
+	}
+
+	&__back {
+	  margin-right: 2rem;
+	  font-size: 1.2rem;
+	  color: $c-chat-gray;
+	  cursor: pointer;
+	  transition: color 0.3s;
+
+	  @include hover {
+		color: $c-text;
+	  }
+
+	  //@include respUp(md) {
+		//display: none;
+	  //}
+
+	  @include respDown(sm) {
+		margin-right: 1.5rem
+	  }
+	}
+
+	&__call {
+	  margin-left: auto;
+	}
+
+	&__recipient {
+	  display: flex;
+	  align-items: center;
+
+	  &-image {
+		position: relative;
+		padding: 0.1rem;
+		margin-right: 0.625rem;
+		overflow: hidden;
+		font-size: 2.5rem;
+		border: 2px solid $c-chat-secondary;
+		border-radius: 100%;
+	  }
+
+	  &-name {
+		word-break: break-word;
+	  }
+
+	  &-status {
+		&-typing {
+		  color: $c-chat-secondary;
+		}
+	  }
+	}
+
+	&__actions {
+	  margin-left: auto;
+
+	  button {
+		font-size: 1.5rem;
+		color: $c-chat-gray;
+		cursor: pointer;
+		transition: color 0.3s;
+
+		@include respDown(sm) {
+		  font-size: 1.2rem;
+		}
+
+		@include hover {
+		  color: $c-text;
+		}
+
+		&:not(:last-child) {
+		  margin-right: 1.5rem;
+		}
+	  }
+	}
+  }
+
+  &-chat {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	height: 1px;
+	min-height: 256px;
+	//background-image: url("~/src/assets/images/messages.jpg");
+	background: $c-chat-primary;
+  }
+}

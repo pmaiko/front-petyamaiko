@@ -1,4 +1,4 @@
-import { Socket, Authorization, Message } from '~/types/chat'
+import { Socket, Authorization, Message } from '~/types/chatTypes'
 import { baseSocket } from '~/helpers/base-socket'
 
 export const addUser = (socket: Socket, sendData: Authorization) => {

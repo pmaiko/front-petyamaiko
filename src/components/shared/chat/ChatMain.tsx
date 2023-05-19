@@ -1,220 +1,156 @@
-import '~/assets/styles/shared/chat/ChatMain.scss'
-import { cloneDeep } from 'lodash'
+import { Socket, User, Messages, Message, Notification } from '~/types/chatTypes'
 
-import { SocketID, User, Message } from '~/types/chat'
+import api from '~/api'
+import { debounce } from 'lodash'
+import { getConversationId } from '~/helpers/get-сonversation-id'
 
-import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import EmojiPicker, { Theme, EmojiClickData } from 'emoji-picker-react'
+import { useEffect, useState, useMemo, useRef, useCallback, memo } from 'react'
 
-import ChatMessage from '~/components/shared/chat/ChatMessage'
+import ChatSidebar from '~/components/shared/chat/ChatSidebar'
+import ChatDialog from '~/components/shared/chat/dialog/ChatDialog'
 
 interface Props {
+  socket: Socket,
   sender: User
-  recipient: User
-  messages: Message[]
-  onHide: () => void
-  onSendMessage: (text: string) => void,
-  onWatchedMessage?: (id: string) => void
 }
 
 const ChatMain = (props: Props) => {
+
+  // ref
+  const watchedIds = useRef([] as string[])
+
+  // state
   const [state, setState] = useState({
-    text: ''
+    users: [] as User[],
+    recipient: {} as User,
+    messages: {} as Messages
   })
 
-  const methods = {
-    sendMessage () {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          text: ''
-        }
-      })
-      props.onSendMessage(state.text)
-    },
+  // computed
+  const sender = useMemo<User | null>(() => {
+    return state.users?.find((item: User) => item.socketId === props.socket?.id) || null
+  }, [props.socket, state.users])
 
-    onKeyPress (event: React.KeyboardEvent) {
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        methods.sendMessage()
-      }
-    },
+  const messages = useMemo(() => {
+    return state.messages
+  }, [state.messages])
 
-    onChange (event: React.ChangeEvent<any>) {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          text: event.target.value
-        }
-      })
-    },
-
-    onClick (event: React.MouseEvent<HTMLElement>) {
-      methods.sendMessage()
+  const currentMessages = useMemo(() => {
+    if (sender && state.recipient.socketId) {
+      const conversationId = getConversationId(sender.socketId, state.recipient.socketId)
+      return (state.messages[conversationId] || []).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
     }
-  }
-  // const [message, setMessage] = useState('')
-  // const [visibleEmojiPicker, setVisibleEmojiPicker] = useState(false)
-  //
-  // const messages = useMemo(() => {
-  //   const tmp = cloneDeep(privateMessages[hash])
-  //   return tmp?.reverse() || []
-  // }, [privateMessages[hash]])
-  //
-  // useEffect(() => {
-  //   if (messages.length && socketId) {
-  //     setTimeout(() => {
-  //       updatePrivateMessage(mySocketId, socketId)
-  //     }, 500)
-  //   }
-  // }, [messages.length, socketId])
-  //
-  // const newNotification = useMemo(() => {
-  //   return notifications.find(item => item.from === socketId)
-  // }, [notifications, socketId])
-  //
-  // const hasNewNotification = useMemo(() => {
-  //   return !!newNotification
-  // }, [notifications, socketId])
+    return []
+  }, [state.recipient.socketId, state.messages])
 
-  // useEffect(() => {
-  //   if (hasNewNotification) {
-  //     setTimeout(() => {
-  //       removeNotification(newNotification?.from)
-  //     }, 500)
-  //   }
-  // }, [notifications, socketId])
+  // methods
+  const openChat = useCallback((recipient: User) => {
+    setState(prevState => ({
+      ...prevState,
+      recipient
+    }))
+  }, [])
 
-  // const onMessageChange = (event: React.ChangeEvent<any>) => {
-  //   onTyping(socketId)
-  //   setMessage(_ => event.target.value || '')
-  // }
+  const hideChat = useCallback(() => {
+    setState(prevState => ({
+      ...prevState,
+      recipient: {} as User
+    }))
+  }, [])
 
-  // const submit = () => {
-  //   onSendMessage(message)
-  //   setMessage(_ => '')
-  // }
+  const sendMessage = useCallback((text: string) => {
+    if (sender) {
+      api.chat.sendMessage(props.socket, {
+        senderId: sender.socketId,
+        recipientId: state.recipient.socketId,
+        text
+      })
+    }
+  }, [props.socket, sender, state.recipient])
 
-  // const onKeyPress = (event: React.KeyboardEvent) => {
-  //   if (event.keyCode === 13) {
-  //     event.preventDefault()
-  //     submit()
-  //   }
-  // }
+  const onWatchedMessageDeb = debounce(async () => {
+    await api.chat.sendMessagesWatchedIds(props.socket, {
+      senderId: sender?.socketId,
+      recipientId: state.recipient.socketId,
+      ids: watchedIds.current
+    })
 
-  // const onClick = (event: React.MouseEvent<HTMLElement>) => {
-  //   onSendMessage(message)
-  //   setMessage(_ => '')
-  // }
+    watchedIds.current = []
+  }, 500)
 
-  // const toggleEmojiPicker = (event: React.MouseEvent<HTMLElement>) => {
-  //   setVisibleEmojiPicker(prev => !prev)
-  // }
+  const onWatchedMessage = useCallback((id: string) => {
+    watchedIds.current.push(id)
+    onWatchedMessageDeb()
+  }, [props.socket, sender?.socketId, state.recipient.socketId])
 
-  // const onEmojiClick = useCallback((event: EmojiClickData) => {
-  //   setMessage(prev => prev ? `${prev} ${event.emoji}` : event.emoji)
-  //   setVisibleEmojiPicker(false)
-  // }, [])
+  // watch
+  useEffect(() => {
+    if (props.socket) {
+      props.socket.on('users:update', (users) => {
+        setState(prevState => {
+          return {
+            ...prevState,
+            users
+          }
+        })
+      })
 
-  // const onClickCall = () => {
-  //   onCall(mySocketId, socketId)
-  // }
+      props.socket.on('messages:update', (data: {conversationId: string, messages: Message[]}) => {
+        setState(prevState => {
+          return {
+            ...prevState,
+            messages: {
+              ...prevState.messages,
+              [data.conversationId]: data.messages
+            }
+          }
+        })
+      })
+
+      props.socket.on('message:notification', (data: Notification) => {
+        //
+      })
+    }
+
+    return () => {
+      if (props.socket) {
+        props.socket.disconnect()
+      }
+    }
+  }, [props.socket])
 
   return (
-    <div className='chat-main'>
-      <div className='chat-main-panel shadow-down'>
-        <button
-          className='chat-main-panel__back'
-          onClick={props.onHide}
-        >
-          <i className='fa-solid fa-chevron-left' />
-        </button>
-        <div className='chat-main-panel__recipient'>
-          <div className='chat-main-panel__recipient-image'>
-            <i className='fa-solid fa-circle-user' />
+    <div className='chat__wrapper pt-321'>
+      <div className='chat__holder'>
+        <ChatSidebar
+          users={state.users}
+          sender={props.sender}
+          recipient={state.recipient}
+          messages={messages}
+          onClickUserCard={openChat}
+        />
+        {
+          !!state.recipient.socketId &&
+          <ChatDialog
+            sender={props.sender}
+            recipient={state.recipient}
+            messages={currentMessages}
+            onHide={hideChat}
+            onSendMessage={sendMessage}
+            onWatchedMessage={onWatchedMessage}
+          />
+        }
+        {
+          !state.recipient.socketId &&
+          <div className='chat__empty'>
+            <div className='chat__empty-text h4 bold!'>
+              Select who you would like to write to!
+            </div>
           </div>
-          <div className='chat-main-panel__recipient-info'>
-            <p className='chat-main-panel__recipient-name bold'>
-              {props.recipient.name}
-            </p>
-            <p className='chat-main-panel__recipient-status small'>
-              {props.recipient.typing ? <span className='chat-main-panel__recipient-status-typing'>...typing</span> : 'Online'}
-            </p>
-          </div>
-        </div>
-        {/*<div*/}
-        {/*  className='chat-main-panel__actions'*/}
-        {/*  onClick={onClickCall}*/}
-        {/*>*/}
-        {/*  <button>*/}
-        {/*    <i className='fa-solid fa-phone' />*/}
-        {/*  </button>*/}
-        {/*  <button>*/}
-        {/*    <i className='fa-solid fa-video' />*/}
-        {/*  </button>*/}
-        {/*</div>*/}
-      </div>
-      <div className='chat-main-chat'>
-        <ul className='chat-main-chat__messages'>
-          {
-            !!props.messages.length ?
-              props.messages.map((message, index) => (
-                <li
-                  key={message.id || index}
-                  className='chat-main-chat__messages-item'
-                >
-                  <ChatMessage
-                    {...message}
-                    name={props.sender.name}
-                    highlight={props.sender.socketId === message.senderId}
-                    onWatched={props.onWatchedMessage}
-                  />
-                </li>
-              ))
-              :
-                <li className='chat-main-chat__messages-empty'>
-                  There is nothing here yet...
-                </li>
-          }
-        </ul>
-        <div className='chat-main-chat__new-message shadow-up'>
-          <div className='chat-main-chat__field'>
-            {/*<button*/}
-            {/*  className='chat-main-chat__field-button chat-main-chat__field-button_smile'*/}
-            {/*  onClick={toggleEmojiPicker}*/}
-            {/*>*/}
-            {/*  <i className='fa-regular fa-face-smile' />*/}
-            {/*</button>*/}
-            {/*{*/}
-            {/*  visibleEmojiPicker ?*/}
-            {/*  <div style={{*/}
-            {/*    visibility: visibleEmojiPicker ? 'visible' : 'hidden',*/}
-            {/*    opacity: visibleEmojiPicker ? 1 : 0*/}
-            {/*  }}>*/}
-            {/*    <EmojiPicker*/}
-            {/*      theme={Theme.DARK}*/}
-            {/*      onEmojiClick={onEmojiClick}*/}
-            {/*    />*/}
-            {/*  </div>*/}
-            {/*  : ''*/}
-            {/*}*/}
-            <textarea
-              value={state.text}
-              placeholder='Your messages...'
-              className='chat-main-chat__field-input'
-              onKeyDown={methods.onKeyPress}
-              onChange={methods.onChange}
-            />
-            <button
-              className='chat-main-chat__field-button chat-main-chat__field-button_send'
-              onClick={methods.onClick}
-            >
-              <i className='fa-solid fa-paper-plane' />
-            </button>
-          </div>
-        </div>
+        }
       </div>
     </div>
   )
 }
-export default ChatMain
+
+export default memo(ChatMain)

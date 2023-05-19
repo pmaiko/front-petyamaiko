@@ -1,8 +1,8 @@
 import '~/assets/styles/shared/chat/ChatSidebar.scss'
-import { User, SocketID, onClickUserCard, Messages, Message } from '~/types/chat'
+import { User, Messages } from '~/types/chatTypes'
 import { getConversationId } from '~/helpers/get-сonversation-id'
 
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, memo } from 'react'
 
 import ChatUserCard from '~/components/shared/chat/ChatUserCard'
 
@@ -11,7 +11,7 @@ interface Props {
   sender: User,
   recipient: User,
   messages: Messages,
-  onClickUserCard: onClickUserCard
+  onClickUserCard: (user: User) => void
 }
 
 const ChatSidebar = (props: Props) => {
@@ -36,7 +36,7 @@ const ChatSidebar = (props: Props) => {
       ?.filter(message => message.recipientId === props.sender.socketId)
       ?.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)) || []
 
-    return messages[messages.length - 1] || {}
+    return messages[messages.length - 1] || null
   }, [props.messages])
   return (
     <div
@@ -67,9 +67,9 @@ const ChatSidebar = (props: Props) => {
           !!formattedUsers?.length ?
             <ul className='chat-sidebar__users-list'>
               {
-                formattedUsers.map((user, index) => (
+                formattedUsers.map(user => (
                   <li
-                    key={index}
+                    key={user.socketId}
                     className='chat-sidebar__users-list-item'
                   >
                     <ChatUserCard
@@ -97,4 +97,4 @@ const ChatSidebar = (props: Props) => {
     </div>
   )
 }
-export default ChatSidebar
+export default memo(ChatSidebar)

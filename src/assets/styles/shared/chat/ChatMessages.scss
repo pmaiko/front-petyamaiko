@@ -1,0 +1,25 @@
+$padding: 1rem 2rem;
+$padding-sm: 1rem;
+
+.chat-messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+  padding: $padding;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @include respDown(sm) {
+    padding: $padding-sm;
+  }
+
+  &__item {
+    &:not(:first-child) {
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  &__empty {
+    margin: auto;
+  }
+}

@@ -7,15 +7,10 @@ export type SocketResponse = {
   message: string
 }
 
-export type ConnectUser = (userName: string) => Promise<SocketResponse>
-
 export type Authorization = {
   userName: string
 }
-
 export type SocketID = string
-
-export type onClickUserCard = (user: User) => void
 
 export type User = {
   socketId: string,
@@ -36,3 +31,8 @@ export type Message = {
 export type Messages = Partial<{
   [conversationId: string]: Message[]
 }>
+
+export type Notification = {
+  senderId: SocketID,
+  text: string
+}

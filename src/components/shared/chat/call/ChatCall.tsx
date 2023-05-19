@@ -1,8 +1,8 @@
 import '~/assets/styles/shared/chat/ChatCall.scss'
 
-import ChatCallCalling from '~/components/shared/chat/ChatCallCalling'
-import ChatCallSpeaking from '~/components/shared/chat/ChatCallSpeaking'
-import ChatCallCompleted from '~/components/shared/chat/ChatCallCompleted'
+import ChatCallCalling from '~/components/shared/chat/call/ChatCallCalling'
+import ChatCallSpeaking from '~/components/shared/chat/call/ChatCallSpeaking'
+import ChatCallCompleted from '~/components/shared/chat/call/ChatCallCompleted'
 import { callTypes, useSocket } from '~/providers/SocketProvider'
 import { useEffect, useState } from 'react'
 
