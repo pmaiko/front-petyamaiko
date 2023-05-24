@@ -9,9 +9,9 @@ import ChatUserCard from '~/components/shared/chat/ChatUserCard'
 interface Props {
   users: User[],
   sender: User,
-  recipient: User,
+  recipient: User | null,
   messages: Messages,
-  onClickUserCard: (user: User) => void
+  onClickRecipientCard: (recipient: User) => void
 }
 
 const ChatSidebar = (props: Props) => {
@@ -76,8 +76,8 @@ const ChatSidebar = (props: Props) => {
                       user={user}
                       notificationsQuantity={notifications[getConversationId(user.socketId, props.sender.socketId)]?.length || 0}
                       lastMessage={getLastMessage(user)}
-                      active={user.socketId === props.recipient.socketId}
-                      onClickUserCard={props.onClickUserCard}
+                      active={user.socketId === props.recipient?.socketId}
+                      onClickRecipientCard={props.onClickRecipientCard}
                     />
                   </li>
                 ))

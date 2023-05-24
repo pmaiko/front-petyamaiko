@@ -1,0 +1,57 @@
+.alert-message-component {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 18rem;
+  padding: 1rem;
+  background-color: $c-chat-user-card-active;
+  border-radius: 1.4rem;
+  box-shadow: 0 4px 20px 0 $c-chat-user-card-active;
+
+  &__wrapper {
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  &__title {
+    margin-bottom: 0.2rem;
+    color: $c-warning;
+  }
+
+  &__image {
+    position: relative;
+    flex-shrink: 0;
+    padding: 0.1rem;
+    margin-right: 0.625rem;
+    overflow: hidden;
+    font-size: 2.5rem;
+    border: 2px solid $c-chat-secondary;
+    border-radius: 100%;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+  }
+
+  &__name {
+    font-weight: bold;
+    color: inherit;
+    word-break: break-word;
+    cursor: pointer;
+  }
+
+  &__text {
+    overflow: hidden;
+    color: $c-chat-gray;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

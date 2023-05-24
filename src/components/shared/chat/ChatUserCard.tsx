@@ -10,12 +10,12 @@ interface IProps {
   notificationsQuantity: number,
   lastMessage: Message | null,
   active: boolean,
-  onClickUserCard: (user: User) => void
+  onClickRecipientCard: (recipient: User) => void
 }
 
 const ChatUserCard = (props: IProps) => {
   const onClick = () => {
-    props.onClickUserCard(props.user)
+    props.onClickRecipientCard(props.user)
   }
 
   const date = useMemo(() => {

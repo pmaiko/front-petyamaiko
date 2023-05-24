@@ -32,7 +32,7 @@ export type Messages = Partial<{
   [conversationId: string]: Message[]
 }>
 
-export type Notification = {
-  senderId: SocketID,
-  text: string
+export type AlertMessage = {
+  sender?: User,
+  text?: string
 }

@@ -1,7 +1,6 @@
 import { cloneDeep, isEmpty } from 'lodash'
 import { useState, createContext, useContext, useEffect } from 'react'
 import io from 'socket.io-client'
-import notificationsSoundSrc from '~/assets/audio/notifications-sound1.mp3'
 
 const createHash = (value1: string, value2: string): string => {
   if (value1 && value2) {
@@ -16,7 +15,7 @@ const SocketContext = createContext({} as TData)
 let socket: TSocket = {} as TSocket
 
 let typingTimer: any
-const audio = new Audio(notificationsSoundSrc)
+const audio = new Audio()
 audio.volume = 0.5
 
 export const SocketProvider = ({ children }: any) => {

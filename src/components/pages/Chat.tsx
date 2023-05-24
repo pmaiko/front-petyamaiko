@@ -12,7 +12,7 @@ import { useAppLoaded } from '~/hooks/useAppLoaded'
 import ChatAuthorization from '~/components/shared/chat/ChatAuthorization'
 import ChatMain from '~/components/shared/chat/ChatMain'
 
-import ChatCall from '~/components/shared/chat/call/ChatCall'
+// import ChatCall from '~/components/shared/chat/call/ChatCall'
 
 const Chat = () => {
   const { setLoadedPage } = useAppLoaded()
@@ -59,6 +59,32 @@ const Chat = () => {
       }
     })
   }
+
+  // watch
+  useEffect(() => {
+    if (state.socket) {
+      state.socket.on('disconnect', () => {
+        setState(prevState => {
+          return {
+            ...prevState,
+            sender: null
+          }
+        })
+      })
+    }
+
+    return () => {
+      if (state.socket) {
+        state.socket.disconnect()
+      }
+    }
+  }, [state.socket])
+
+  useEffect(() => {
+    if (!state.sender) {
+      state.socket?.disconnect()
+    }
+  }, [state.sender])
 
   return (
     <div className='chat'>

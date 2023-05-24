@@ -8,6 +8,9 @@ export const addUser = (socket: Socket, sendData: Authorization) => {
 export const sendMessage = (socket: Socket, sendData: Message) => {
   return baseSocket(socket, 'message:send', sendData)
 }
+export const typingMessage = (socket: Socket, sendData: object) => {
+  return baseSocket(socket, 'message:typing', sendData)
+}
 
 export const sendMessagesWatchedIds = (socket: Socket, sendData: object) => {
   return baseSocket(socket, 'messages:watchedIds', sendData)

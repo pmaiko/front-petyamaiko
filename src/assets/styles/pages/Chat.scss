@@ -8,27 +8,32 @@
 	height: 100%;
   }
 
-  &__wrapper {
-	height: 100%;
-  }
-
-  &__holder {
+  &-main {
 	position: relative;
-	display: flex;
 	height: 100%;
-	overflow: hidden;
-	border-radius: 4px;
-  }
 
-  &__empty {
-	display: flex;
-	flex: 1;
-	align-items: center;
-	justify-content: center;
-	padding: 2rem;
+	&__wrapper {
+	  height: 100%;
+	}
 
-	@include respDown(sm) {
-	  display: none;
+	&__holder {
+	  position: relative;
+	  display: flex;
+	  height: 100%;
+	  overflow: hidden;
+	  border-radius: 4px;
+	}
+
+	&__empty {
+	  display: flex;
+	  flex: 1;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 2rem;
+
+	  @include respDown(sm) {
+		display: none;
+	  }
 	}
   }
 }

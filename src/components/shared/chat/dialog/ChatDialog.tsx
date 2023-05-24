@@ -13,7 +13,8 @@ interface Props {
   messages: Message[]
   onHide: () => void
   onSendMessage: (text: string) => void,
-  onWatchedMessage?: (id: string) => void
+  onWatchedMessage?: (id: string) => void,
+  onTyping: () => void
 }
 
 const ChatDialog = (props: Props) => {
@@ -69,6 +70,7 @@ const ChatDialog = (props: Props) => {
         />
         <ChatMessagePanel
           onSendMessage={props.onSendMessage}
+          onTyping={props.onTyping}
         />
       </div>
     </div>

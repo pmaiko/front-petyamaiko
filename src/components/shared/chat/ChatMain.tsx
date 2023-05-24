@@ -1,13 +1,18 @@
-import { Socket, User, Messages, Message, Notification } from '~/types/chatTypes'
+import { Socket, User, Messages, Message, AlertMessage } from '~/types/chatTypes'
 
 import api from '~/api'
-import { debounce } from 'lodash'
+import NotificationManager from '~/plugins/notification'
+
+import { debounce, cloneDeep } from 'lodash'
 import { getConversationId } from '~/helpers/get-сonversation-id'
 
 import { useEffect, useState, useMemo, useRef, useCallback, memo } from 'react'
+import { CSSTransition } from 'react-transition-group'
+
 
 import ChatSidebar from '~/components/shared/chat/ChatSidebar'
 import ChatDialog from '~/components/shared/chat/dialog/ChatDialog'
+import AlertMessageComponent from '~/components/shared/chat/AlertMessageComponent'
 
 interface Props {
   socket: Socket,
@@ -15,15 +20,18 @@ interface Props {
 }
 
 const ChatMain = (props: Props) => {
-
   // ref
   const watchedIds = useRef([] as string[])
+  const alertMessageComponent = useRef(null)
+  const setTimeoutAlertId = useRef<undefined | ReturnType<typeof setTimeout>>()
+  const setTimeoutTypingId = useRef<undefined | ReturnType<typeof setTimeout>>()
 
   // state
   const [state, setState] = useState({
     users: [] as User[],
-    recipient: {} as User,
-    messages: {} as Messages
+    recipient: null as User | null,
+    messages: {} as Messages,
+    alertMessage: null as AlertMessage | null
   })
 
   // computed
@@ -36,12 +44,12 @@ const ChatMain = (props: Props) => {
   }, [state.messages])
 
   const currentMessages = useMemo(() => {
-    if (sender && state.recipient.socketId) {
+    if (sender && state.recipient?.socketId) {
       const conversationId = getConversationId(sender.socketId, state.recipient.socketId)
       return (state.messages[conversationId] || []).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
     }
     return []
-  }, [state.recipient.socketId, state.messages])
+  }, [state.recipient?.socketId, state.messages])
 
   // methods
   const openChat = useCallback((recipient: User) => {
@@ -62,7 +70,7 @@ const ChatMain = (props: Props) => {
     if (sender) {
       api.chat.sendMessage(props.socket, {
         senderId: sender.socketId,
-        recipientId: state.recipient.socketId,
+        recipientId: state.recipient?.socketId || '',
         text
       })
     }
@@ -71,7 +79,7 @@ const ChatMain = (props: Props) => {
   const onWatchedMessageDeb = debounce(async () => {
     await api.chat.sendMessagesWatchedIds(props.socket, {
       senderId: sender?.socketId,
-      recipientId: state.recipient.socketId,
+      recipientId: state.recipient?.socketId,
       ids: watchedIds.current
     })
 
@@ -81,7 +89,23 @@ const ChatMain = (props: Props) => {
   const onWatchedMessage = useCallback((id: string) => {
     watchedIds.current.push(id)
     onWatchedMessageDeb()
-  }, [props.socket, sender?.socketId, state.recipient.socketId])
+  }, [props.socket, sender?.socketId, state.recipient?.socketId])
+
+  const onTyping = useCallback(() => {
+    if (state.recipient) {
+      api.chat.typingMessage(props.socket, {
+        senderId: props.sender.socketId,
+        recipientId: state.recipient.socketId
+      })
+    }
+  }, [props.socket, sender?.socketId, state.recipient?.socketId])
+
+  const hideAlertMessage = useCallback(() => {
+    setState(prevState => ({
+      ...prevState,
+      alertMessage: null
+    }))
+  }, [])
 
   // watch
   useEffect(() => {
@@ -107,30 +131,95 @@ const ChatMain = (props: Props) => {
         })
       })
 
-      props.socket.on('message:notification', (data: Notification) => {
-        //
-      })
-    }
+      props.socket.on('message:alert', (alertMessage: AlertMessage) => {
+        setState(prevState => {
+          if (prevState.recipient?.socketId !== alertMessage.sender?.socketId) {
+            return {
+              ...prevState,
+              alertMessage
+            }
+          } else {
+            return prevState
+          }
+        })
 
-    return () => {
-      if (props.socket) {
-        props.socket.disconnect()
-      }
+        clearTimeout(setTimeoutAlertId.current)
+        setTimeoutAlertId.current = setTimeout(() => {
+          setState(prevState => {
+            return {
+              ...prevState,
+              alertMessage: null
+            }
+          })
+        }, 4000)
+      })
+
+      props.socket.on('message:typing', (data: {senderId: string}) => {
+        const handler = (typing: boolean) => {
+          setState(prevState => {
+            const users = prevState.users.map((user) => {
+              if (user.socketId === data.senderId) {
+                const object = cloneDeep(user)
+                object.typing = typing
+                return object
+              }
+              return user
+            })
+
+            const recipient = cloneDeep(prevState.recipient)
+            if (recipient?.socketId === data.senderId) {
+              recipient.typing = typing
+            }
+
+            return {
+              ...prevState,
+              users,
+              recipient
+            }
+          })
+        }
+
+        handler(true)
+
+        clearTimeout(setTimeoutTypingId.current)
+        setTimeoutTypingId.current = setTimeout(() => {
+          handler(false)
+        }, 1000)
+      })
+
+      props.socket.on('user:connect', (user: User) => {
+        NotificationManager.success(`Connected: ${user.name}`)
+      })
+
+      props.socket.on('user:disconnect', (user: User) => {
+        NotificationManager.error(`Disconnected: ${user.name}`)
+
+        setState((prevState) => {
+          if (prevState.recipient?.socketId === user.socketId) {
+            return {
+              ...prevState,
+              recipient: null
+            }
+          } else {
+            return prevState
+          }
+        })
+      })
     }
   }, [props.socket])
 
   return (
-    <div className='chat__wrapper pt-321'>
-      <div className='chat__holder'>
+    <div className='chat-main pt-321'>
+      <div className='chat-main__holder'>
         <ChatSidebar
           users={state.users}
           sender={props.sender}
           recipient={state.recipient}
           messages={messages}
-          onClickUserCard={openChat}
+          onClickRecipientCard={openChat}
         />
         {
-          !!state.recipient.socketId &&
+          !!state.recipient?.socketId &&
           <ChatDialog
             sender={props.sender}
             recipient={state.recipient}
@@ -138,17 +227,36 @@ const ChatMain = (props: Props) => {
             onHide={hideChat}
             onSendMessage={sendMessage}
             onWatchedMessage={onWatchedMessage}
+            onTyping={onTyping}
           />
         }
         {
-          !state.recipient.socketId &&
-          <div className='chat__empty'>
-            <div className='chat__empty-text h4 bold!'>
+          !state.recipient?.socketId &&
+          <div className='chat-main__empty'>
+            <div className='chat-main__empty-text h4 bold!'>
               Select who you would like to write to!
             </div>
           </div>
         }
       </div>
+
+      <CSSTransition
+        nodeRef={alertMessageComponent}
+        in={!!state.alertMessage}
+        timeout={500}
+        classNames='fade-right'
+        unmountOnExit={true}
+      >
+        {
+          !!state.alertMessage ?
+          <AlertMessageComponent
+            _ref={alertMessageComponent}
+            {...state.alertMessage}
+            onClose={hideAlertMessage}
+            onSenderClick={openChat}
+          /> : <div />
+        }
+      </CSSTransition>
     </div>
   )
 }
