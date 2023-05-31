@@ -1,9 +1,10 @@
 import io from 'socket.io-client'
+import any = jasmine.any
 export type Socket = ReturnType<typeof io> | null
 
-export type SocketResponse = {
+export type SocketResponse<T = any> = {
   status: 'success' | 'error'
-  data: any,
+  data: T,
   message: string
 }
 
@@ -35,4 +36,11 @@ export type Messages = Partial<{
 export type AlertMessage = {
   sender?: User,
   text?: string
+}
+
+export type GeneralMessage = {
+  id?: string,
+  sender: User,
+  text: string,
+  timestamp?: number
 }

@@ -1,4 +1,4 @@
-import { Socket, User, Messages, Message, AlertMessage } from '~/types/chatTypes'
+import { Socket, User, Messages, Message, AlertMessage, GeneralMessage } from '~/types/chatTypes'
 
 import api from '~/api'
 import NotificationManager from '~/plugins/notification'
@@ -12,6 +12,7 @@ import { CSSTransition } from 'react-transition-group'
 
 import ChatSidebar from '~/components/shared/chat/ChatSidebar'
 import ChatDialog from '~/components/shared/chat/dialog/ChatDialog'
+import ChatGeneral from '~/components/shared/chat/general/ChatGeneral'
 import AlertMessageComponent from '~/components/shared/chat/AlertMessageComponent'
 
 interface Props {
@@ -31,7 +32,9 @@ const ChatMain = (props: Props) => {
     users: [] as User[],
     recipient: null as User | null,
     messages: {} as Messages,
-    alertMessage: null as AlertMessage | null
+    alertMessage: null as AlertMessage | null,
+    general: false,
+    generalMessages: null as GeneralMessage[] | null
   })
 
   // computed
@@ -55,14 +58,27 @@ const ChatMain = (props: Props) => {
   const openChat = useCallback((recipient: User) => {
     setState(prevState => ({
       ...prevState,
-      recipient
+      recipient,
+      general: false
+    }))
+  }, [])
+
+  const openGeneralChat = useCallback(async () => {
+    const { data } = await api.chat.getGeneralMessage<GeneralMessage[]>(props.socket)
+
+    setState(prevState => ({
+      ...prevState,
+      recipient: null,
+      general: true,
+      generalMessages: data
     }))
   }, [])
 
   const hideChat = useCallback(() => {
     setState(prevState => ({
       ...prevState,
-      recipient: {} as User
+      recipient: null,
+      general: false
     }))
   }, [])
 
@@ -71,6 +87,15 @@ const ChatMain = (props: Props) => {
       api.chat.sendMessage(props.socket, {
         senderId: sender.socketId,
         recipientId: state.recipient?.socketId || '',
+        text
+      })
+    }
+  }, [props.socket, sender, state.recipient])
+
+  const sendGeneralMessage = useCallback((text: string) => {
+    if (sender) {
+      api.chat.sendGeneralMessage(props.socket, {
+        senderId: sender.socketId,
         text
       })
     }
@@ -127,6 +152,20 @@ const ChatMain = (props: Props) => {
               ...prevState.messages,
               [data.conversationId]: data.messages
             }
+          }
+        })
+      })
+
+      props.socket.on('general-messages:update', (data: GeneralMessage[]) => {
+        setState(prevState => {
+          if (prevState.general) {
+            return {
+              ...prevState,
+              generalMessages: data
+            }
+          }
+          return {
+            ...prevState
           }
         })
       })
@@ -217,9 +256,11 @@ const ChatMain = (props: Props) => {
           recipient={state.recipient}
           messages={messages}
           onClickRecipientCard={openChat}
+          general={state.general}
+          onClickGeneral={openGeneralChat}
         />
         {
-          !!state.recipient?.socketId &&
+          !!state.recipient?.socketId && !state.general &&
           <ChatDialog
             sender={props.sender}
             recipient={state.recipient}
@@ -231,7 +272,16 @@ const ChatMain = (props: Props) => {
           />
         }
         {
-          !state.recipient?.socketId &&
+          state.general &&
+          <ChatGeneral
+            sender={props.sender}
+            messages={state.generalMessages}
+            onHide={hideChat}
+            onSendMessage={sendGeneralMessage}
+          />
+        }
+        {
+          !state.recipient?.socketId && !state.general &&
           <div className='chat-main__empty'>
             <div className='chat-main__empty-text h4 bold!'>
               Select who you would like to write to!

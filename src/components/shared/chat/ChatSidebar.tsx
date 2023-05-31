@@ -12,6 +12,8 @@ interface Props {
   recipient: User | null,
   messages: Messages,
   onClickRecipientCard: (recipient: User) => void
+  general: boolean,
+  onClickGeneral: () => void
 }
 
 const ChatSidebar = (props: Props) => {
@@ -44,7 +46,7 @@ const ChatSidebar = (props: Props) => {
     >
       <div className='chat-sidebar__head'>
         <h2 className='chat-sidebar__head-title'>
-          Messages
+          - CHAT -
         </h2>
         {
           !!notificationsQuantity &&
@@ -52,6 +54,22 @@ const ChatSidebar = (props: Props) => {
             {notificationsQuantity}
           </div>
         }
+      </div>
+
+      <div
+        className={`chat-sidebar__general chat-user-card ${props.general ? 'chat-user-card_active' : ''}`}
+        onClick={props.onClickGeneral}
+      >
+        <div className='chat-user-card__image chat-user-card__image_border-c-blue'>
+          <i className='fa-solid fa-users' />
+        </div>
+        <div className='chat-user-card__inner'>
+          <div className='chat-user-card__head'>
+            <p className='chat-user-card__name'>
+              GENERAL CHAT
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className='chat-sidebar__users'>

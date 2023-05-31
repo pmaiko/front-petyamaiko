@@ -7,7 +7,7 @@ import ChatEmojiPicker from '~/components/shared/chat/dialog/ChatEmojiPicker'
 
 interface Props {
   onSendMessage: (text: string) => void
-  onTyping: () => void
+  onTyping?: () => void
 }
 
 const ChatMessagePanel = (props: Props) => {
@@ -33,7 +33,10 @@ const ChatMessagePanel = (props: Props) => {
   }
 
   const onChange = (event: React.ChangeEvent<any>) => {
-    props.onTyping()
+    if (props.onTyping) {
+      props.onTyping()
+    }
+
     setState((prevState) => {
       return {
         ...prevState,

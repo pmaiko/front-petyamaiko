@@ -1,11 +1,12 @@
 import '~/assets/styles/shared/chat/ChatMessage.scss'
-import { Message } from '~/types/chatTypes'
+import { Message, GeneralMessage } from '~/types/chatTypes'
 
 import Observer from '~/plugins/observer'
 import { convertTimestamp } from '~/helpers/convert-timestamp'
 import { useEffect, useMemo, useRef, memo } from 'react'
 
-interface Props extends Message {
+interface Props {
+  message: Message | GeneralMessage
   highlight: boolean
   name: string,
   onWatched?: (id: string) => void
@@ -15,13 +16,13 @@ const ChatMessage = (props: Props) => {
   const root: any = useRef()
 
   const date = useMemo(() => {
-    return convertTimestamp(props.timestamp, '*hour*:*minutes*:*seconds*')
-  }, [props.timestamp])
+    return convertTimestamp(props.message.timestamp, '*hour*:*minutes*:*seconds*')
+  }, [props.message.timestamp])
 
   useEffect(() => {
     const onInView = () => {
       if (props.onWatched) {
-        props.onWatched(props.id || '')
+        props.onWatched(props.message.id || '')
       }
     }
 
@@ -51,14 +52,15 @@ const ChatMessage = (props: Props) => {
       </div>
       <div className='chat-message__message'>
         <div className='chat-message__message-text'>
-          {props.text}
+          {props.message.text}
         </div>
         <div className='chat-message__message-icons'>
           {
-            !props.watched ?
+            'watched' in props.message && (
+            !props.message.watched ?
               <i className='fa-solid fa-check' />
             :
-              <i className='fa-solid fa-check-double' />
+              <i className='fa-solid fa-check-double' />)
           }
         </div>
       </div>
