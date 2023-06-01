@@ -31,6 +31,10 @@
 	  border: 2px solid $c-blue;
 	}
 
+	&_border-transparent {
+	  border: 2px solid transparent;
+	}
+
 	//&::before {
 	//  position: absolute;
 	//  top: 0;

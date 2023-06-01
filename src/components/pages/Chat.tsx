@@ -5,12 +5,15 @@ import io from 'socket.io-client'
 
 import { Socket, User } from '~/types/chatTypes'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { useMatches, useNavigate } from 'react-router-dom'
 import { useAppLoaded } from '~/hooks/useAppLoaded'
 
 // components
 import ChatAuthorization from '~/components/shared/chat/ChatAuthorization'
 import ChatMain from '~/components/shared/chat/ChatMain'
+import Conference from '~/components/shared/chat/conference/Conference'
+import { createConference } from '~/api/chat'
 
 // import ChatCall from '~/components/shared/chat/call/ChatCall'
 
@@ -23,8 +26,11 @@ const Chat = () => {
   // state
   const [state, setState] = useState({
     socket: null as Socket,
-    sender: null as User | null
+    sender: null as User | null,
+    conference: false
   })
+  const navigate = useNavigate()
+  const [route] = useMatches()
 
   // methods
   const connectUser = async (userName: string) => {
@@ -60,6 +66,11 @@ const Chat = () => {
     })
   }
 
+  const createNewConference = useCallback(async () => {
+    const { data } = await api.chat.createConference<string>(state.socket)
+    navigate(`/chat/conference/${data}`)
+  }, [state.socket])
+
   // watch
   useEffect(() => {
     if (state.socket) {
@@ -86,6 +97,17 @@ const Chat = () => {
     }
   }, [state.sender])
 
+  useEffect(() => {
+    if (route.params.id) {
+      setState(prevState => {
+        return {
+          ...prevState,
+          conference: true
+        }
+      })
+    }
+  }, [route])
+
   return (
     <div className='chat'>
       <div className='chat__container'>
@@ -97,10 +119,17 @@ const Chat = () => {
           />
         }
         {
-          !!state.sender &&
+          !!state.sender && !state.conference &&
           <ChatMain
             socket={state.socket}
             sender={state.sender}
+            createNewConference={createNewConference}
+          />
+        }
+        {
+          !!state.sender && state.conference &&
+          <Conference
+            socket={state.socket}
           />
         }
       </div>

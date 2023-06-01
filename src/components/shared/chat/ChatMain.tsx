@@ -17,7 +17,8 @@ import AlertMessageComponent from '~/components/shared/chat/AlertMessageComponen
 
 interface Props {
   socket: Socket,
-  sender: User
+  sender: User,
+  createNewConference: () => void
 }
 
 const ChatMain = (props: Props) => {
@@ -258,6 +259,7 @@ const ChatMain = (props: Props) => {
           onClickRecipientCard={openChat}
           general={state.general}
           onClickGeneral={openGeneralChat}
+          onClickNewConference={props.createNewConference}
         />
         {
           !!state.recipient?.socketId && !state.general &&

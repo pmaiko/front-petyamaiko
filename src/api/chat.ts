@@ -24,3 +24,7 @@ export const sendGeneralMessage = (socket: Socket, sendData: { senderId: SocketI
 export const getGeneralMessage = <T>(socket: Socket) => {
   return baseSocket<T>(socket, 'general-message:get', {})
 }
+
+export const createConference = <T>(socket: Socket) => {
+  return baseSocket<T>(socket, 'create-conference', {})
+}

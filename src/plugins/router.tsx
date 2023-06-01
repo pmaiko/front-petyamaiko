@@ -7,7 +7,6 @@ import Default from '~/components/layout/default'
 import Empty from '~/components/layout/empty'
 import Spinner from '~/components/shared/Spinner'
 import Error from '~/components/pages/Error'
-import { SocketProvider } from '~/providers/SocketProvider'
 
 // tslint:disable-next-line:no-empty
 // const Home = lazy(() => new Promise(() => {}))
@@ -56,6 +55,13 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element:
+          <Suspense fallback={<Spinner />}>
+            <Chat />
+          </Suspense>
+      },
+      {
+        path: 'conference/:id',
         element:
           <Suspense fallback={<Spinner />}>
             <Chat />

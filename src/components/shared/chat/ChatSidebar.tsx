@@ -13,7 +13,8 @@ interface Props {
   messages: Messages,
   onClickRecipientCard: (recipient: User) => void
   general: boolean,
-  onClickGeneral: () => void
+  onClickGeneral: () => void,
+  onClickNewConference: () => void
 }
 
 const ChatSidebar = (props: Props) => {
@@ -57,7 +58,23 @@ const ChatSidebar = (props: Props) => {
       </div>
 
       <div
-        className={`chat-sidebar__general chat-user-card ${props.general ? 'chat-user-card_active' : ''}`}
+        className='chat-sidebar__offset chat-user-card'
+        onClick={props.onClickNewConference}
+      >
+        <div className='chat-user-card__image chat-user-card__image_border-transparent'>
+          <i className='fa-solid fa-plus' />
+        </div>
+        <div className='chat-user-card__inner'>
+          <div className='chat-user-card__head'>
+            <p className='chat-user-card__name'>
+              NEW CONFERENCE
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className={`chat-sidebar__offset chat-user-card ${props.general ? 'chat-user-card_active' : ''}`}
         onClick={props.onClickGeneral}
       >
         <div className='chat-user-card__image chat-user-card__image_border-c-blue'>
