@@ -18,6 +18,9 @@ const options = {
   path,
   port
 }
+if (!port) {
+  delete options.port
+}
 
 let myPeer: Peer | null
 let myPid: string
